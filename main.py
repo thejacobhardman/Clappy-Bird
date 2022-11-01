@@ -43,14 +43,14 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Assets/Art/duo_lingo.png")
         self.original_image = self.image
-        self.position = vec(WIDTH/2, HEIGHT/2)
+        self.position = vec(WIDTH/2-250, HEIGHT/2)
         self.rect = self.image.get_rect(center=self.position)
         self.vel = vec(0, 0)
         self.acceleration = vec(0, -0.2)
         self.id = "player"
 
     def reset(self):
-        self.position = vec(WIDTH/2, HEIGHT/2)
+        self.position = vec(WIDTH/2-250, HEIGHT/2)
         self.image = pygame.transform.rotate(self.original_image, 0)
         self.rect = self.image.get_rect(center=self.position)
         self.vel = vec(0, 0)
@@ -131,6 +131,19 @@ def game_loop(all_sprites, pipes, backgrounds, player, offset):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        
+        all_sprites.update()
+        backgrounds.update()
+
+        org_screen.fill((255, 255, 255))
+        screen.fill((0, 0, 0))
+
+        backgrounds.draw(screen)
+
+        fps_clock.tick(FPS)
+        all_sprites.draw(screen)
+        org_screen.blit(screen, next(offset))
+        pygame.display.update()
 
 def game_over(all_sprites, pipes, backgrounds, player, offset):
     print("This is the game over screen.")
