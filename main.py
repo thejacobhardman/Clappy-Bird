@@ -23,7 +23,44 @@ pygame.display.set_icon(icon)
 
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 
+# Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Assets/Art/duo_lingo.png")
+        self.original_image = self.image
+        self.position = vec(WIDTH/2, HEIGHT/2)
+        self.rect = self.image.get_rect(center=self.position)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, -0.2)
+        self.id = "player"
+
+    def reset(self):
+        self.position = vec(WIDTH/2, HEIGHT/2)
+        self.image = pygame.transform.rotate(self.original_image, 0)
+        self.rect = self.image.get_rect(center=self.position)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, -0.2)
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            self.vel += self.acceleration
+
+        self.position += self.vel
+        self.rect.center = self.position
+        self.leave_screen()
+
+    def leave_screen(self):
+        if self.position.y >= HEIGHT:
+            pass # End the game.
+
+class Pipe(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Assets/Art/pipe.png")
 
 def main_menu():
     mixer.music.load("Assets/SFX/happy.mp3")
