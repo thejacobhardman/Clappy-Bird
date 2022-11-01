@@ -176,9 +176,9 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_SPACE:
-            #         jump_sound.play()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    jump_sound.play()
 
         if pipe_count < 2:
             top_pipe = Pipe("top")
