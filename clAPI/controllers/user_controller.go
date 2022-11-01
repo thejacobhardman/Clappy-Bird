@@ -41,7 +41,7 @@ func CreateUser() gin.HandlerFunc {
 			Username:   user.Username,
 			Password:   user.Password,
 			FriendCode: user.FriendCode,
-			Points:     user.Points,
+			HighScore:  user.HighScore,
 		}
 
 		result, err := userCollection.InsertOne(ctx, newUser)
@@ -93,7 +93,7 @@ func EditAUser() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"username": user.Username, "password": user.Password, "friendcode": user.FriendCode, "points": user.Points}
+		update := bson.M{"username": user.Username, "password": user.Password, "friend_code": user.FriendCode, "high_score": user.HighScore}
 		result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
