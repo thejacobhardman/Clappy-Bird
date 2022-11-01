@@ -18,11 +18,17 @@ game_font = pygame.font.SysFont(None, 48)
 org_screen = pygame.display.set_mode((WIDTH, HEIGHT))
 screen = org_screen.copy()
 pygame.display.set_caption("Clappy Bird")
+icon = pygame.image.load('Assets/Art/duo_lingo.png')
+pygame.display.set_icon(icon)
+
+jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
 
 def main_menu():
-    print("This is the main menu loop.")
+    mixer.music.load("Assets/SFX/happy.mp3")
+    mixer.music.set_volume(0.5)
+    mixer.music.play(-1)
     click = False
     while True:
         screen.fill((0, 0, 0))
