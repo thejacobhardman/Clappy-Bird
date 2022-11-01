@@ -91,7 +91,7 @@ class Pipe(pygame.sprite.Sprite):
         self.image = pygame.image.load("Assets/Art/pipe.png")
         self.original_image = self.image
         if self.y_side == "top":
-            self.position=vec((WIDTH+30+x_offset), self.generate_height())
+            self.position=vec((WIDTH+x_offset), self.generate_height())
             self.image = pygame.transform.rotate(self.original_image, 180)
         elif self.y_side == "bottom": 
             self.position = vec(WIDTH+x_offset, self.generate_height())
@@ -101,9 +101,9 @@ class Pipe(pygame.sprite.Sprite):
 
     def generate_height(self):
         if self.y_side == "top":
-            return random.randint(0, 180)
+            return random.randint(0, 133)
         elif self.y_side == "bottom":
-            return random.randint(540, 720)
+            return random.randint(626, 720)
 
     def update(self):
         self.position += self.vel
