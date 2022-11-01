@@ -122,9 +122,10 @@ player = Player()
 pipe_count = 0
 
 def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    mixer.music.load("Assets/SFX/happy.mp3")
-    mixer.music.set_volume(0.5)
-    mixer.music.play(-1)
+    # Uncomment this to play menu music.
+    # mixer.music.load("Assets/SFX/happy.mp3")
+    # mixer.music.set_volume(0.5)
+    # mixer.music.play(-1)
     click = False
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
@@ -212,9 +213,10 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         fps_clock.tick(FPS)
 
 def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    mixer.music.load("Assets/SFX/happy.mp3")
-    mixer.music.set_volume(0.5)
-    mixer.music.play(-1)
+    # Uncomment this to play menu music.
+    # mixer.music.load("Assets/SFX/happy.mp3")
+    # mixer.music.set_volume(0.5)
+    # mixer.music.play(-1)
     click = False
     pipe_count = 0
 
