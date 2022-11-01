@@ -17,8 +17,9 @@ def shake():
     while True:
         yield (0, 0)
 
-def reset_game(all_sprites, pipes, player):
+def reset_game(all_sprites, pipes, backgrounds, player):
     all_sprites.empty()
     pipes.empty()
+    backgrounds.empty()
     player.reset()
     all_sprites.add(player)
