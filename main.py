@@ -90,7 +90,7 @@ class Pipe(pygame.sprite.Sprite):
         self.image = pygame.image.load("Assets/Art/pipe.png")
         self.original_image = self.image
         if y_side == "top":
-            self.position=vec(WIDTH/2, 180)
+            self.position=vec(WIDTH/2+30, 180)
             self.image = pygame.transform.rotate(self.original_image, 180)
         elif y_side == "bottom":
             self.position = vec(WIDTH/2, 540)
@@ -164,6 +164,8 @@ def main_menu(all_sprites, pipes, backgrounds, player, offset):
 def game_loop(all_sprites, pipes, backgrounds, player, offset):
     top_pipe = Pipe("top")
     bottom_pipe = Pipe("bottom")
+    print(top_pipe.position)
+    print(bottom_pipe.position)
     pipes.add(top_pipe)
     pipes.add(bottom_pipe)
     all_sprites.add(top_pipe)
@@ -175,15 +177,13 @@ def game_loop(all_sprites, pipes, backgrounds, player, offset):
                 pygame.quit()
                 sys.exit()
         
-        all_sprites.update()
         backgrounds.update()
+        all_sprites.update()
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
 
         backgrounds.draw(screen)
-
-        fps_clock.tick(FPS)
         all_sprites.draw(screen)
 
         if player.did_leave_screen():
@@ -192,6 +192,7 @@ def game_loop(all_sprites, pipes, backgrounds, player, offset):
 
         org_screen.blit(screen, next(offset))
         pygame.display.update()
+        fps_clock.tick(FPS)
 
 def game_over(all_sprites, pipes, backgrounds, player, offset):
     mixer.music.load("Assets/SFX/happy.mp3")
