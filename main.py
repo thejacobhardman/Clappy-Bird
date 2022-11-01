@@ -1,7 +1,6 @@
-from tkinter.tix import MAX
 import pygame, random, math, sys
 from itertools import repeat
-from pygame import K_SPACE, mixer
+from pygame import mixer
 import scripts
 
 pygame.init()
