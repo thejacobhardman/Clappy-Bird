@@ -1,3 +1,4 @@
+from tkinter.tix import MAX
 import pygame, random, math, sys
 from itertools import repeat
 from pygame import K_SPACE, mixer
@@ -9,7 +10,7 @@ vec = pygame.math.Vector2
 
 WIDTH = 1280
 HEIGHT = 720
-MAX_SPEED = 9
+MAX_SPEED = 6
 FPS = 60
 fps_clock = pygame.time.Clock()
 title_font = pygame.font.SysFont(None, 64)
@@ -27,10 +28,10 @@ jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, position):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Assets/Art/background.png")
-        self.position = vec(WIDTH/2, HEIGHT/2)
+        self.image = pygame.image.load("Assets/Art/background.png").convert()
+        self.position = position
         self.vel = vec(-4, 0)
         self.rect = self.image.get_rect(center=self.position)
         self.id = "background"
@@ -38,6 +39,11 @@ class Background(pygame.sprite.Sprite):
     def update(self):
         self.position += self.vel
         self.rect.center = self.position
+        self.wrap_around_screen()
+
+    def wrap_around_screen(self):
+        if self.position.x < -(WIDTH/2 + 1020):
+            self.position = vec(WIDTH/2+1600, HEIGHT/2)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -46,35 +52,37 @@ class Player(pygame.sprite.Sprite):
         self.original_image = self.image
         self.position = vec(WIDTH/2-250, HEIGHT/2)
         self.rect = self.image.get_rect(center=self.position)
-        self.vel = vec(0, 4)
-        self.acceleration = vec(0, -24)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, 0)
         self.id = "player"
 
     def reset(self):
         self.position = vec(WIDTH/2-250, HEIGHT/2)
         self.image = pygame.transform.rotate(self.original_image, 0)
         self.rect = self.image.get_rect(center=self.position)
-        self.vel = vec(0, 4)
-        self.acceleration = vec(0, -24)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, 0)
 
     def update(self):
-        if self.vel.magnitude() > vec(0, 4).magnitude():
-            self.vel = vec(0, 4)
-        elif self.vel.magnitude() < vec(0, -24).magnitude():
-            self.vel = vec(0, -24)
-
-        self.vel += (0, 4)
+        self.acceleration += vec(0, 0.4)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
-            self.vel += self.acceleration
+            self.acceleration += vec(0, -4)
 
+        if self.acceleration.length() > MAX_SPEED:
+            self.acceleration.scale_to_length(MAX_SPEED)
+        if self.vel.length() > MAX_SPEED:
+            self.vel.scale_to_length(MAX_SPEED)
+
+        self.vel += self.acceleration
         self.position += self.vel
         self.rect.center = self.position
-        self.did_leave_screen()
 
     def did_leave_screen(self):
-        if self.position.y >= HEIGHT:
+        if self.position.y > HEIGHT:
+            return True
+        if self.position.y < 0:
             return True
 
 class Pipe(pygame.sprite.Sprite):
@@ -95,8 +103,10 @@ def main_menu(all_sprites, pipes, backgrounds, player, offset):
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
 
-    background = Background()
-    backgrounds.add(background)
+    background_1 = Background(vec(WIDTH/2, HEIGHT/2))
+    background_2 = Background(vec(WIDTH/2+1920, HEIGHT/2))
+    backgrounds.add(background_1)
+    backgrounds.add(background_2)
 
     while True:
         screen.fill((0, 0, 0))
