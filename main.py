@@ -91,13 +91,13 @@ class Pipe(pygame.sprite.Sprite):
         self.image = pygame.image.load("Assets/Art/pipe.png")
         self.original_image = self.image
         if self.y_side == "top":
-            self.position=vec(WIDTH/2+30, self.generate_height())
+            self.position=vec(WIDTH+30, self.generate_height())
             self.image = pygame.transform.rotate(self.original_image, 180)
         elif self.y_side == "bottom": 
-            self.position = vec(WIDTH/2, self.generate_height())
+            self.position = vec(WIDTH, self.generate_height())
         self.rect = self.image.get_rect(center= self.position)
         self.vel = vec(-4, 0)
-        self.id = "pipe"
+        self.id = "pipe"    
 
     def generate_height(self):
         if self.y_side == "top":
@@ -119,8 +119,9 @@ all_sprites = pygame.sprite.Group()
 pipes = pygame.sprite.Group()
 backgrounds = pygame.sprite.Group()
 player = Player()
+pipe_count = 0
 
-def main_menu(all_sprites, pipes, backgrounds, player, offset):
+def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     mixer.music.play(-1)
@@ -145,7 +146,7 @@ def main_menu(all_sprites, pipes, backgrounds, player, offset):
         quit_button.center=(WIDTH/2, HEIGHT/2+75)
         if play_button.collidepoint((mouseX, mouseY)):
             if click:
-                game_loop(all_sprites, pipes, backgrounds, player, offset)
+                game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
         if quit_button.collidepoint((mouseX, mouseY)):
             if click:
                 pygame.quit()
@@ -168,22 +169,33 @@ def main_menu(all_sprites, pipes, backgrounds, player, offset):
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
-def game_loop(all_sprites, pipes, backgrounds, player, offset):
-    top_pipe = Pipe("top")
-    bottom_pipe = Pipe("bottom")
-    pipes.add(top_pipe)
-    pipes.add(bottom_pipe)
-    all_sprites.add(top_pipe)
-    all_sprites.add(bottom_pipe)
-
+def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-        
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_SPACE:
+            #         jump_sound.play()
+
+        if pipe_count < 2:
+            top_pipe = Pipe("top")
+            bottom_pipe = Pipe("bottom")
+            pipes.add(top_pipe)
+            pipes.add(bottom_pipe)
+            all_sprites.add(top_pipe)
+            all_sprites.add(bottom_pipe)
+            pipe_count += 2
+            print("New Pipe")
+
+        current_sprites = all_sprites.__len__()
+        if current_sprites > 3:
+            current_sprites = 3
         backgrounds.update()
         all_sprites.update()
+        if all_sprites.__len__() < current_sprites:
+            pipe_count -= 1
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
@@ -193,17 +205,18 @@ def game_loop(all_sprites, pipes, backgrounds, player, offset):
 
         if player.did_leave_screen():
             offset = scripts.shake()
-            game_over(all_sprites, pipes, backgrounds, player, offset)
+            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
 
         org_screen.blit(screen, next(offset))
         pygame.display.update()
         fps_clock.tick(FPS)
 
-def game_over(all_sprites, pipes, backgrounds, player, offset):
+def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     mixer.music.play(-1)
     click = False
+    pipe_count = 0
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
 
@@ -222,7 +235,7 @@ def game_over(all_sprites, pipes, backgrounds, player, offset):
         quit_button.center=(WIDTH/2, HEIGHT/2+75)
         if play_button.collidepoint((mouseX, mouseY)):
             if click:
-                main_menu(all_sprites, pipes, backgrounds, player, offset)
+                main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset)
         if quit_button.collidepoint((mouseX, mouseY)):
             if click:
                 pygame.quit()
@@ -245,4 +258,4 @@ def game_over(all_sprites, pipes, backgrounds, player, offset):
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
-main_menu(all_sprites, pipes, backgrounds, player, offset)
+main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset)
