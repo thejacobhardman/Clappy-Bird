@@ -26,6 +26,18 @@ jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
 
+class Background(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Assets/Art/background.png")
+        self.position = (WIDTH/2, HEIGHT/2)
+        self.rect = self.image.get_rect(center=self.position)
+        self.id = "background"
+
+    # TODO Update this later to allow for scrolling background
+    def update(self):
+        self.position = self.position 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -64,20 +76,25 @@ class Pipe(pygame.sprite.Sprite):
 
 all_sprites = pygame.sprite.Group()
 pipes = pygame.sprite.Group()
+backgrounds = pygame.sprite.Group()
 player = Player()
 
-def main_menu(all_sprites, pipes, player, offset):
+def main_menu(all_sprites, pipes, backgrounds, player, offset):
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     mixer.music.play(-1)
     click = False
 
-    scripts.reset_game(all_sprites, pipes, player)
+    scripts.reset_game(all_sprites, pipes, backgrounds, player)
+
+    background = Background()
+    backgrounds.add(background)
 
     while True:
         screen.fill((0, 0, 0))
+        backgrounds.draw(screen)
 
-        scripts.draw_text("CLAPPY BIRD", title_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2-100)
+        scripts.draw_text("CLAPPY BIRD", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
         mouseX, mouseY = pygame.mouse.get_pos()
         play_button = pygame.Rect(WIDTH/2, HEIGHT/2, 200, 50)
         play_button.center=(WIDTH/2, HEIGHT/2)
@@ -85,15 +102,15 @@ def main_menu(all_sprites, pipes, player, offset):
         quit_button.center=(WIDTH/2, HEIGHT/2+75)
         if play_button.collidepoint((mouseX, mouseY)):
             if click:
-                game_loop(all_sprites, pipes, player, offset)
+                game_loop(all_sprites, pipes, backgrounds, player, offset)
         if quit_button.collidepoint((mouseX, mouseY)):
             if click:
                 pygame.quit()
                 sys.exit()
-        pygame.draw.rect(screen, (255, 255, 255), play_button)
-        scripts.draw_text("PLAY", game_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2)
-        pygame.draw.rect(screen, (255, 255, 255), quit_button)
-        scripts.draw_text("QUIT", game_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2+75)
+        pygame.draw.rect(screen, (0, 0, 0), play_button)
+        scripts.draw_text("PLAY", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
+        pygame.draw.rect(screen, (0, 0, 0), quit_button)
+        scripts.draw_text("QUIT", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2+75)
 
         click = False
         for event in pygame.event.get():
@@ -108,10 +125,14 @@ def main_menu(all_sprites, pipes, player, offset):
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
-def game_loop(all_sprites, pipes, player, offset):
-    print("This is the main game loop.")
+def game_loop(all_sprites, pipes, backgrounds, player, offset):
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-def game_over(all_sprites, pipes, player, offset):
+def game_over(all_sprites, pipes, backgrounds, player, offset):
     print("This is the game over screen.")
 
-main_menu(all_sprites, pipes, player, offset)
+main_menu(all_sprites, pipes, backgrounds, player, offset)
