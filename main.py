@@ -62,11 +62,18 @@ class Pipe(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Assets/Art/pipe.png")
 
-def main_menu():
+all_sprites = pygame.sprite.Group()
+pipes = pygame.sprite.Group()
+player = Player()
+
+def main_menu(all_sprites, pipes, player, offset):
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     mixer.music.play(-1)
     click = False
+
+    scripts.reset_game(all_sprites, pipes, player)
+
     while True:
         screen.fill((0, 0, 0))
 
@@ -78,7 +85,7 @@ def main_menu():
         quit_button.center=(WIDTH/2, HEIGHT/2+75)
         if play_button.collidepoint((mouseX, mouseY)):
             if click:
-                game_loop()
+                game_loop(all_sprites, pipes, player, offset)
         if quit_button.collidepoint((mouseX, mouseY)):
             if click:
                 pygame.quit()
@@ -101,10 +108,10 @@ def main_menu():
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
-def game_loop():
+def game_loop(all_sprites, pipes, player, offset):
     print("This is the main game loop.")
 
-def game_over():
+def game_over(all_sprites, pipes, player, offset):
     print("This is the game over screen.")
 
-main_menu()
+main_menu(all_sprites, pipes, player, offset)
