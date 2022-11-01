@@ -85,9 +85,28 @@ class Player(pygame.sprite.Sprite):
             return True
 
 class Pipe(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, y_side):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Assets/Art/pipe.png")
+        self.original_image = self.image
+        if y_side == "top":
+            self.position=vec(WIDTH/2, 180)
+            self.image = pygame.transform.rotate(self.original_image, 180)
+        elif y_side == "bottom":
+            self.position = vec(WIDTH/2, 540)
+        self.rect = self.image.get_rect(center= self.position)
+        self.vel = vec(-4, 0)
+        self.id = "pipe"
+
+    def update(self):
+        self.position += self.vel
+        self.rect.center = self.position
+        self.did_leave_screen()
+
+    def did_leave_screen(self):
+        if self.position.x < -360:
+            pipes.remove(self)
+            all_sprites.remove(self)
 
 all_sprites = pygame.sprite.Group()
 pipes = pygame.sprite.Group()
@@ -143,6 +162,13 @@ def main_menu(all_sprites, pipes, backgrounds, player, offset):
         pygame.display.update()
 
 def game_loop(all_sprites, pipes, backgrounds, player, offset):
+    top_pipe = Pipe("top")
+    bottom_pipe = Pipe("bottom")
+    pipes.add(top_pipe)
+    pipes.add(bottom_pipe)
+    all_sprites.add(top_pipe)
+    all_sprites.add(bottom_pipe)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -175,8 +201,8 @@ def game_over(all_sprites, pipes, backgrounds, player, offset):
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
 
-    background = Background()
-    backgrounds.add(background)
+    background_1 = Background(vec(WIDTH/2, HEIGHT/2))
+    backgrounds.add(background_1)
 
     while True:
         screen.fill((0, 0, 0))
