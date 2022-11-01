@@ -87,16 +87,23 @@ class Player(pygame.sprite.Sprite):
 class Pipe(pygame.sprite.Sprite):
     def __init__(self, y_side):
         pygame.sprite.Sprite.__init__(self)
+        self.y_side = y_side
         self.image = pygame.image.load("Assets/Art/pipe.png")
         self.original_image = self.image
-        if y_side == "top":
-            self.position=vec(WIDTH/2+30, 180)
+        if self.y_side == "top":
+            self.position=vec(WIDTH/2+30, self.generate_height())
             self.image = pygame.transform.rotate(self.original_image, 180)
-        elif y_side == "bottom":
-            self.position = vec(WIDTH/2, 540)
+        elif self.y_side == "bottom": 
+            self.position = vec(WIDTH/2, self.generate_height())
         self.rect = self.image.get_rect(center= self.position)
         self.vel = vec(-4, 0)
         self.id = "pipe"
+
+    def generate_height(self):
+        if self.y_side == "top":
+            return random.randint(0, 180)
+        elif self.y_side == "bottom":
+            return random.randint(540, 720)
 
     def update(self):
         self.position += self.vel
@@ -164,8 +171,6 @@ def main_menu(all_sprites, pipes, backgrounds, player, offset):
 def game_loop(all_sprites, pipes, backgrounds, player, offset):
     top_pipe = Pipe("top")
     bottom_pipe = Pipe("bottom")
-    print(top_pipe.position)
-    print(bottom_pipe.position)
     pipes.add(top_pipe)
     pipes.add(bottom_pipe)
     all_sprites.add(top_pipe)
