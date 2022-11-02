@@ -12,3 +12,4 @@
  Pipe art by bhu1c https://opengameart.org/content/pipe
  Happy Music by rezoner https://opengameart.org/content/happy-arcade-tune
  Jump sound effect by KobatoGames https://opengameart.org/content/slime-jump-effect
+ Various sound effects by hosch https://opengameart.org/content/8-bit-sound-effects-2
