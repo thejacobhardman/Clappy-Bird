@@ -22,6 +22,7 @@ icon = pygame.image.load('Assets/Art/duo_lingo.png')
 pygame.display.set_icon(icon)
 
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
+death_sound = mixer.Sound("Assets/SFX/death.ogg")
 
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
@@ -41,8 +42,8 @@ class Background(pygame.sprite.Sprite):
         self.wrap_around_screen()
 
     def wrap_around_screen(self):
-        if self.position.x < -(WIDTH/2 + 1020):
-            self.position = vec(WIDTH/2+1600, HEIGHT/2)
+        if self.position.x < -(WIDTH/2 + 1327):
+            self.position = vec(WIDTH/2+2064, HEIGHT/2)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -54,6 +55,7 @@ class Player(pygame.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acceleration = vec(0, 0)
         self.id = "player"
+        self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
         self.position = vec(WIDTH/2-250, HEIGHT/2)
@@ -63,18 +65,29 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = vec(0, 0)
 
     def update(self):
-        self.acceleration += vec(0, 0.4)
+        if self.dev_mode == False: # Normal bouncy movement.
+            self.acceleration += vec(0, 0.4)
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            self.acceleration += vec(0, -4)
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                self.acceleration += vec(0, -4)
 
-        if self.acceleration.length() > MAX_SPEED:
-            self.acceleration.scale_to_length(MAX_SPEED)
-        if self.vel.length() > MAX_SPEED:
-            self.vel.scale_to_length(MAX_SPEED)
+            if self.acceleration.length() > MAX_SPEED:
+                self.acceleration.scale_to_length(MAX_SPEED)
+            if self.vel.length() > MAX_SPEED:
+                self.vel.scale_to_length(MAX_SPEED)
+            self.vel += self.acceleration
+        else: # Complete control for testing.
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w]:
+                self.vel += vec(0, -0.4)
+            if keys[pygame.K_s]:
+                self.vel += vec(0, 0.4)
+            if keys[pygame.K_a]:
+                self.vel += vec(-0.4, 0)
+            if keys[pygame.K_d]:
+                self.vel += (0.4, 0)
 
-        self.vel += self.acceleration
         self.position += self.vel
         self.rect.center = self.position
 
@@ -101,9 +114,9 @@ class Pipe(pygame.sprite.Sprite):
 
     def generate_height(self):
         if self.y_side == "top":
-            return random.randint(0, 133)
+            return random.randint(0, 93) # Original value = (0, 133)
         elif self.y_side == "bottom":
-            return random.randint(626, 720)
+            return random.randint(666, 720) # Original value = (626, 720)
 
     def update(self):
         self.position += self.vel
@@ -131,7 +144,7 @@ def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
 
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
-    background_2 = Background(vec(WIDTH/2+1920, HEIGHT/2))
+    background_2 = Background(vec(WIDTH/2+2560, HEIGHT/2))
     backgrounds.add(background_1)
     backgrounds.add(background_2)
 
@@ -181,7 +194,7 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
                 if event.key == pygame.K_SPACE:
                     jump_sound.play()
 
-        if pipe_count < 8:
+        if pipe_count < 12:
             top_pipe = Pipe("top", x_offset)
             bottom_pipe = Pipe("bottom", x_offset)
             pipes.add(top_pipe)
@@ -189,10 +202,14 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
             all_sprites.add(top_pipe)
             all_sprites.add(bottom_pipe)
             pipe_count += 2
+            if x_offset < 1500:
+                x_offset += 250
+            else:
+                x_offset = 0
 
         current_sprites = all_sprites.__len__()
-        if current_sprites > 9:
-            current_sprites = 9
+        if current_sprites > 13:
+            current_sprites = 13
         backgrounds.update()
         all_sprites.update()
         if all_sprites.__len__() < current_sprites:
@@ -205,21 +222,19 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         all_sprites.draw(screen)
 
         if player.did_leave_screen():
+            death_sound.play()
             offset = scripts.shake()
             game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
 
         did_player_collide = scripts.check_collisions(player, pipes)
         if did_player_collide == True:
+            death_sound.play()
             offset = scripts.shake()
             game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
 
         org_screen.blit(screen, next(offset))
         pygame.display.update()
         fps_clock.tick(FPS)
-        if x_offset < 1000:
-            x_offset += 250
-        else:
-            x_offset = 0
 
 def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     # Uncomment this to play menu music.
