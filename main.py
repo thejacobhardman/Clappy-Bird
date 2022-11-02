@@ -124,7 +124,8 @@ class Pipe(pygame.sprite.Sprite):
         self.did_leave_screen()
 
     def did_leave_screen(self):
-        if self.position.x < -360:
+        if self.position.x < -152:
+            self.kill()
             pipes.remove(self)
             all_sprites.remove(self)
 
@@ -192,9 +193,10 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     jump_sound.play()
-
-        if pipe_count < 12:
+        
+        while pipe_count < 12:
             top_pipe = Pipe("top", x_offset)
+            print(top_pipe.position)
             bottom_pipe = Pipe("bottom", x_offset)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
@@ -205,13 +207,12 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
                 x_offset += 250
             else:
                 x_offset = 0
+            #print(x_offset)
 
-        current_sprites = all_sprites.__len__()
-        if current_sprites > 13:
-            current_sprites = 13
+        current_pipes = pipes.__len__()
         backgrounds.update()
         all_sprites.update()
-        if all_sprites.__len__() < current_sprites:
+        if pipes.__len__() < current_pipes:
             pipe_count -= 2
 
         org_screen.fill((255, 255, 255))
