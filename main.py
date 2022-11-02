@@ -1,3 +1,5 @@
+# Version 0.1.0
+
 import pygame, random, math, sys
 from itertools import repeat
 from pygame import mixer
