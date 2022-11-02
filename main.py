@@ -42,8 +42,8 @@ class Background(pygame.sprite.Sprite):
         self.wrap_around_screen()
 
     def wrap_around_screen(self):
-        if self.position.x < -(WIDTH/2 + 1327):
-            self.position = vec(WIDTH/2+2064, HEIGHT/2)
+        if self.position.x < -(WIDTH/2 + 1920):
+            self.position = vec(WIDTH/2+1900, HEIGHT/2)
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -55,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acceleration = vec(0, 0)
         self.id = "player"
-        self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
+        self.dev_mode = True # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
         self.position = vec(WIDTH/2-250, HEIGHT/2)
@@ -135,10 +135,9 @@ player = Player()
 pipe_count = 0
 
 def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    # Uncomment this to play menu music.
-    # mixer.music.load("Assets/SFX/happy.mp3")
-    # mixer.music.set_volume(0.5)
-    # mixer.music.play(-1)
+    mixer.music.load("Assets/SFX/happy.mp3")
+    mixer.music.set_volume(0.5)
+    # mixer.music.play(-1) # Uncomment this to play menu music.
     click = False
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
@@ -237,10 +236,9 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         fps_clock.tick(FPS)
 
 def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    # Uncomment this to play menu music.
-    # mixer.music.load("Assets/SFX/happy.mp3")
-    # mixer.music.set_volume(0.5)
-    # mixer.music.play(-1)
+    mixer.music.load("Assets/SFX/happy.mp3")
+    mixer.music.set_volume(0.5)
+    # mixer.music.play(-1) # Uncomment this to play menu music.
     click = False
     pipe_count = 0
 
