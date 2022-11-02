@@ -55,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acceleration = vec(0, 0)
         self.id = "player"
-        self.dev_mode = True # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
+        self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
         self.position = vec(WIDTH/2-250, HEIGHT/2)
@@ -125,7 +125,6 @@ class Pipe(pygame.sprite.Sprite):
 
     def did_leave_screen(self):
         if self.position.x < -152:
-            self.kill()
             pipes.remove(self)
             all_sprites.remove(self)
 
@@ -193,27 +192,31 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     jump_sound.play()
-        
+
         while pipe_count < 12:
             top_pipe = Pipe("top", x_offset)
-            print(top_pipe.position)
             bottom_pipe = Pipe("bottom", x_offset)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
             all_sprites.add(bottom_pipe)
             pipe_count += 2
-            if x_offset < 1500:
-                x_offset += 250
+            # This entire code is so stupid and needs a proper fix.
+            if x_offset < 2250:
+                fix = random.randint(0, 1)
+                if fix == 0:
+                    x_offset += 250
+                elif fix == 1:
+                    x_offset += 450
             else:
                 x_offset = 0
-            #print(x_offset)
 
         current_pipes = pipes.__len__()
         backgrounds.update()
         all_sprites.update()
         if pipes.__len__() < current_pipes:
             pipe_count -= 2
+        print(pipes.__len__())
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
