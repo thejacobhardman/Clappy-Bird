@@ -1,3 +1,5 @@
+import pygame
+
 # Draws text to the screen 
 def draw_text(text, font, color, surface, x, y):
     text = font.render(text, 1, color)
@@ -16,3 +18,17 @@ def shake():
         s *= -1
     while True:
         yield (0, 0)
+
+def check_collisions(sprite, group):
+    is_collision = False
+    is_collision = pygame.sprite.spritecollide(sprite, group, False)
+    if is_collision:
+        return True
+    return False
+
+def reset_game(all_sprites, pipes, backgrounds, player):
+    all_sprites.empty()
+    pipes.empty()
+    backgrounds.empty()
+    player.reset()
+    all_sprites.add(player)
