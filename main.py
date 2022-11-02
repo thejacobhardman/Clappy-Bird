@@ -216,7 +216,6 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         all_sprites.update()
         if pipes.__len__() < current_pipes:
             pipe_count -= 2
-        print(pipes.__len__())
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
