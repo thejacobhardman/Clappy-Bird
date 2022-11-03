@@ -5,6 +5,7 @@ import (
 	"clAPI/models"
 	"clAPI/responses"
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -42,7 +43,7 @@ func CreateScore() gin.HandlerFunc {
 			HighScore:   score.HighScore,
 		}
 
-		result, err := userCollection.InsertOne(ctx, newScore)
+		result, err := scoreCollection.InsertOne(ctx, newScore)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
@@ -61,6 +62,9 @@ func GetAScore() gin.HandlerFunc {
 		defer cancel()
 
 		objId, _ := primitive.ObjectIDFromHex(userId)
+
+		fmt.Println("Player Object: " + fmt.Sprint(objId))
+		fmt.Println("Leaderboard number: " + leaderboard)
 
 		err := scoreCollection.FindOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}).Decode(&score)
 		if err != nil {
@@ -103,7 +107,7 @@ func EditAScore() gin.HandlerFunc {
 		//get updated user details
 		var updatedScore models.Score
 		if result.MatchedCount == 1 {
-			err := userCollection.FindOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}).Decode(&updatedScore)
+			err := scoreCollection.FindOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}).Decode(&updatedScore)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 				return
@@ -146,9 +150,10 @@ func GetBoardScores() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var scores []models.Score
+		leaderboard := c.Param("leaderboard")
 		defer cancel()
 
-		results, err := scoreCollection.Find(ctx, bson.M{})
+		results, err := scoreCollection.Find(ctx, bson.M{"leaderboard": leaderboard})
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
