@@ -65,6 +65,9 @@ class ClapTester(object):
 
         start = time.time()
 
+        amp_mem = {0:0, 1:0, 2:0, 3:0, 4:0}
+        amp_itter = 0
+
         # while true
         while 1:
             try:
@@ -79,9 +82,15 @@ class ClapTester(object):
 
                     stop = time.time()
 
+                    amp_mem.update({amp_itter % 5: x})
+                    amp_itter += 1
+                    
+
                     # break out of audio block if loud object found (if x is above certain amplitude)
-                    if x > 10000 and stop - start > 0.2:
+                    if x > 20000 and stop - start > 0.2:
                         start = time.time()
+                        print(amp_mem)
+                        
                         print("loud object")
                         print(x)
                         break
