@@ -16,7 +16,7 @@ func UserRoute(router *gin.Engine) {
 	router.GET("/users", controllers.GetAllUsers())
 
 	// Score routes
-	router.POST("/user", controllers.CreateScore())
+	router.POST("/score", controllers.CreateScore())
 	router.GET("/score", controllers.GetAScore())
 	router.PUT("/score", controllers.EditAScore())
 	router.DELETE("/score/:userId/:boardnum", controllers.DeleteAScore())
