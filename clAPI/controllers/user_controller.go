@@ -92,7 +92,7 @@ func EditAUser() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"username": user.Username, "password": user.Password, "friend_code": user.FriendCode}
+		update := bson.M{"username": user.Username, "password": user.Password, "friendcode": user.FriendCode}
 		result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})

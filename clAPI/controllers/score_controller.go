@@ -5,8 +5,8 @@ import (
 	"clAPI/models"
 	"clAPI/responses"
 	"context"
-	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -56,17 +56,25 @@ func CreateScore() gin.HandlerFunc {
 func GetAScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		userId := c.Param("userId")
-		leaderboard := c.Param("leaderboard")
 		var score models.Score
 		defer cancel()
+		userId := c.Param("userId")
+		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
+			return
+		}
 
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
-		fmt.Println("Player Object: " + fmt.Sprint(objId))
-		fmt.Println("Leaderboard number: " + leaderboard)
+		//fmt.Println("Player Object: " + fmt.Sprint(objId))
+		//fmt.Println("Leaderboard number: " + fmt.Sprint(leaderboard))
 
-		err := scoreCollection.FindOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}).Decode(&score)
+		filter := bson.M{"player": objId, "leaderboard": leaderboard}
+		//query = append(query, bson.M{"player": objId}, bson.M{"leaderboard": leaderboard})
+		//query := bson.M{"player": objId, "leaderboard": leaderboard}
+
+		err := scoreCollection.FindOne(ctx, filter).Decode(&score)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
@@ -79,10 +87,15 @@ func GetAScore() gin.HandlerFunc {
 func EditAScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		userId := c.Param("userId")
-		leaderboard := c.Param("leaderboard")
 		var score models.Score
 		defer cancel()
+		userId := c.Param("userId")
+		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
+			return
+		}
+
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
 		//validate the request body
@@ -97,7 +110,7 @@ func EditAScore() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"player": score.Player, "leaderboard": score.Leaderboard, "high_score": score.HighScore}
+		update := bson.M{"highscore": score.HighScore}
 		result, err := scoreCollection.UpdateOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -122,8 +135,12 @@ func DeleteAScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		userId := c.Param("userId")
-		leaderboard := c.Param("leaderboard")
 		defer cancel()
+		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
+			return
+		}
 
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
@@ -150,8 +167,12 @@ func GetBoardScores() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var scores []models.Score
-		leaderboard := c.Param("leaderboard")
 		defer cancel()
+		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
+			return
+		}
 
 		results, err := scoreCollection.Find(ctx, bson.M{"leaderboard": leaderboard})
 
