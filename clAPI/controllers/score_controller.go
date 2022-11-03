@@ -15,10 +15,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
-var validate_user = validator.New()
+var scoreCollection *mongo.Collection = configs.GetCollection(configs.DB, "scores")
+var validate_score = validator.New()
 
-func CreateUser() gin.HandlerFunc {
+func CreateScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var user models.User
@@ -31,7 +31,7 @@ func CreateUser() gin.HandlerFunc {
 		}
 
 		//use the validator library to validate required fields
-		if validationErr := validate_user.Struct(&user); validationErr != nil {
+		if validationErr := validate_score.Struct(&user); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
@@ -53,7 +53,7 @@ func CreateUser() gin.HandlerFunc {
 	}
 }
 
-func GetAUser() gin.HandlerFunc {
+func GetAScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		userId := c.Param("userId")
@@ -72,7 +72,7 @@ func GetAUser() gin.HandlerFunc {
 	}
 }
 
-func EditAUser() gin.HandlerFunc {
+func EditAScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		userId := c.Param("userId")
@@ -87,7 +87,7 @@ func EditAUser() gin.HandlerFunc {
 		}
 
 		//use the validator library to validate required fields
-		if validationErr := validate_user.Struct(&user); validationErr != nil {
+		if validationErr := validate_score.Struct(&user); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
@@ -113,7 +113,7 @@ func EditAUser() gin.HandlerFunc {
 	}
 }
 
-func DeleteAUser() gin.HandlerFunc {
+func DeleteAScore() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		userId := c.Param("userId")
@@ -140,7 +140,7 @@ func DeleteAUser() gin.HandlerFunc {
 	}
 }
 
-func GetAllUsers() gin.HandlerFunc {
+func GetBoardScores() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var users []models.User
