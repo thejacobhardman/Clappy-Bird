@@ -50,7 +50,9 @@ class Background(pygame.sprite.Sprite):
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Assets/Art/duo_lingo.png")
+        self.frames = scripts.load_player_sprite()
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
         self.original_image = self.image
         self.position = vec(WIDTH/2-250, HEIGHT/2)
         self.rect = self.image.get_rect(center=self.position)
@@ -73,6 +75,10 @@ class Player(pygame.sprite.Sprite):
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SPACE]:
                 self.acceleration += vec(0, -4)
+                if self.frame_index == 7:
+                    self.frame_index = 0
+                self.image = scripts.animate_sprite(self.frames, self.frame_index)
+                self.frame_index += 1
 
             if self.acceleration.length() > MAX_SPEED:
                 self.acceleration.scale_to_length(MAX_SPEED)
