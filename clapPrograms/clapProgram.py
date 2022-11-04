@@ -2,6 +2,7 @@ import pyaudio
 import struct
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 
 
 # Base16 format that .wav is saved as
@@ -67,6 +68,11 @@ class ClapTester(object):
         ax1.set_ylim = (0,1)              #sets y to be 0-1 due to normalization              
         fig.show()                                                          
 
+        start = time.time()
+
+        amp_mem = {0:0, 1:0, 2:0, 3:0, 4:0}
+        amp_itter = 0
+
         # while true
         while 1:
             try:
@@ -79,8 +85,17 @@ class ClapTester(object):
                 """for x in dataInt:
                     # TODO -- normalize each data point
 
+                    stop = time.time()
+
+                    amp_mem.update({amp_itter % 5: x})
+                    amp_itter += 1
+                    
+
                     # break out of audio block if loud object found (if x is above certain amplitude)
-                    if x > 20000:
+                    if x > 20000 and stop - start > 0.2:
+                        start = time.time()
+                        print(amp_mem)
+                        
                         print("loud object")
                         print(x)
                         break"""
