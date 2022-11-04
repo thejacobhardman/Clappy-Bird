@@ -102,7 +102,7 @@ class ClapTester(object):
                             if amp > 20000:
                                 count += 1
                             if count > 2:
-                                print("Too Long")
+                                print("Sustained Noise")
                                 break
                         if count < 2 and count > 0 and stop - start > 0.2:
                             start = time.time()
