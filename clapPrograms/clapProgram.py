@@ -68,9 +68,14 @@ class ClapTester(object):
         ax1.set_ylim = (0,1)              #sets y to be 0-1 due to normalization              
         fig.show()                                                          
 
+
         start = time.time()
 
-        amp_mem = {0:0, 1:0, 2:0, 3:0, 4:0}
+        # memory to store amp values
+        amp_mem = {}
+        for i in range(1000): # initializes 1000 slots to memory
+            amp_mem.update({i:0})
+
         amp_itter = 0
 
         # while true
@@ -82,17 +87,33 @@ class ClapTester(object):
                 dataInt = struct.unpack(str(INPUT_FRAMES_PER_BLOCK) + 'h', data)
 
                 # iterate audio block
-                """for x in dataInt:
+                for x in dataInt:
                     # TODO -- normalize each data point
 
                     stop = time.time()
 
-                    amp_mem.update({amp_itter % 5: x})
+                    amp_mem.update({amp_itter % 1000: x})
                     amp_itter += 1
+
+                    count = 0
+
+                    if x > 20000:
+                        for amp in amp_mem.values():
+                            if amp > 20000:
+                                count += 1
+                            if count > 2:
+                                print("Too Long")
+                                break
+                        if count < 2 and count > 0 and stop - start > 0.2:
+                            start = time.time()
+
+                            print("Detected Clap")
+                            print(x)
+                            break
                     
 
                     # break out of audio block if loud object found (if x is above certain amplitude)
-                    if x > 20000 and stop - start > 0.2:
+                    """if x > 20000 and stop - start > 0.2:
                         start = time.time()
                         print(amp_mem)
                         
