@@ -53,14 +53,19 @@ class ClapTester(object):
     def listen(self):
 
         
-        fig,ax = plt.subplots()                                             #
-        x = np.arange(0,INPUT_FRAMES_PER_BLOCK*2,2)                         # Set up our graph plot with random np data, arange puts the spaced time numbers
-        line, = ax.plot(x, np.random.rand(INPUT_FRAMES_PER_BLOCK),'r')      #
+        fig, (ax,ax1) = plt.subplots(2)  
+        x_fft = np.linspace(0, RATE, INPUT_FRAMES_PER_BLOCK)                                           
+        x = np.arange(0,INPUT_FRAMES_PER_BLOCK*2,2)                        
+        line, = ax.plot(x, np.random.rand(INPUT_FRAMES_PER_BLOCK),'r')
+        line_fft, = ax1.semilogx(x_fft, np.random.rand(INPUT_FRAMES_PER_BLOCK), 'b')  #makes another graph for frequency
+              
 
 
-        ax.set_ylim(-32700,32700)                                           #
-        ax.set_xlim = (0,INPUT_FRAMES_PER_BLOCK)                            # Set the x and y limits for our graph and show it
-        fig.show()                                                          #
+        ax.set_ylim(-32000,3200)                                           
+        ax.set_xlim = (0,INPUT_FRAMES_PER_BLOCK)
+        ax1.set_xlim(20,RATE/2)           #                                
+        ax1.set_ylim = (0,1)              #sets y to be 0-1 due to normalization              
+        fig.show()                                                          
 
         # while true
         while 1:
@@ -71,17 +76,18 @@ class ClapTester(object):
                 dataInt = struct.unpack(str(INPUT_FRAMES_PER_BLOCK) + 'h', data)
 
                 # iterate audio block
-                for x in dataInt:
+                """for x in dataInt:
                     # TODO -- normalize each data point
 
                     # break out of audio block if loud object found (if x is above certain amplitude)
                     if x > 20000:
                         print("loud object")
                         print(x)
-                        break
+                        break"""
                 
                 # constantly redraw audio data to plot
                 line.set_ydata(dataInt)
+                line_fft.set_ydata(np.abs(np.fft.fft(dataInt))*2/(11000*INPUT_FRAMES_PER_BLOCK)) # gets frequency with fast fourier transform
                 fig.canvas.draw()
                 fig.canvas.flush_events()
             
