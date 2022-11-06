@@ -19,6 +19,7 @@ fps_clock = pygame.time.Clock()
 title_font = pygame.font.SysFont(None, 64)
 game_font = pygame.font.SysFont(None, 48)
 
+
 org_screen = pygame.display.set_mode((WIDTH, HEIGHT))
 screen = org_screen.copy()
 pygame.display.set_caption("Clappy Bird")
@@ -26,7 +27,7 @@ icon = pygame.image.load('Assets/Art/duo_lingo.png')
 pygame.display.set_icon(icon)
 
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
-death_sound = mixer.Sound("Assets/SFX/death.ogg")
+death_sound = mixer.Sound("Assets/SFX/death.wav")
 
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
@@ -135,7 +136,7 @@ pipe_count = 0
 
 
 def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    
+    hovered = False
     click = False
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
@@ -157,16 +158,18 @@ def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         quit_button.center=(WIDTH/2, HEIGHT/2+75)
         if play_button.collidepoint((mouseX, mouseY)):
             if click:
-                game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
+                #game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
+                song_menu()
         if quit_button.collidepoint((mouseX, mouseY)):
             if click:
                 pygame.quit()
                 sys.exit()
         pygame.draw.rect(screen, (0, 0, 0), play_button)
-        scripts.draw_text("PLAY", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
+        scripts.draw_text("SONGS", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
         pygame.draw.rect(screen, (0, 0, 0), quit_button)
         scripts.draw_text("QUIT", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2+75)
 
+        hovered = False
         click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -180,12 +183,76 @@ def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
+def playSoundIfMouseIsOver(sound):
+    mixer.music.unload
+    mixer.music.load(sound)
+    mixer.music.play(-1, 10, fade_ms=1500)
+
+
+def song_menu():
+    hovered = False
+    click = False
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        backgrounds.draw(screen)
+        scripts.draw_text("Level menu", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        mouseX, mouseY = pygame.mouse.get_pos()
+        play_button = pygame.Rect(WIDTH/2, HEIGHT/2, 400, 50)
+        play_button.center=(WIDTH/2, HEIGHT/2)
+        quit_button = pygame.Rect(WIDTH/2, HEIGHT/2+75, 200, 50)
+        quit_button.center=(WIDTH/2, HEIGHT/2+75)
+        if play_button.collidepoint((mouseX, mouseY)):
+            if click:
+                game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
+        else:
+            hover = False
+        if quit_button.collidepoint((mouseX, mouseY)):
+            if click:
+                pygame.quit()
+                sys.exit()
+
+
+        pygame.draw.rect(screen, (0, 0, 0), play_button)
+        scripts.draw_text("C MAJOR SCALE", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
+        pygame.draw.rect(screen, (0, 0, 0), quit_button)
+        scripts.draw_text("QUIT", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2+75)
+
+        hovered = False
+        click = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+            if event.type == pygame.MOUSEMOTION:
+                previous_value = hovered # remember previous value
+                hovered = play_button.collidepoint(event.pos) # get new value 
+
+                # check both values
+                if previous_value is False and hovered is True:
+                    mixer.music.load("C Major Scale.mp3")
+                    mixer.music.play(-1, 30, fade_ms=1500)
+                elif hovered is False:
+                    mixer.music.unload()
+
+        fps_clock.tick(FPS)
+        org_screen.blit(screen, next(offset))
+        pygame.display.update()
+
+
 def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     mixer.music.load("C Major Scale.wav")
     mixer.music.set_volume(0.5)
     level = Level("C Major Scale.wav")
     music_started = False
+    start_ticks=pygame.time.get_ticks()
+    font = pygame.font.SysFont("comicsans", 30, True)
     while True:
+        score=(pygame.time.get_ticks()-start_ticks)/1000
+        score_text = font.render("Score: " + str(score), 1, (0,0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -221,18 +288,19 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         if player.did_leave_screen():
             death_sound.play()
             offset = scripts.shake()
-            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
+            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset, score)
 
         did_player_collide = scripts.check_collisions(player, pipes)
         if did_player_collide == True and not player.dev_mode:
             death_sound.play()
             offset = scripts.shake()
-            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
+            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset, score)
         org_screen.blit(screen, next(offset))
+        org_screen.blit(score_text, (10,10))
         pygame.display.update()
         fps_clock.tick(FPS)
 
-def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset):
+def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset, score):
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
@@ -248,7 +316,8 @@ def game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         screen.fill((0, 0, 0))
         backgrounds.draw(screen)
 
-        scripts.draw_text("GAME OVER", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        scripts.draw_text("GAME OVER", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-250)
+        scripts.draw_text("Final Score: "+str(score), title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
         mouseX, mouseY = pygame.mouse.get_pos()
         play_button = pygame.Rect(WIDTH/2, HEIGHT/2, 200, 50)
         play_button.center=(WIDTH/2, HEIGHT/2)
