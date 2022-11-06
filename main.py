@@ -4,6 +4,7 @@ import pygame, random, math, sys
 from itertools import repeat
 from pygame import mixer
 import scripts
+from level import Level
 
 pygame.init()
 
@@ -11,8 +12,9 @@ vec = pygame.math.Vector2
 
 WIDTH = 1280
 HEIGHT = 720
-MAX_SPEED = 6
+MAX_SPEED = 4
 FPS = 60
+PIPE_SPEED = 10
 fps_clock = pygame.time.Clock()
 title_font = pygame.font.SysFont(None, 64)
 game_font = pygame.font.SysFont(None, 48)
@@ -100,25 +102,19 @@ class Player(pygame.sprite.Sprite):
             return True
 
 class Pipe(pygame.sprite.Sprite):
-    def __init__(self, y_side, x_offset):
+    def __init__(self, y_side, x_offset, height):
         pygame.sprite.Sprite.__init__(self)
         self.y_side = y_side
         self.image = pygame.image.load("Assets/Art/pipe.png")
         self.original_image = self.image
         if self.y_side == "top":
-            self.position=vec((WIDTH+x_offset), self.generate_height())
+            self.position=vec((WIDTH+x_offset), height)
             self.image = pygame.transform.rotate(self.original_image, 180)
         elif self.y_side == "bottom": 
-            self.position = vec(WIDTH+x_offset, self.generate_height())
+            self.position = vec(WIDTH+x_offset, height)
         self.rect = self.image.get_rect(center= self.position)
-        self.vel = vec(-4, 0)
-        self.id = "pipe"    
-
-    def generate_height(self):
-        if self.y_side == "top":
-            return random.randint(0, 93) # Original value = (0, 133)
-        elif self.y_side == "bottom":
-            return random.randint(666, 720) # Original value = (626, 720)
+        self.vel = vec(-PIPE_SPEED, 0)
+        self.id = "pipe"
 
     def update(self):
         self.position += self.vel
@@ -129,6 +125,7 @@ class Pipe(pygame.sprite.Sprite):
         if self.position.x < -152:
             pipes.remove(self)
             all_sprites.remove(self)
+        
 
 all_sprites = pygame.sprite.Group()
 pipes = pygame.sprite.Group()
@@ -136,10 +133,9 @@ backgrounds = pygame.sprite.Group()
 player = Player()
 pipe_count = 0
 
+
 def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    mixer.music.load("Assets/SFX/happy.mp3")
-    mixer.music.set_volume(0.5)
-    # mixer.music.play(-1) # Uncomment this to play menu music.
+    
     click = False
 
     scripts.reset_game(all_sprites, pipes, backgrounds, player)
@@ -185,7 +181,10 @@ def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         pygame.display.update()
 
 def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    x_offset = 0
+    mixer.music.load("C Major Scale.wav")
+    mixer.music.set_volume(0.5)
+    level = Level("C Major Scale.wav")
+    music_started = False
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -195,29 +194,23 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
                 if event.key == pygame.K_SPACE:
                     jump_sound.play()
 
-        while pipe_count < 12:
-            top_pipe = Pipe("top", x_offset)
-            bottom_pipe = Pipe("bottom", x_offset)
+        if level.tick > 90 and not music_started:
+            mixer.music.play(-1)
+            music_started = True
+
+        pipe_height = level.spawn_update()
+
+        if pipe_height != -1:
+            top_pipe = Pipe("top", 500, pipe_height - 560)
+            bottom_pipe = Pipe("bottom", 500, pipe_height + 560)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
             all_sprites.add(bottom_pipe)
-            pipe_count += 2
-            # This entire code is so stupid and needs a proper fix.
-            if x_offset < 2250:
-                fix = random.randint(0, 1)
-                if fix == 0:
-                    x_offset += 250
-                elif fix == 1:
-                    x_offset += 450
-            else:
-                x_offset = 0
-
+            
         current_pipes = pipes.__len__()
         backgrounds.update()
         all_sprites.update()
-        if pipes.__len__() < current_pipes:
-            pipe_count -= 2
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
@@ -231,11 +224,10 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
             game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
 
         did_player_collide = scripts.check_collisions(player, pipes)
-        if did_player_collide == True:
+        if did_player_collide == True and not player.dev_mode:
             death_sound.play()
             offset = scripts.shake()
             game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset)
-
         org_screen.blit(screen, next(offset))
         pygame.display.update()
         fps_clock.tick(FPS)
