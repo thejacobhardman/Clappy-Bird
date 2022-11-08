@@ -215,6 +215,7 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     counter = 3
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     while True:
+        # Plays a countdown at the start of the game.
         while first_run == True:
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT:
@@ -300,7 +301,8 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
 
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
-    backgrounds.add(background_1)
+    background_2 = Background(vec(WIDTH/2+2560, HEIGHT/2))
+    backgrounds.add(background_1, background_2)
 
     play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
