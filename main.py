@@ -71,6 +71,7 @@ class Player(pygame.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acceleration = vec(0, 0)
         self.id = "player"
+        self.score = 0
         self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
@@ -79,6 +80,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.position)
         self.vel = vec(0, 0)
         self.acceleration = vec(0, 0)
+        self.score = 0
 
     def update(self):
         if self.dev_mode == False: # Normal bouncy movement.
@@ -130,6 +132,7 @@ class Pipe(pygame.sprite.Sprite):
             self.position = vec(WIDTH+x_offset, self.generate_height())
         self.rect = self.image.get_rect(center= self.position)
         self.vel = vec(-4, 0)
+        self.passed_player = False
         self.id = "pipe"    
 
     def generate_height(self):
@@ -240,12 +243,17 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         all_sprites.update()
         if pipes.__len__() < current_pipes:
             pipe_count -= 2
+        
+        for pipe in pipes:
+            scripts.check_score_increase(player, pipe)
+        print(player.score)
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
 
         backgrounds.draw(screen)
         all_sprites.draw(screen)
+        scripts.draw_text(str(round(player.score)), game_font, (0, 0, 0), screen, 50, 50)
 
         if player.did_leave_screen():
             death_sound.play()
