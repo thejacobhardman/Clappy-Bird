@@ -25,6 +25,7 @@ pygame.display.set_icon(icon)
 
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 death_sound = mixer.Sound("Assets/SFX/death.wav")
+countdown_sound = mixer.Sound("Assets/SFX/Countdown.wav")
 
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
@@ -216,6 +217,8 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     while True:
         # Plays a countdown at the start of the game.
+        if first_run:
+            countdown_sound.play()
         while first_run == True:
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT:
