@@ -190,6 +190,12 @@ def main_menu(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
+def options_menu():
+    print("this is the options menu")
+
+def leaderboard_menu():
+    print("this is the leaderboard menu")
+
 def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
     x_offset = 0
     while True:
