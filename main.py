@@ -270,7 +270,7 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     click = False
     pipe_count = 0
 
-    scripts.reset_game(all_sprites, pipes, backgrounds, player)
+    scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
 
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
     backgrounds.add(background_1)
