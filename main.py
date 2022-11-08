@@ -164,8 +164,7 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
 
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
     background_2 = Background(vec(WIDTH/2+2560, HEIGHT/2))
-    backgrounds.add(background_1)
-    backgrounds.add(background_2)
+    backgrounds.add(background_1, background_2)
 
     play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
