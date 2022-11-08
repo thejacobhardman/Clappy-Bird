@@ -197,3 +197,34 @@ func GetBoardScores() gin.HandlerFunc {
 		)
 	}
 }
+
+func MakeIndex() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		var score models.Score
+		defer cancel()
+		userId := c.Param("userId")
+		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
+			return
+		}
+
+		objId, _ := primitive.ObjectIDFromHex(userId)
+
+		//fmt.Println("Player Object: " + fmt.Sprint(objId))
+		//fmt.Println("Leaderboard number: " + fmt.Sprint(leaderboard))
+
+		filter := bson.M{"player": objId, "leaderboard": leaderboard}
+		//query = append(query, bson.M{"player": objId}, bson.M{"leaderboard": leaderboard})
+		//query := bson.M{"player": objId, "leaderboard": leaderboard}
+
+		err := scoreCollection.FindOne(ctx, filter).Decode(&score)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
+		c.JSON(http.StatusOK, responses.ScoreResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": score}})
+	}
+}

@@ -21,4 +21,5 @@ func UserRoute(router *gin.Engine) {
 	router.PUT("/score/:userId/:leaderboard", controllers.EditAScore())
 	router.DELETE("/score/:userId/:leaderboard", controllers.DeleteAScore())
 	router.GET("/scores/:leaderboard", controllers.GetBoardScores())
+	router.GET("/scores/makeindex", controllers.MakeIndex())
 }
