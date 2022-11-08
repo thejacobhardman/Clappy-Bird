@@ -5,6 +5,7 @@ import (
 	"clAPI/models"
 	"clAPI/responses"
 	"context"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -14,6 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var scoreCollection *mongo.Collection = configs.GetCollection(configs.DB, "scores")
@@ -210,6 +212,20 @@ func MakeIndex() gin.HandlerFunc {
 			return
 		}
 
+		indexModel := mongo.IndexModel{
+			Keys: bson.D{
+				{"player", 1},
+				{"leaderboard", 1},
+			},
+			Options: options.Index().SetUnique(true),
+		}
+		indexName, err1 := scoreCollection.Indexes().CreateOne(context.TODO(), indexModel)
+		if err1 != nil {
+			panic(err1)
+		}
+
+		fmt.Println("Index name is: " + indexName)
+
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
 		//fmt.Println("Player Object: " + fmt.Sprint(objId))
@@ -219,9 +235,9 @@ func MakeIndex() gin.HandlerFunc {
 		//query = append(query, bson.M{"player": objId}, bson.M{"leaderboard": leaderboard})
 		//query := bson.M{"player": objId, "leaderboard": leaderboard}
 
-		err := scoreCollection.FindOne(ctx, filter).Decode(&score)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+		err2 := scoreCollection.FindOne(ctx, filter).Decode(&score)
+		if err2 != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err2.Error()}})
 			return
 		}
 
