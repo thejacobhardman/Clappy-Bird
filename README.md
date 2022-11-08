@@ -13,6 +13,7 @@
 
  Temporary Asset Credits:
  Bird sound effects by isaiah658 https://opengameart.org/content/ambient-bird-sounds
+ Button art by Hawkadium http://hawkadium.blogspot.ca/
  Background art and Base Bird Sprite by bevouliin.com https://opengameart.org/content/bevouliin-free-game-background-for-game-developers, https://opengameart.org/content/game-character-blue-flappy-bird-sprite-sheets
  Pipe art by bhu1c https://opengameart.org/content/pipe
  Happy Music by rezoner https://opengameart.org/content/happy-arcade-tune
