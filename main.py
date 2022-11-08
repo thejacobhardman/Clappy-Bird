@@ -211,7 +211,29 @@ def options_menu():
 
 def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     x_offset = 0
+    first_run = True
+    counter = 3
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
     while True:
+        while first_run == True:
+            for event in pygame.event.get():
+                if event.type == pygame.USEREVENT:
+                    counter -= 1
+
+            org_screen.fill((255, 255, 255))
+            screen.fill((0, 0, 0))
+            backgrounds.draw(screen)
+
+            if counter > 0:
+                scripts.draw_text(str(counter), title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2)
+            else:
+                scripts.draw_text("GO!!!", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2)
+
+            org_screen.blit(screen, next(offset))
+            pygame.display.update()
+            if counter == -1:
+                first_run = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -246,7 +268,6 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         
         for pipe in pipes:
             scripts.check_score_increase(player, pipe)
-        print(player.score)
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
