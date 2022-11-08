@@ -26,6 +26,11 @@ def check_collisions(sprite, group):
         return True
     return False
 
+def check_score_increase(player, pipe):
+    if pipe.position.x < player.position.x and pipe.passed_player == False:
+        player.score += 0.5
+        pipe.passed_player = True
+
 def load_player_sprite():
     player_sprite = [
         pygame.image.load("Assets/Art/Bird Sprite/frame-1.png"),
