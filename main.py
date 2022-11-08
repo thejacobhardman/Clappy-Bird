@@ -267,7 +267,6 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
-    click = False
     pipe_count = 0
 
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
@@ -275,36 +274,35 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
     backgrounds.add(background_1)
 
+    play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
+    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
+    quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
+    buttons.add(play_button, level_select_button, options_button, quit_button)
+
     while True:
         screen.fill((0, 0, 0))
         backgrounds.draw(screen)
+        buttons.draw(screen)
 
         scripts.draw_text("GAME OVER", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
         mouseX, mouseY = pygame.mouse.get_pos()
-        play_button = pygame.Rect(WIDTH/2, HEIGHT/2, 200, 50)
-        play_button.center=(WIDTH/2, HEIGHT/2)
-        quit_button = pygame.Rect(WIDTH/2, HEIGHT/2+75, 200, 50)
-        quit_button.center=(WIDTH/2, HEIGHT/2+75)
-        if play_button.collidepoint((mouseX, mouseY)):
-            if click:
-                main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-        if quit_button.collidepoint((mouseX, mouseY)):
-            if click:
-                pygame.quit()
-                sys.exit()
-        pygame.draw.rect(screen, (0, 0, 0), play_button)
-        scripts.draw_text("MAIN MENU", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
-        pygame.draw.rect(screen, (0, 0, 0), quit_button)
-        scripts.draw_text("QUIT", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2+75)
 
-        click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    click = True
+                    if play_button.click((mouseX, mouseY)):
+                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if level_select_button.click((mouseX, mouseY)):
+                        leaderboard_menu()
+                    if options_button.click((mouseX, mouseY)):
+                        options_menu()
+                    if quit_button.click((mouseX, mouseY)):
+                        pygame.quit()
+                        sys.exit()
 
         fps_clock.tick(FPS)
         org_screen.blit(screen, next(offset))
