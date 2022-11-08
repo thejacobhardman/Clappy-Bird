@@ -49,9 +49,10 @@ def animate_sprite(frames, index):
     else:
         return frames[index+1]
 
-def reset_game(all_sprites, pipes, backgrounds, player):
+def reset_game(all_sprites, pipes, backgrounds, buttons, player):
     all_sprites.empty()
     pipes.empty()
     backgrounds.empty()
+    buttons.empty()
     player.reset()
     all_sprites.add(player)
