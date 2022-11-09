@@ -203,14 +203,7 @@ func GetBoardScores() gin.HandlerFunc {
 func MakeIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		var score models.Score
 		defer cancel()
-		userId := c.Param("userId")
-		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
-		if bad != nil {
-			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
-			return
-		}
 
 		indexModel := mongo.IndexModel{
 			Keys: bson.D{
@@ -219,28 +212,13 @@ func MakeIndex() gin.HandlerFunc {
 			},
 			Options: options.Index().SetUnique(true),
 		}
-		indexName, err1 := scoreCollection.Indexes().CreateOne(context.TODO(), indexModel)
+		indexName, err1 := scoreCollection.Indexes().CreateOne(ctx, indexModel)
 		if err1 != nil {
 			panic(err1)
 		}
 
 		fmt.Println("Index name is: " + indexName)
 
-		objId, _ := primitive.ObjectIDFromHex(userId)
-
-		//fmt.Println("Player Object: " + fmt.Sprint(objId))
-		//fmt.Println("Leaderboard number: " + fmt.Sprint(leaderboard))
-
-		filter := bson.M{"player": objId, "leaderboard": leaderboard}
-		//query = append(query, bson.M{"player": objId}, bson.M{"leaderboard": leaderboard})
-		//query := bson.M{"player": objId, "leaderboard": leaderboard}
-
-		err2 := scoreCollection.FindOne(ctx, filter).Decode(&score)
-		if err2 != nil {
-			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err2.Error()}})
-			return
-		}
-
-		c.JSON(http.StatusOK, responses.ScoreResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": score}})
+		c.JSON(http.StatusOK, responses.ScoreResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": indexName}})
 	}
 }

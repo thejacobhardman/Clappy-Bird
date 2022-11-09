@@ -4,7 +4,7 @@ import requests
 import json
 import time
 
-api_url = "http://localhost:6000"
+api_url = "http://localhost:8000"
 userId = "6364208b9761cecb7c2b305d"
 
 # GET ALL

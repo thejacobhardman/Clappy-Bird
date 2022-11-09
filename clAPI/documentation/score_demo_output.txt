@@ -1,6 +1,6 @@
 
-GET ALL REQUEST: http://localhost:6000/scores/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:6000/scores/1
+GET ALL REQUEST: http://localhost:8000/scores/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/scores/1
 REQUEST BODY:
 None
 RESPONSE:
@@ -18,24 +18,14 @@ RESPONSE:
                 "player": "636419c24ecfe34167f0a9a2",
                 "leaderboard": 1,
                 "highscore": 77
-            },
-            {
-                "player": "636419c24ecfe34167f0a9a2",
-                "leaderboard": 1,
-                "highscore": 77
-            },
-            {
-                "player": "6364208b9761cecb7c2b305d",
-                "leaderboard": 1,
-                "highscore": 985
             }
         ]
     }
 }
 
 
-POST REQUEST: http://localhost:6000/score
-EXAMPLE REQUEST: http://localhost:6000/score
+POST REQUEST: http://localhost:8000/score
+EXAMPLE REQUEST: http://localhost:8000/score
 REQUEST BODY:
 {'player': '6364208b9761cecb7c2b305d', 'leaderboard': 1, 'highscore': 985}
 RESPONSE:
@@ -44,14 +34,14 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "InsertedID": "636a13867ccba6fb2ae56e9e"
+            "InsertedID": "636adf81dcbe75fab70be242"
         }
     }
 }
 
 
-GET SINGLE REQUEST: http://localhost:6000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:6000/score/6364208b9761cecb7c2b305d/1
+GET SINGLE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
 REQUEST BODY:
 None
 RESPONSE:
@@ -68,8 +58,8 @@ RESPONSE:
 }
 
 
-UPDATE REQUEST: http://localhost:6000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:6000/score/6364208b9761cecb7c2b305d/1
+UPDATE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
 REQUEST BODY:
 {'player': '6364208b9761cecb7c2b305d', 'leaderboard': 1, 'highscore': 1000}
 RESPONSE:
@@ -86,8 +76,8 @@ RESPONSE:
 }
 
 
-DELETE REQUEST: http://localhost:6000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:6000/score/6364208b9761cecb7c2b305d/1
+DELETE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
 REQUEST BODY:
 None
 RESPONSE:

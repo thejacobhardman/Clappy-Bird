@@ -13,6 +13,7 @@ func main() {
 	configs.ConnectDB()
 
 	routes.UserRoute(router)
+	routes.ScoreRoute(router)
 
 	router.Run("localhost:8000")
 }
