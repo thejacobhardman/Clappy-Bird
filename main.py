@@ -5,6 +5,7 @@ from itertools import repeat
 from pygame import mixer
 import scripts
 from level import Level
+from otherLevel import OtherLevel
 
 pygame.init()
 
@@ -204,7 +205,7 @@ def song_menu():
         quit_button.center=(WIDTH/2, HEIGHT/2+75)
         if play_button.collidepoint((mouseX, mouseY)):
             if click:
-                game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
+                other_game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
         else:
             hover = False
         if quit_button.collidepoint((mouseX, mouseY)):
@@ -276,6 +277,68 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
             all_sprites.add(bottom_pipe)
             
         current_pipes = pipes.__len__()
+        backgrounds.update()
+        all_sprites.update()
+
+        org_screen.fill((255, 255, 255))
+        screen.fill((0, 0, 0))
+
+        backgrounds.draw(screen)
+        all_sprites.draw(screen)
+
+        if player.did_leave_screen():
+            death_sound.play()
+            offset = scripts.shake()
+            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset, score)
+
+        did_player_collide = scripts.check_collisions(player, pipes)
+        if did_player_collide == True and not player.dev_mode:
+            death_sound.play()
+            offset = scripts.shake()
+            game_over(all_sprites, pipes, backgrounds, player, pipe_count, offset, score)
+        org_screen.blit(screen, next(offset))
+        org_screen.blit(score_text, (10,10))
+        pygame.display.update()
+        fps_clock.tick(FPS)
+
+def other_game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
+    mixer.music.load("C Major Scale.wav")
+    mixer.music.set_volume(0.5)
+    level = OtherLevel("C Major Scale.wav")
+    start_ticks=pygame.time.get_ticks()
+    font = pygame.font.SysFont("comicsans", 30, True)
+    music_started = False
+    pipeIncr = 0
+    levelTick = 0
+    while True:
+        random_height = (random.randint(-100,100))
+        levelTick += 1
+        score=(pygame.time.get_ticks()-start_ticks)/1000
+        musicTick=(pygame.time.get_ticks()-start_ticks)/1000
+        score_text = font.render("Score: " + str(score), 1, (0,0,0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    jump_sound.play()
+
+        pipe_list = getattr(level, 'pipe_spawnList')
+
+        if levelTick == 120 and not music_started:
+            music_started = True
+            mixer.music.play(-1)
+
+        if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]:
+            top_pipe = Pipe("top", 500, random_height - 275)
+            bottom_pipe = Pipe("bottom", 500, random_height + 975)
+            pipes.add(top_pipe)
+            pipes.add(bottom_pipe)
+            all_sprites.add(top_pipe)
+            all_sprites.add(bottom_pipe)
+            pipeIncr += 1
+            
         backgrounds.update()
         all_sprites.update()
 
