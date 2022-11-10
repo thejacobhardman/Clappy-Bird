@@ -302,16 +302,16 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         fps_clock.tick(FPS)
 
 def other_game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    mixer.music.load("C Major Scale.wav")
+    mixer.music.load("space_rabbit.wav")
     mixer.music.set_volume(0.5)
-    level = OtherLevel("C Major Scale.wav")
+    level = OtherLevel("space_rabbit.wav")
     start_ticks=pygame.time.get_ticks()
     font = pygame.font.SysFont("comicsans", 30, True)
     music_started = False
     pipeIncr = 0
     levelTick = 0
     while True:
-        random_height = (random.randint(-100,100))
+        #random_height = (random.randint(-100,100))
         levelTick += 1
         score=(pygame.time.get_ticks()-start_ticks)/1000
         musicTick=(pygame.time.get_ticks()-start_ticks)/1000
@@ -324,15 +324,14 @@ def other_game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
                 if event.key == pygame.K_SPACE:
                     jump_sound.play()
 
-        pipe_list = getattr(level, 'pipe_spawnList')
+        pipe_list = getattr(level, 'pipe_list')
 
         if levelTick == 120 and not music_started:
             music_started = True
             mixer.music.play(-1)
-
-        if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]:
-            top_pipe = Pipe("top", 500, random_height - 275)
-            bottom_pipe = Pipe("bottom", 500, random_height + 975)
+        if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]['spawn']:  
+            top_pipe = Pipe("top", 500, -270 + random.randint(-150,150))
+            bottom_pipe = Pipe("bottom", 500, 970 + random.randint(-150,150) + 120)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
