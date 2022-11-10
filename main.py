@@ -24,7 +24,9 @@ icon = pygame.image.load('Assets/Art/Bird Sprite/frame-1.png')
 pygame.display.set_icon(icon)
 
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
+jump_sound.set_volume(0.75)
 death_sound = mixer.Sound("Assets/SFX/death.wav")
+death_sound.set_volume(0.75)
 countdown_sound = mixer.Sound("Assets/SFX/Countdown.wav")
 countdown_sound.set_volume(0.25)
 birds_sound = mixer.Sound("Assets/SFX/birds-isaiah658.wav")
@@ -243,7 +245,6 @@ def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_coun
         fps_clock.tick(FPS)
         org_screen.blit(screen, next(offset))
         pygame.display.update()
-
 
 def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
