@@ -26,7 +26,7 @@ pygame.display.set_icon(icon)
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 death_sound = mixer.Sound("Assets/SFX/death.wav")
 countdown_sound = mixer.Sound("Assets/SFX/Countdown.wav")
-countdown_sound.set_volume(0.5)
+countdown_sound.set_volume(0.25)
 birds_sound = mixer.Sound("Assets/SFX/birds-isaiah658.wav")
 birds_sound.set_volume(0.25)
 
@@ -166,7 +166,8 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
-    birds_sound.play(-1)
+    if not mixer.get_busy():
+        birds_sound.play(-1)
 
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
 
@@ -209,11 +210,11 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         pygame.display.update()
 
 def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
+    main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(play_button, level_select_button, options_button, quit_button)
+    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
 
     while True:
         screen.fill((0, 0, 0))
@@ -229,8 +230,8 @@ def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_coun
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if play_button.click((mouseX, mouseY)):
-                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if main_menu_button.click((mouseX, mouseY)):
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if level_select_button.click((mouseX, mouseY)):
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
@@ -245,11 +246,11 @@ def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_coun
 
 
 def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
+    main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(play_button, level_select_button, options_button, quit_button)
+    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
 
     while True:
         screen.fill((0, 0, 0))
@@ -265,8 +266,8 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if play_button.click((mouseX, mouseY)):
-                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if main_menu_button.click((mouseX, mouseY)):
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if level_select_button.click((mouseX, mouseY)):
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
@@ -369,7 +370,8 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
-    birds_sound.play(-1)
+    if not mixer.get_busy():
+        birds_sound.play(-1)
     pipe_count = 0
 
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
@@ -378,11 +380,11 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     background_2 = Background(vec(WIDTH/2+2560, HEIGHT/2))
     backgrounds.add(background_1, background_2)
 
-    play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
+    main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(play_button, level_select_button, options_button, quit_button)
+    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
 
     while True:
         screen.fill((0, 0, 0))
@@ -398,12 +400,12 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    if play_button.click((mouseX, mouseY)):
-                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if main_menu_button.click((mouseX, mouseY)):
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if level_select_button.click((mouseX, mouseY)):
-                        leaderboard_menu()
+                        leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
-                        options_menu()
+                        options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if quit_button.click((mouseX, mouseY)):
                         pygame.quit()
                         sys.exit()
