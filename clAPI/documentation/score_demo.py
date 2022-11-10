@@ -18,6 +18,18 @@ if response.status_code == 200:
 time.sleep(2)
 
 
+# GET TOP 'x' BOARD
+print("\n\nGET TOP 'x' BOARD REQUEST: " + api_url +
+      "/scoreslimit/<int:x>/<int:leaderboard>")
+print("EXAMPLE REQUEST: " + api_url + "/scoreslimit/3/1")
+print("REQUEST BODY:\nNone")
+print("RESPONSE:")
+response = requests.get(api_url + "/scoreslimit/3/1")
+if response.status_code == 200:
+    print(json.dumps(response.json(), indent=4))
+time.sleep(2)
+
+
 # POST
 bodyData = {"player": userId,
             "leaderboard": 1, "highscore": 985}

@@ -24,6 +24,31 @@ RESPONSE:
 }
 
 
+GET TOP 'x' BOARD REQUEST: http://localhost:8000/scoreslimit/<int:x>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/scoreslimit/3/1
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": [
+            {
+                "player": "6364192c4ecfe34167f0a9a0",
+                "leaderboard": 1,
+                "highscore": 985
+            },
+            {
+                "player": "636419c24ecfe34167f0a9a2",
+                "leaderboard": 1,
+                "highscore": 77
+            }
+        ]
+    }
+}
+
+
 POST REQUEST: http://localhost:8000/score
 EXAMPLE REQUEST: http://localhost:8000/score
 REQUEST BODY:
@@ -34,7 +59,7 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "InsertedID": "636adf81dcbe75fab70be242"
+            "InsertedID": "636c7a88a67ff6ab373ba738"
         }
     }
 }

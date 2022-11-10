@@ -200,6 +200,49 @@ func GetBoardScores() gin.HandlerFunc {
 	}
 }
 
+func GetTopTenBoardScores() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		var scores []models.Score
+		defer cancel()
+		leaderboard, bad := strconv.Atoi(c.Param("leaderboard"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad.Error()}})
+			return
+		}
+		docs, bad2 := strconv.Atoi(c.Param("docs"))
+		if bad != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": bad2.Error()}})
+			return
+		}
+
+		find_options := options.Find()
+		find_options.SetSort(bson.D{{"highscore", -1}})
+		find_options.SetLimit(int64(docs))
+		results, err := scoreCollection.Find(ctx, bson.M{"leaderboard": leaderboard}, find_options)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
+		//reading from the db in an optimal way
+		defer results.Close(ctx)
+		for results.Next(ctx) {
+			var singleScore models.Score
+			if err = results.Decode(&singleScore); err != nil {
+				c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			}
+
+			scores = append(scores, singleScore)
+		}
+
+		c.JSON(http.StatusOK,
+			responses.ScoreResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": scores}},
+		)
+	}
+}
+
 func MakeIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
