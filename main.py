@@ -27,6 +27,8 @@ jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 death_sound = mixer.Sound("Assets/SFX/death.wav")
 countdown_sound = mixer.Sound("Assets/SFX/Countdown.wav")
 countdown_sound.set_volume(0.5)
+birds_sound = mixer.Sound("Assets/SFX/birds-isaiah658.wav")
+birds_sound.set_volume(0.25)
 
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
@@ -164,6 +166,7 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
+    birds_sound.play(-1)
 
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
 
