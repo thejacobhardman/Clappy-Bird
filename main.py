@@ -234,8 +234,8 @@ def song_menu():
 
                 # check both values
                 if previous_value is False and hovered is True:
-                    mixer.music.load("C Major Scale.mp3")
-                    mixer.music.play(-1, 30, fade_ms=1500)
+                    mixer.music.load("C Major Scale.wav")
+                    mixer.music.play(-1, fade_ms=1500)
                 elif hovered is False:
                     mixer.music.unload()
 
