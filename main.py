@@ -197,9 +197,9 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
                     if play_button.click((mouseX, mouseY)):
                         game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if level_select_button.click((mouseX, mouseY)):
-                        leaderboard_menu()
+                        leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
-                        options_menu()
+                        options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if quit_button.click((mouseX, mouseY)):
                         pygame.quit()
                         sys.exit()
@@ -208,11 +208,76 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
-def leaderboard_menu():
-    print("this is the leaderboard menu")
+def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
+    play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
+    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
+    quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
+    buttons.add(play_button, level_select_button, options_button, quit_button)
 
-def options_menu():
-    print("this is the options menu")
+    while True:
+        screen.fill((0, 0, 0))
+        backgrounds.draw(screen)
+        buttons.draw(screen)
+
+        scripts.draw_text("LEADERBOARD", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        
+        mouseX, mouseY = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if play_button.click((mouseX, mouseY)):
+                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if level_select_button.click((mouseX, mouseY)):
+                        leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if options_button.click((mouseX, mouseY)):
+                        options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if quit_button.click((mouseX, mouseY)):
+                        pygame.quit()
+                        sys.exit()
+
+        fps_clock.tick(FPS)
+        org_screen.blit(screen, next(offset))
+        pygame.display.update()
+
+
+def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
+    play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
+    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
+    quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
+    buttons.add(play_button, level_select_button, options_button, quit_button)
+
+    while True:
+        screen.fill((0, 0, 0))
+        backgrounds.draw(screen)
+        buttons.draw(screen)
+
+        scripts.draw_text("OPTIONS", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        
+        mouseX, mouseY = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if play_button.click((mouseX, mouseY)):
+                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if level_select_button.click((mouseX, mouseY)):
+                        leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if options_button.click((mouseX, mouseY)):
+                        options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if quit_button.click((mouseX, mouseY)):
+                        pygame.quit()
+                        sys.exit()
+
+        fps_clock.tick(FPS)
+        org_screen.blit(screen, next(offset))
+        pygame.display.update()
 
 def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     x_offset = 0
