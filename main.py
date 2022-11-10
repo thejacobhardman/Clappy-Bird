@@ -185,7 +185,7 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         backgrounds.draw(screen)
         buttons.draw(screen)
 
-        scripts.draw_text("CLAPPY BIRD", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        scripts.draw_image("Assets/Art/clappy-bird-logo.png", screen, WIDTH/2, HEIGHT/2-150)
         
         mouseX, mouseY = pygame.mouse.get_pos()
         for event in pygame.event.get():
