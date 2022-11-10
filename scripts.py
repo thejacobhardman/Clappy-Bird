@@ -7,6 +7,12 @@ def draw_text(text, font, color, surface, x, y):
     text_rect.center = (x, y)
     surface.blit(text, text_rect)
 
+def draw_image(image, surface, x, y):
+    image = pygame.image.load(image)
+    image_rect = image.get_rect()
+    image_rect.center = (x, y)
+    surface.blit(image, image_rect)
+
 # Shakes the screen upon player death
 def shake():
     s = -1
