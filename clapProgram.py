@@ -1,7 +1,7 @@
 import pyaudio
 import struct
-import matplotlib.pyplot as plt
-import numpy as np
+#import matplotlib.pyplot as plt
+#import numpy as np
 import time
 from pynput.keyboard import Key, Controller
 
@@ -90,8 +90,10 @@ class ClapTester(object):
                 # iterate audio block
                 for x in dataInt:
                     if x > 0:
-                        amp_mem[amp_itter % 200] = x
+                        amp_mem[amp_itter] = x
                         amp_itter += 1
+                        if amp_itter == 200:
+                            amp_itter = 0              
 
                     amplitude_noise = sum(amp_mem) / len(amp_mem)
 
@@ -104,7 +106,6 @@ class ClapTester(object):
                             if amp > amplitude_noise + 20000:
                                 count += 1
                             if count > 2: 
-                                print("Sustained Noise")
                                 break
                         if count <= 2 and count > 0 and stop - start > 0.3:     
                             start = time.time()
@@ -114,8 +115,8 @@ class ClapTester(object):
                             time.sleep(0.1)
                             keyboard.release(Key.space)
 
-                            print("Detected Clap")
-                            print(x)
+                            print("JUMP via Spacebar")
+                            #print(x)
                             break
                     
 
