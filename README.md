@@ -3,15 +3,15 @@
 
  If you're bad at Flappy Bird like Jacob you can enable dev mode by setting the Player class' property to true in its __init__ function.
 
- Controls:
+ ### Controls:
  - Space: Jump
 
- Credits:
+ ### Credits:
  - Project Lead - Michael Vigil
  - Frontend Team - Jacob Hardman, Emma Ogle
  - Backend Team - Cody Cox, Matthew Davis, Logan Kulesus, Cole Robinson, Allen Schneider, Connor Swanson
 
- Temporary Asset Credits:
+ ### Temporary Asset Credits:
  - Bird sound effects by isaiah658 https://opengameart.org/content/ambient-bird-sounds
  - Button art by Hawkadium https://opengameart.org/content/simple-buttons
  - Background art and Base Bird Sprite by bevouliin.com https://opengameart.org/content/bevouliin-free-game-background-for-game-developers, https://opengameart.org/content/game-character-blue-flappy-bird-sprite-sheets
