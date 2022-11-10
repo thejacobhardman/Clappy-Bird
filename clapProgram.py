@@ -55,26 +55,26 @@ class ClapTester(object):
     def listen(self):
 
         
-        fig, (ax,ax1) = plt.subplots(2)  
-        x_fft = np.linspace(0, RATE, INPUT_FRAMES_PER_BLOCK)                                           
-        x = np.arange(0,INPUT_FRAMES_PER_BLOCK*2,2)                        
-        line, = ax.plot(x, np.random.rand(INPUT_FRAMES_PER_BLOCK),'r')
-        line_fft, = ax1.semilogx(x_fft, np.random.rand(INPUT_FRAMES_PER_BLOCK), 'b')  #makes another graph for frequency
+        #fig, (ax,ax1) = plt.subplots(2)  
+        #x_fft = np.linspace(0, RATE, INPUT_FRAMES_PER_BLOCK)                                           
+        #x = np.arange(0,INPUT_FRAMES_PER_BLOCK*2,2)                        
+        #line, = ax.plot(x, np.random.rand(INPUT_FRAMES_PER_BLOCK),'r')
+        #line_fft, = ax1.semilogx(x_fft, np.random.rand(INPUT_FRAMES_PER_BLOCK), 'b')  #makes another graph for frequency
               
 
 
-        ax.set_ylim(-32000,3200)                                           
-        ax.set_xlim = (0,INPUT_FRAMES_PER_BLOCK)
-        ax1.set_xlim(20,RATE/2)           #                                
-        ax1.set_ylim = (0,1)              #sets y to be 0-1 due to normalization              
-        fig.show()                                                          
+        #ax.set_ylim(-32000,3200)                                           
+        #ax.set_xlim = (0,INPUT_FRAMES_PER_BLOCK)
+        #ax1.set_xlim(20,RATE/2)           #                                
+        #ax1.set_ylim = (0,1)              #sets y to be 0-1 due to normalization              
+        # fig.show()                                                          
 
         start = time.time()
 
         # memory to store amp values
-        amp_mem = {}
-        for i in range(1000): # initializes 1000 slots to memory
-            amp_mem.update({i:0})
+        amp_mem = []
+        for i in range(200): # initializes 200 slots to memory
+            amp_mem.append(0)
 
         amp_itter = 0
 
@@ -87,30 +87,29 @@ class ClapTester(object):
                 data = self.stream.read(INPUT_FRAMES_PER_BLOCK)
                 # convert to int from base16
                 dataInt = struct.unpack(str(INPUT_FRAMES_PER_BLOCK) + 'h', data)
-
                 # iterate audio block
                 for x in dataInt:
-                    # TODO -- normalize each data point
+                    if x > 0:
+                        amp_mem[amp_itter % 200] = x
+                        amp_itter += 1
 
-
-                    amp_mem.update({amp_itter % 1000: x}) # memory can be lowered by updating every 10-50 x in dataInt instead of every x (Lower Memory To Increase Performance)
-                    amp_itter += 1
+                    amplitude_noise = sum(amp_mem) / len(amp_mem)
 
                     count = 0
 
-                    if x > 20000: # this int needs to be changed to a value that is normalized
+                    if x > amplitude_noise + 20000:
                         stop = time.time()
 
-                        for amp in amp_mem.values():
-                            if amp > 20000:
+                        for amp in amp_mem:
+                            if amp > amplitude_noise + 20000:
                                 count += 1
                             if count > 2: 
                                 print("Sustained Noise")
                                 break
-                        if count <= 2 and count > 0 and stop - start > 0.2:
+                        if count <= 2 and count > 0 and stop - start > 0.3:     
                             start = time.time()
 
-                            # jump in clappy bird
+                            # jump in clappy bird    
                             keyboard.press(Key.space)
                             time.sleep(0.1)
                             keyboard.release(Key.space)
@@ -130,10 +129,10 @@ class ClapTester(object):
                         break"""
                 
                 # constantly redraw audio data to plot
-                line.set_ydata(dataInt)
-                line_fft.set_ydata(np.abs(np.fft.fft(dataInt))*2/(11000*INPUT_FRAMES_PER_BLOCK)) # gets frequency with fast fourier transform
-                fig.canvas.draw()
-                fig.canvas.flush_events()
+                #line.set_ydata(dataInt)
+                #line_fft.set_ydata(np.abs(np.fft.fft(dataInt))*2/(11000*INPUT_FRAMES_PER_BLOCK)) # gets frequency with fast fourier transform
+                #fig.canvas.draw()
+                #fig.canvas.flush_events()
             
             # errors printed to console
             except IOError as e:
