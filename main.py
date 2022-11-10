@@ -26,6 +26,7 @@ pygame.display.set_icon(icon)
 jump_sound = mixer.Sound("Assets/SFX/slime_jump.wav")
 death_sound = mixer.Sound("Assets/SFX/death.wav")
 countdown_sound = mixer.Sound("Assets/SFX/Countdown.wav")
+countdown_sound.set_volume(0.5)
 
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
