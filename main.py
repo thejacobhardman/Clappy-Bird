@@ -219,6 +219,7 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     first_run = True
     counter = 3
     pygame.time.set_timer(pygame.USEREVENT, 1000)
+    birds_sound.stop()
     while True:
         # Plays a countdown at the start of the game.
         if first_run:
@@ -303,6 +304,7 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
+    birds_sound.play(-1)
     pipe_count = 0
 
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
