@@ -245,9 +245,9 @@ def song_menu():
 
 
 def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    mixer.music.load("C Major Scale.wav")
+    mixer.music.load("psycho.wav")
     mixer.music.set_volume(0.5)
-    level = Level("C Major Scale.wav")
+    level = Level("psycho.wav")
     music_started = False
     start_ticks=pygame.time.get_ticks()
     font = pygame.font.SysFont("comicsans", 30, True)
@@ -269,8 +269,8 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         pipe_height = level.spawn_update()
 
         if pipe_height != -1:
-            top_pipe = Pipe("top", 500, pipe_height - 560)
-            bottom_pipe = Pipe("bottom", 500, pipe_height + 560)
+            top_pipe = Pipe("top", 500, -150)
+            bottom_pipe = Pipe("bottom", 500, 950)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
@@ -302,16 +302,16 @@ def game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
         fps_clock.tick(FPS)
 
 def other_game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset):
-    mixer.music.load("space_rabbit.wav")
+    mixer.music.load("c major with clicks.wav")
     mixer.music.set_volume(0.5)
-    level = OtherLevel("space_rabbit.wav")
+    level = OtherLevel("C Major Scale.wav")
     start_ticks=pygame.time.get_ticks()
     font = pygame.font.SysFont("comicsans", 30, True)
     music_started = False
     pipeIncr = 0
     levelTick = 0
     while True:
-        #random_height = (random.randint(-100,100))
+        random_height = (random.randint(-300,300))
         levelTick += 1
         score=(pygame.time.get_ticks()-start_ticks)/1000
         musicTick=(pygame.time.get_ticks()-start_ticks)/1000
@@ -326,12 +326,12 @@ def other_game_loop(all_sprites, pipes, backgrounds, player, pipe_count, offset)
 
         pipe_list = getattr(level, 'pipe_list')
 
-        if levelTick == 120 and not music_started:
+        if levelTick == 140 and not music_started:
             music_started = True
             mixer.music.play(-1)
         if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]['spawn']:  
-            top_pipe = Pipe("top", 500, -270 + random.randint(-150,150))
-            bottom_pipe = Pipe("bottom", 500, 970 + random.randint(-150,150) + 120)
+            top_pipe = Pipe("top", 500, -50 + random_height)
+            bottom_pipe = Pipe("bottom", 500, 1050 + random_height)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
