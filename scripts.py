@@ -1,4 +1,5 @@
 import pygame
+from pygame import mixer
 
 # Draws text to the screen 
 def draw_text(text, font, color, surface, x, y):
@@ -6,12 +7,6 @@ def draw_text(text, font, color, surface, x, y):
     text_rect = text.get_rect()
     text_rect.center = (x, y)
     surface.blit(text, text_rect)
-
-def draw_image(image, surface, x, y):
-    image = pygame.image.load(image)
-    image_rect = image.get_rect()
-    image_rect.center = (x, y)
-    surface.blit(image, image_rect)
 
 # Shakes the screen upon player death
 def shake():
@@ -31,11 +26,6 @@ def check_collisions(sprite, group):
     if is_collision:
         return True
     return False
-
-def check_score_increase(player, pipe):
-    if pipe.position.x < player.position.x and pipe.passed_player == False:
-        player.score += 0.5
-        pipe.passed_player = True
 
 def load_player_sprite():
     player_sprite = [
@@ -59,6 +49,22 @@ def animate_sprite(frames, index):
         return frames[0]
     else:
         return frames[index+1]
+
+def draw_image(image, surface, x, y):
+    image = pygame.image.load(image)
+    image_rect = image.get_rect()
+    image_rect.center = (x, y)
+    surface.blit(image, image_rect)
+
+def check_score_increase(player, pipe):
+    if pipe.position.x < player.position.x and pipe.passed_player == False:
+        player.score += 0.5
+        pipe.passed_player = True
+
+def playSoundIfMouseIsOver(sound):
+    mixer.music.unload
+    mixer.music.load(sound)
+    mixer.music.play(-1, 10, fade_ms=1500)
 
 def reset_game(all_sprites, pipes, backgrounds, buttons, player):
     all_sprites.empty()

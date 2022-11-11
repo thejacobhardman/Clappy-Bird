@@ -4,6 +4,8 @@ import pygame, random, math, sys
 from itertools import repeat
 from pygame import mixer
 import scripts
+from level import Level
+from otherLevel import OtherLevel
 
 pygame.init()
 
@@ -11,11 +13,13 @@ vec = pygame.math.Vector2
 
 WIDTH = 1280
 HEIGHT = 720
-MAX_SPEED = 6
+MAX_SPEED = 4
 FPS = 60
+PIPE_SPEED = 10
 fps_clock = pygame.time.Clock()
 title_font = pygame.font.SysFont(None, 64)
 game_font = pygame.font.SysFont(None, 48)
+
 
 org_screen = pygame.display.set_mode((WIDTH, HEIGHT))
 screen = org_screen.copy()
@@ -76,8 +80,8 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.position)
         self.vel = vec(0, 0)
         self.acceleration = vec(0, 0)
-        self.id = "player"
         self.score = 0
+        self.id = "player"
         self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
@@ -85,8 +89,8 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.original_image, 0)
         self.rect = self.image.get_rect(center=self.position)
         self.vel = vec(0, 0)
-        self.acceleration = vec(0, 0)
         self.score = 0
+        self.acceleration = vec(0, 0)
 
     def update(self):
         if self.dev_mode == False: # Normal bouncy movement.
@@ -126,26 +130,20 @@ class Player(pygame.sprite.Sprite):
             return True
 
 class Pipe(pygame.sprite.Sprite):
-    def __init__(self, y_side, x_offset):
+    def __init__(self, y_side, x_offset, height):
         pygame.sprite.Sprite.__init__(self)
         self.y_side = y_side
         self.image = pygame.image.load("Assets/Art/pipe.png")
         self.original_image = self.image
         if self.y_side == "top":
-            self.position=vec((WIDTH+x_offset), self.generate_height())
+            self.position=vec((WIDTH+x_offset), height)
             self.image = pygame.transform.rotate(self.original_image, 180)
         elif self.y_side == "bottom": 
-            self.position = vec(WIDTH+x_offset, self.generate_height())
+            self.position = vec(WIDTH+x_offset, height)
         self.rect = self.image.get_rect(center= self.position)
-        self.vel = vec(-4, 0)
+        self.vel = vec(-PIPE_SPEED, 0)
         self.passed_player = False
-        self.id = "pipe"    
-
-    def generate_height(self):
-        if self.y_side == "top":
-            return random.randint(0, 93) # Original value = (0, 133)
-        elif self.y_side == "bottom":
-            return random.randint(666, 720) # Original value = (626, 720)
+        self.id = "pipe"
 
     def update(self):
         self.position += self.vel
@@ -165,12 +163,6 @@ player = Player()
 pipe_count = 0
 
 def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    mixer.music.load("Assets/SFX/happy.mp3")
-    mixer.music.set_volume(0.5)
-    # mixer.music.play(-1) # Uncomment this to play menu music.
-    if not mixer.get_busy():
-        birds_sound.play(-1)
-
     scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
 
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
@@ -178,10 +170,13 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     backgrounds.add(background_1, background_2)
 
     play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
-    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    leaderboard_button = Button("Assets/Art/UI/Leaderboard-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(play_button, level_select_button, options_button, quit_button)
+    buttons.add(play_button, leaderboard_button, options_button, quit_button)
+
+    if not mixer.get_busy():
+        birds_sound.play(-1)
 
     while True:
         screen.fill((0, 0, 0))
@@ -189,7 +184,7 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         buttons.draw(screen)
 
         scripts.draw_image("Assets/Art/clappy-bird-logo.png", screen, WIDTH/2, HEIGHT/2-150)
-        
+
         mouseX, mouseY = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -198,8 +193,8 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if play_button.click((mouseX, mouseY)):
-                        game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-                    if level_select_button.click((mouseX, mouseY)):
+                        song_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    if leaderboard_button.click((mouseX, mouseY)):
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
                         options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
@@ -213,10 +208,10 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
 
 def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
-    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    leaderboard_button = Button("Assets/Art/UI/Leaderboard-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
+    buttons.add(main_menu_button, leaderboard_button, options_button, quit_button)
 
     while True:
         screen.fill((0, 0, 0))
@@ -226,6 +221,7 @@ def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_coun
         scripts.draw_text("LEADERBOARD", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
         
         mouseX, mouseY = pygame.mouse.get_pos()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -234,7 +230,7 @@ def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_coun
                 if event.button == 1:
                     if main_menu_button.click((mouseX, mouseY)):
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-                    if level_select_button.click((mouseX, mouseY)):
+                    if leaderboard_button.click((mouseX, mouseY)):
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
                         options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
@@ -248,10 +244,10 @@ def leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_coun
 
 def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
-    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    leaderboard_button = Button("Assets/Art/UI/Leaderboard-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
+    buttons.add(main_menu_button, leaderboard_button, options_button, quit_button)
 
     while True:
         screen.fill((0, 0, 0))
@@ -269,7 +265,7 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
                 if event.button == 1:
                     if main_menu_button.click((mouseX, mouseY)):
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-                    if level_select_button.click((mouseX, mouseY)):
+                    if leaderboard_button.click((mouseX, mouseY)):
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
                         options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
@@ -281,15 +277,72 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
+def song_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
+    hovered = False
+    click = False
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+        backgrounds.draw(screen)
+        scripts.draw_text("Levels", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        mouseX, mouseY = pygame.mouse.get_pos()
+        play_button = pygame.Rect(WIDTH/2, HEIGHT/2, 400, 50)
+        play_button.center=(WIDTH/2, HEIGHT/2)
+        quit_button = pygame.Rect(WIDTH/2, HEIGHT/2+75, 200, 50)
+        quit_button.center=(WIDTH/2, HEIGHT/2+75)
+        if play_button.collidepoint((mouseX, mouseY)):
+            if click:
+                game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+        else:
+            hovered = False
+        if quit_button.collidepoint((mouseX, mouseY)):
+            if click:
+                main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
+        pygame.draw.rect(screen, (0, 0, 0), play_button)
+        scripts.draw_text("C MAJOR SCALE", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
+        pygame.draw.rect(screen, (0, 0, 0), quit_button)
+        scripts.draw_text("BACK", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2+75)
+
+        hovered = False
+        click = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+            if event.type == pygame.MOUSEMOTION:
+                previous_value = hovered # remember previous value
+                hovered = play_button.collidepoint(event.pos) # get new value 
+
+                # check both values
+                if previous_value is False and hovered is True:
+                    mixer.music.load("C Major Scale.wav")
+                    mixer.music.play(-1, fade_ms=1500)
+                elif hovered is False:
+                    mixer.music.unload()
+
+        fps_clock.tick(FPS)
+        org_screen.blit(screen, next(offset))
+        pygame.display.update()
+
 def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    x_offset = 0
+    mixer.music.load("c major with clicks.wav")
+    mixer.music.set_volume(0.5)
+    level = OtherLevel("C Major Scale.wav")
+    start_ticks=pygame.time.get_ticks()
+    music_started = False
+    pipeIncr = 0
+    levelTick = 0
     first_run = True
     counter = 3
-    pygame.time.set_timer(pygame.USEREVENT, 1000)
     birds_sound.stop()
     while True:
         # Plays a countdown at the start of the game.
         if first_run:
+            pygame.time.set_timer(pygame.USEREVENT, 1000)
             countdown_sound.play()
         while first_run == True:
             for event in pygame.event.get():
@@ -308,8 +361,12 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
             org_screen.blit(screen, next(offset))
             pygame.display.update()
             if counter == -1:
+                start_ticks=pygame.time.get_ticks()
                 first_run = False
 
+        random_height = (random.randint(-300,300))
+        levelTick += 1
+        musicTick=(pygame.time.get_ticks()-start_ticks)/1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -318,35 +375,28 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
                 if event.key == pygame.K_SPACE:
                     jump_sound.play()
 
-        while pipe_count < 12:
-            top_pipe = Pipe("top", x_offset)
-            bottom_pipe = Pipe("bottom", x_offset)
+        pipe_list = getattr(level, 'pipe_list')
+
+        if levelTick == 140 and not music_started:
+            music_started = True
+            mixer.music.play(-1)
+        if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]['spawn']:  
+            top_pipe = Pipe("top", 500, -50 + random_height)
+            bottom_pipe = Pipe("bottom", 500, 1050 + random_height)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
             all_sprites.add(bottom_pipe)
-            pipe_count += 2
-            # This entire code is so stupid and needs a proper fix.
-            if x_offset < 2250:
-                fix = random.randint(0, 1)
-                if fix == 0:
-                    x_offset += 250
-                elif fix == 1:
-                    x_offset += 450
-            else:
-                x_offset = 0
-
-        current_pipes = pipes.__len__()
+            pipeIncr += 1
+            
         backgrounds.update()
         all_sprites.update()
-        if pipes.__len__() < current_pipes:
-            pipe_count -= 2
-        
-        for pipe in pipes:
-            scripts.check_score_increase(player, pipe)
 
         org_screen.fill((255, 255, 255))
         screen.fill((0, 0, 0))
+
+        for pipe in pipes:
+            scripts.check_score_increase(player, pipe)
 
         backgrounds.draw(screen)
         all_sprites.draw(screen)
@@ -358,12 +408,11 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
             game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
 
         did_player_collide = scripts.check_collisions(player, pipes)
-        if did_player_collide == True:
+        if did_player_collide == True and not player.dev_mode:
             death_sound.play()
             offset = scripts.shake()
             game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-
-        org_screen.blit(screen, next(offset))
+        org_screen.blit(screen, next(offset)) 
         pygame.display.update()
         fps_clock.tick(FPS)
 
@@ -371,30 +420,27 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
-    if not mixer.get_busy():
-        birds_sound.play(-1)
+    click = False
     pipe_count = 0
 
-    scripts.reset_game(all_sprites, pipes, backgrounds, buttons, player)
-
-    background_1 = Background(vec(WIDTH/2, HEIGHT/2))
-    background_2 = Background(vec(WIDTH/2+2560, HEIGHT/2))
-    backgrounds.add(background_1, background_2)
-
     main_menu_button = Button("Assets/Art/UI/Main-Menu-Button.png", (WIDTH/2-175, HEIGHT/2))
-    level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
+    leaderboard_button = Button("Assets/Art/UI/Leaderboard-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
+    buttons.add(main_menu_button, leaderboard_button, options_button, quit_button)
+
+    background_1 = Background(vec(WIDTH/2, HEIGHT/2))
+    backgrounds.add(background_1)
 
     while True:
         screen.fill((0, 0, 0))
         backgrounds.draw(screen)
         buttons.draw(screen)
 
-        scripts.draw_text("GAME OVER", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
-        mouseX, mouseY = pygame.mouse.get_pos()
+        scripts.draw_text("GAME OVER", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-250)
+        scripts.draw_text("Final Score: "+str(round(player.score)), title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
 
+        mouseX, mouseY = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -403,7 +449,7 @@ def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
                 if event.button == 1:
                     if main_menu_button.click((mouseX, mouseY)):
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-                    if level_select_button.click((mouseX, mouseY)):
+                    if leaderboard_button.click((mouseX, mouseY)):
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
                     if options_button.click((mouseX, mouseY)):
                         options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
