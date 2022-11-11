@@ -1,0 +1,115 @@
+
+GET ALL REQUEST: http://localhost:8000/scores/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/scores/1
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": [
+            {
+                "player": "6364192c4ecfe34167f0a9a0",
+                "leaderboard": 1,
+                "highscore": 985
+            },
+            {
+                "player": "636419c24ecfe34167f0a9a2",
+                "leaderboard": 1,
+                "highscore": 77
+            }
+        ]
+    }
+}
+
+
+GET TOP 'x' BOARD REQUEST: http://localhost:8000/scoreslimit/<int:x>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/scoreslimit/3/1
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": [
+            {
+                "player": "6364192c4ecfe34167f0a9a0",
+                "leaderboard": 1,
+                "highscore": 985
+            },
+            {
+                "player": "636419c24ecfe34167f0a9a2",
+                "leaderboard": 1,
+                "highscore": 77
+            }
+        ]
+    }
+}
+
+
+POST REQUEST: http://localhost:8000/score
+EXAMPLE REQUEST: http://localhost:8000/score
+REQUEST BODY:
+{'player': '6364208b9761cecb7c2b305d', 'leaderboard': 1, 'highscore': 985}
+RESPONSE:
+{
+    "status": 201,
+    "message": "success",
+    "data": {
+        "data": {
+            "InsertedID": "636c7a88a67ff6ab373ba738"
+        }
+    }
+}
+
+
+GET SINGLE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "player": "6364208b9761cecb7c2b305d",
+            "leaderboard": 1,
+            "highscore": 985
+        }
+    }
+}
+
+
+UPDATE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
+REQUEST BODY:
+{'player': '6364208b9761cecb7c2b305d', 'leaderboard': 1, 'highscore': 1000}
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "player": "6364208b9761cecb7c2b305d",
+            "leaderboard": 1,
+            "highscore": 1000
+        }
+    }
+}
+
+
+DELETE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": "Score successfully deleted!"
+    }
+}
