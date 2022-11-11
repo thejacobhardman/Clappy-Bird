@@ -1,5 +1,4 @@
 import subprocess
 
-clap_process = subprocess.Popen(["python clapProgram.py"])
-main_process = subprocess.call(["python main.py"])
-
+subprocess.Popen(["python", "clapProgram.py"], shell=True)
+subprocess.call(["python", "main.py"], shell=True)
