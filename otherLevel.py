@@ -2,7 +2,6 @@ import librosa
 import warnings
 
 
-
 class OtherLevel():
     def __init__(self, song: str):
         self.song = song
@@ -32,6 +31,7 @@ class OtherLevel():
     def get_pitch_range(self, beat_frames, x, sr):
             pitches, magnitude = librosa.piptrack(y=x, sr=sr)
             pitch_list = []
+            print(beat_frames)
 
             #credit: https://stackoverflow.com/questions/43877971/librosa-pitch-tracking-stft
             def detect_pitch(t, magnitude, pitches):
@@ -40,8 +40,9 @@ class OtherLevel():
                 return pitch
 
             # try to normalize pitch list with level height
-            for x in range(len(beat_frames)):
+            for x in beat_frames:
                 pitch_list.append(detect_pitch(x, magnitude, pitches))
+
             mx = pitch_list[0]
             mn = pitch_list[0]
             for pitch in pitch_list:
@@ -50,6 +51,14 @@ class OtherLevel():
                 if (pitch < mn and pitch != 0) or mn == 0:
                     mn = pitch
             pipe_height_list = []
+
+            print(mx)
+            print(mn)
+
             for i in range(len(pitch_list)):
-                pipe_height_list.append(-420 * ((pitch_list[i] - mn) / (mx - mn))+570)
+                if (pitch_list[i] == 0):
+                    pipe_height_list.append(570)
+                else:
+                    pipe_height_list.append(-420 * ((pitch_list[i] - mn) / (mx - mn))+570)
+            print(pipe_height_list)
             return pipe_height_list

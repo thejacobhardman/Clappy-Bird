@@ -82,7 +82,7 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = vec(0, 0)
         self.score = 0
         self.id = "player"
-        self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
+        self.dev_mode = True # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
         self.position = vec(WIDTH/2-250, HEIGHT/2)
@@ -329,7 +329,7 @@ def song_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         pygame.display.update()
 
 def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    mixer.music.load("c major with clicks.wav")
+    mixer.music.load("C Major Scale.wav")
     mixer.music.set_volume(0.5)
     level = OtherLevel("C Major Scale.wav")
     start_ticks=pygame.time.get_ticks()
@@ -381,8 +381,8 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
             music_started = True
             mixer.music.play(-1)
         if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]['spawn']:  
-            top_pipe = Pipe("top", 500, -50 + random_height)
-            bottom_pipe = Pipe("bottom", 500, 1050 + random_height)
+            top_pipe = Pipe("top", 500, pipe_list[pipeIncr]['height'] - 540)
+            bottom_pipe = Pipe("bottom", 500, pipe_list[pipeIncr]['height'] + 540)
             pipes.add(top_pipe)
             pipes.add(bottom_pipe)
             all_sprites.add(top_pipe)
