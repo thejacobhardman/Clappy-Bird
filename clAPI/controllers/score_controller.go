@@ -27,13 +27,13 @@ func CreateScore() gin.HandlerFunc {
 		var score models.Score
 		defer cancel()
 
-		//validate the request body
+		// validate the request body
 		if err := c.BindJSON(&score); err != nil {
 			c.JSON(http.StatusBadRequest, responses.ScoreResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		//use the validator library to validate required fields
+		// use the validator library to validate required fields
 		if validationErr := validate_score.Struct(&score); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.ScoreResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
@@ -69,12 +69,12 @@ func GetAScore() gin.HandlerFunc {
 
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
-		//fmt.Println("Player Object: " + fmt.Sprint(objId))
-		//fmt.Println("Leaderboard number: " + fmt.Sprint(leaderboard))
+		// fmt.Println("Player Object: " + fmt.Sprint(objId))
+		// fmt.Println("Leaderboard number: " + fmt.Sprint(leaderboard))
 
 		filter := bson.M{"player": objId, "leaderboard": leaderboard}
-		//query = append(query, bson.M{"player": objId}, bson.M{"leaderboard": leaderboard})
-		//query := bson.M{"player": objId, "leaderboard": leaderboard}
+		// query = append(query, bson.M{"player": objId}, bson.M{"leaderboard": leaderboard})
+		// query := bson.M{"player": objId, "leaderboard": leaderboard}
 
 		err := scoreCollection.FindOne(ctx, filter).Decode(&score)
 		if err != nil {
@@ -100,13 +100,13 @@ func EditAScore() gin.HandlerFunc {
 
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
-		//validate the request body
+		// validate the request body
 		if err := c.BindJSON(&score); err != nil {
 			c.JSON(http.StatusBadRequest, responses.ScoreResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		//use the validator library to validate required fields
+		// use the validator library to validate required fields
 		if validationErr := validate_score.Struct(&score); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.ScoreResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
@@ -119,7 +119,7 @@ func EditAScore() gin.HandlerFunc {
 			return
 		}
 
-		//get updated user details
+		// get updated user details
 		var updatedScore models.Score
 		if result.MatchedCount == 1 {
 			err := scoreCollection.FindOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}).Decode(&updatedScore)
@@ -183,7 +183,7 @@ func GetBoardScores() gin.HandlerFunc {
 			return
 		}
 
-		//reading from the db in an optimal way
+		// reading from the db in an optimal way
 		defer results.Close(ctx)
 		for results.Next(ctx) {
 			var singleScore models.Score
@@ -226,7 +226,7 @@ func GetTopTenBoardScores() gin.HandlerFunc {
 			return
 		}
 
-		//reading from the db in an optimal way
+		// reading from the db in an optimal way
 		defer results.Close(ctx)
 		for results.Next(ctx) {
 			var singleScore models.Score
