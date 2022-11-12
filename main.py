@@ -6,6 +6,8 @@ from pygame import mixer
 import scripts
 from level import Level
 from otherLevel import OtherLevel
+from os import listdir
+from os.path import isfile, join
 
 pygame.init()
 
@@ -58,12 +60,17 @@ class Background(pygame.sprite.Sprite):
             self.position = vec(WIDTH/2+1900, HEIGHT/2)
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, image_file, position):
+    def __init__(self, image_file, position, text=""):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(image_file)
         self.position = position
         self.rect = self.image.get_rect(center=self.position)
         self.id = "button"
+        self.text = text
+        self.font = pygame.font.SysFont("Arial", 30, bold=True)
+        self.text_renderer = self.font.render(text, True, pygame.Color(255, 255, 255))
+        self.image.blit(self.text_renderer, [self.image.get_width() / 2 - self.text_renderer.get_width() / 2,
+                                        self.image.get_height() / 2 - self.text_renderer.get_height() / 2])
 
     def click(self, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
@@ -82,7 +89,7 @@ class Player(pygame.sprite.Sprite):
         self.acceleration = vec(0, 0)
         self.score = 0
         self.id = "player"
-        self.dev_mode = True # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
+        self.dev_mode = False # <- Set this to True to disable the hopping movement for testing because I'm bad at Flappy Bird lol.
 
     def reset(self):
         self.position = vec(WIDTH/2-250, HEIGHT/2)
@@ -278,60 +285,51 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
         pygame.display.update()
 
 def song_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    hovered = False
-    click = False
-    running = True
-    while running:
+
+    buttons.empty()
+    level_paths = [f for f in listdir("Levels") if isfile(join("Levels", f))]
+
+    level_buttons = []
+    i = 0
+    for level in level_paths:
+        level_buttons.append(Button("Assets/Art/UI/Empty-Button.png", (WIDTH/2, (HEIGHT/4) + (100 * i)), level))
+        i += 1
+
+    quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH / 2, (HEIGHT / 2) + 300))
+
+    for level in level_buttons:
+        buttons.add(level)
+
+    buttons.add(quit_button)
+
+    while True:
         screen.fill((0, 0, 0))
         backgrounds.draw(screen)
-        scripts.draw_text("Levels", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+        buttons.draw(screen)
+
+        scripts.draw_text("Level Select", title_font, (0, 0, 0), screen, WIDTH / 2, HEIGHT / 2 - 300)
+
         mouseX, mouseY = pygame.mouse.get_pos()
-        play_button = pygame.Rect(WIDTH/2, HEIGHT/2, 400, 50)
-        play_button.center=(WIDTH/2, HEIGHT/2)
-        quit_button = pygame.Rect(WIDTH/2, HEIGHT/2+75, 200, 50)
-        quit_button.center=(WIDTH/2, HEIGHT/2+75)
-        if play_button.collidepoint((mouseX, mouseY)):
-            if click:
-                game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-        else:
-            hovered = False
-        if quit_button.collidepoint((mouseX, mouseY)):
-            if click:
-                main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
-
-        pygame.draw.rect(screen, (0, 0, 0), play_button)
-        scripts.draw_text("C MAJOR SCALE", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2)
-        pygame.draw.rect(screen, (0, 0, 0), quit_button)
-        scripts.draw_text("BACK", game_font, (255, 255, 255), screen, WIDTH/2, HEIGHT/2+75)
-
-        hovered = False
-        click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    click = True
-            if event.type == pygame.MOUSEMOTION:
-                previous_value = hovered # remember previous value
-                hovered = play_button.collidepoint(event.pos) # get new value 
-
-                # check both values
-                if previous_value is False and hovered is True:
-                    mixer.music.load("C Major Scale.wav")
-                    mixer.music.play(-1, fade_ms=1500)
-                elif hovered is False:
-                    mixer.music.unload()
+                    if quit_button.click((mouseX, mouseY)):
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    for i in level_buttons:
+                        if i.click((mouseX, mouseY)):
+                            game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset, "Levels/" + i.text)
 
         fps_clock.tick(FPS)
         org_screen.blit(screen, next(offset))
         pygame.display.update()
 
-def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
-    mixer.music.load("C Major Scale.wav")
+def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset, song=""):
+    mixer.music.load(song)
     mixer.music.set_volume(0.5)
-    level = OtherLevel("C Major Scale.wav")
+    level = OtherLevel(song)
     start_ticks=pygame.time.get_ticks()
     music_started = False
     pipeIncr = 0
@@ -417,6 +415,7 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         fps_clock.tick(FPS)
 
 def game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
+    buttons.empty()
     mixer.music.load("Assets/SFX/happy.mp3")
     mixer.music.set_volume(0.5)
     # mixer.music.play(-1) # Uncomment this to play menu music.
