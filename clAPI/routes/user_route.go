@@ -26,6 +26,7 @@ func UserRoute(router *gin.Engine) {
 			secure.PUT("/:userId", controllers.EditAUser())
 			secure.DELETE("/:userId", controllers.DeleteAUser())
 			secure.GET("/all", controllers.GetAllUsers())
+			secure.GET("/skedaddle", controllers.CheckToken())
 		}
 	}
 }

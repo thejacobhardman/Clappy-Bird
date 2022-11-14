@@ -8,6 +8,8 @@ import (
 
 	"context"
 	// "fmt"
+	"crypto/sha256"
+	"encoding/hex"
 	"net/http"
 	"time"
 
@@ -25,7 +27,7 @@ var validate_user = validator.New()
 func CreateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		var user models.User
+		var user models.FullUser
 		defer cancel()
 
 		// validate the request body
@@ -40,10 +42,14 @@ func CreateUser() gin.HandlerFunc {
 			return
 		}
 
-		newUser := models.User{
+		a := []byte(configs.EnvS1() + user.Password + configs.EnvS2())
+		b := sha256.Sum256(a)
+		newPass := hex.EncodeToString(b[:])
+
+		newUser := models.FullUser{
 			Id:         primitive.NewObjectID(),
 			Username:   user.Username,
-			Password:   user.Password,
+			Password:   newPass,
 			FriendCode: user.FriendCode,
 		}
 
@@ -80,7 +86,7 @@ func EditAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		userId := c.Param("userId")
-		var user models.User
+		var user models.FullUser
 		defer cancel()
 		objId, _ := primitive.ObjectIDFromHex(userId)
 
@@ -96,7 +102,11 @@ func EditAUser() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"username": user.Username, "password": user.Password, "friendcode": user.FriendCode}
+		a := []byte(configs.EnvS1() + user.Password + configs.EnvS2())
+		b := sha256.Sum256(a)
+		newPass := hex.EncodeToString(b[:])
+
+		update := bson.M{"username": user.Username, "password": newPass, "friendcode": user.FriendCode}
 		result, err := userCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -193,18 +203,30 @@ func AuthenticateUser() gin.HandlerFunc {
 			return
 		}
 
-		err := userCollection.FindOne(ctx, bson.M{"username": user_auth.Username, "password": user_auth.Password}).Decode(&user)
+		a := []byte(configs.EnvS1() + user_auth.Password + configs.EnvS2())
+		b := sha256.Sum256(a)
+		newPass := hex.EncodeToString(b[:])
+
+		err := userCollection.FindOne(ctx, bson.M{"username": user_auth.Username, "password": newPass}).Decode(&user)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": "Invalid credentials", "token": ""}})
 			return
 		}
 
-		tokenString, err := auth.GenerateJWT(user.Username, user.Password)
+		tokenString, err := auth.GenerateJWT(user_auth.Username, user_auth.Password)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error(), "token": tokenString}})
 		}
 
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user, "token": tokenString}})
+	}
+}
+
+func CheckToken() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "skedoodle"}})
+
 	}
 }
 
