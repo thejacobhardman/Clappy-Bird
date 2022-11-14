@@ -61,6 +61,11 @@ def check_score_increase(player, pipe):
         player.score += 0.5
         pipe.passed_player = True
 
+def check_gem_increase(player, gem):
+    if player.rect.colliderect(gem):
+        return True
+    return False
+
 def playSoundIfMouseIsOver(sound):
     mixer.music.unload
     mixer.music.load(sound)

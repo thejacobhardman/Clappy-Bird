@@ -1,5 +1,10 @@
 # Version 0.2.0
 
+# Gem image credit - https://pngtree.com/freepng/purple-luminous-gemstone-diamond_6070400.html
+
+# Gem sound credit - https://freesound.org/people/bradwesson/sounds/135936/
+# Author - Brad Wesson
+
 import pygame, random, math, sys
 from itertools import repeat
 from pygame import mixer
@@ -37,6 +42,8 @@ countdown_sound = mixer.Sound("Assets/SFX/Countdown.wav")
 countdown_sound.set_volume(0.25)
 birds_sound = mixer.Sound("Assets/SFX/birds-isaiah658.wav")
 birds_sound.set_volume(0.25)
+gem_sound = mixer.Sound("Assets/SFX/collect.wav")
+gem_sound.set_volume(0.25)
 
 # Used to shake the screen upon player death.
 offset = repeat((0, 0)) # <- Set with "scripts.shake()"
@@ -162,8 +169,38 @@ class Pipe(pygame.sprite.Sprite):
             pipes.remove(self)
             all_sprites.remove(self)
 
+class Gem(pygame.sprite.Sprite):
+    def __init__(self, x_offset, height, top_pipe, bottom_pipe):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Assets/Art/purpleGem.png")
+        self.image = pygame.transform.scale(self.image, (35,35))
+        self.position=vec((WIDTH+x_offset), height)
+        self.rect = self.image.get_rect(center= self.position)
+        self.vert_speed = -6
+        self.vel = vec(-PIPE_SPEED, self.vert_speed)
+        self.id = "gem"
+        self.top_pipe = top_pipe
+        self.bottom_pipe = bottom_pipe
+
+    def update(self):
+        self.position += self.vel
+        self.rect.center = self.position
+        self.did_leave_screen()
+
+    def change_direction(self):
+        self.vert_speed = self.vert_speed * -1
+        self.vel = vec(-PIPE_SPEED, self.vert_speed)
+
+    def play_collect_sound(self):
+        gem_sound.play()
+
+    def did_leave_screen(self):
+        if self.position.x < -152:
+            gems.remove(self)
+
 all_sprites = pygame.sprite.Group()
 pipes = pygame.sprite.Group()
+gems = pygame.sprite.Group()
 backgrounds = pygame.sprite.Group()
 buttons = pygame.sprite.Group()
 player = Player()
@@ -381,12 +418,15 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         if pipeIncr < len(pipe_list) and musicTick >= pipe_list[pipeIncr]['spawn']:  
             top_pipe = Pipe("top", 500, pipe_list[pipeIncr]['height'] - 540)
             bottom_pipe = Pipe("bottom", 500, pipe_list[pipeIncr]['height'] + 540)
+            gem = Gem(500, pipe_list[pipeIncr]['height'], top_pipe, bottom_pipe)
             pipes.add(top_pipe)
-            pipes.add(bottom_pipe)
+            pipes.add(bottom_pipe) 
+            gems.add(gem)
             all_sprites.add(top_pipe)
             all_sprites.add(bottom_pipe)
             pipeIncr += 1
-            
+        
+        gems.update()
         backgrounds.update()
         all_sprites.update()
 
@@ -395,8 +435,17 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
 
         for pipe in pipes:
             scripts.check_score_increase(player, pipe)
+        
+        for gem in gems:
+            if gem.rect.colliderect(gem.top_pipe.rect) or gem.rect.colliderect(gem.bottom_pipe.rect):
+                gem.change_direction()
+            if scripts.check_gem_increase(player, gem.rect):
+                gem.play_collect_sound()
+                player.score += 50 
+                gems.remove(gem)
 
         backgrounds.draw(screen)
+        gems.draw(screen)
         all_sprites.draw(screen)
         scripts.draw_text(str(round(player.score)), game_font, (0, 0, 0), screen, 50, 50)
 
