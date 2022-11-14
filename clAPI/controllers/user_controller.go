@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"clAPI/auth"
 	"clAPI/configs"
 	"clAPI/models"
 	"clAPI/responses"
+
 	"context"
+	// "fmt"
 	"net/http"
 	"time"
 
@@ -13,6 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	// "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
@@ -179,22 +183,76 @@ func AuthenticateUser() gin.HandlerFunc {
 
 		// validate the request body
 		if err := c.BindJSON(&user_auth); err != nil {
-			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error(), "token": ""}})
 			return
 		}
 
 		// use the validator library to validate required fields
 		if validationErr := validate_user.Struct(&user_auth); validationErr != nil {
-			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
+			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error(), "token": ""}})
 			return
 		}
 
 		err := userCollection.FindOne(ctx, bson.M{"username": user_auth.Username, "password": user_auth.Password}).Decode(&user)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": "Invalid credentials", "token": ""}})
 			return
 		}
 
-		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
+		tokenString, err := auth.GenerateJWT(user.Username, user.Password)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error(), "token": tokenString}})
+		}
+
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user, "token": tokenString}})
 	}
 }
+
+// Deprecated Test Functions
+/*
+
+func MakeIndexUsername() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		indexModel := mongo.IndexModel{
+			Keys: bson.D{
+				{"username", 1},
+			},
+			Options: options.Index().SetUnique(true),
+		}
+		indexName, err1 := userCollection.Indexes().CreateOne(ctx, indexModel)
+		if err1 != nil {
+			panic(err1)
+		}
+
+		fmt.Println("Index name is: " + indexName)
+
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": indexName}})
+	}
+}
+
+func MakeIndexCode() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		indexModel := mongo.IndexModel{
+			Keys: bson.D{
+				{"friendcode", 1},
+			},
+			Options: options.Index().SetUnique(true),
+		}
+		indexName, err1 := userCollection.Indexes().CreateOne(ctx, indexModel)
+		if err1 != nil {
+			panic(err1)
+		}
+
+		fmt.Println("Index name is: " + indexName)
+
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": indexName}})
+	}
+}
+
+*/

@@ -4,8 +4,9 @@ import (
 	"clAPI/configs"
 	"clAPI/models"
 	"clAPI/responses"
+
 	"context"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -243,6 +244,9 @@ func GetTopTenBoardScores() gin.HandlerFunc {
 	}
 }
 
+// Deprecated Test Function
+/*
+
 func MakeIndex() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -265,3 +269,5 @@ func MakeIndex() gin.HandlerFunc {
 		c.JSON(http.StatusOK, responses.ScoreResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": indexName}})
 	}
 }
+
+*/
