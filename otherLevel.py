@@ -31,7 +31,7 @@ class OtherLevel():
     def get_pitch_range(self, beat_frames, x, sr):
             pitches, magnitude = librosa.piptrack(y=x, sr=sr)
             pitch_list = []
-            print(beat_frames)
+            #print(beat_frames)
 
             #credit: https://stackoverflow.com/questions/43877971/librosa-pitch-tracking-stft
             def detect_pitch(t, magnitude, pitches):
@@ -52,13 +52,13 @@ class OtherLevel():
                     mn = pitch
             pipe_height_list = []
 
-            print(mx)
-            print(mn)
+            #print(mx)
+            #print(mn)
 
             for i in range(len(pitch_list)):
                 if (pitch_list[i] == 0):
                     pipe_height_list.append(570)
                 else:
                     pipe_height_list.append(-420 * ((pitch_list[i] - mn) / (mx - mn))+570)
-            print(pipe_height_list)
+            #print(pipe_height_list)
             return pipe_height_list

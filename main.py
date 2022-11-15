@@ -185,7 +185,6 @@ class Gem(pygame.sprite.Sprite):
     def update(self):
         self.position += self.vel
         self.rect.center = self.position
-        self.did_leave_screen()
 
     def change_direction(self):
         self.vert_speed = self.vert_speed * -1
@@ -196,11 +195,10 @@ class Gem(pygame.sprite.Sprite):
 
     def did_leave_screen(self):
         if self.position.x < -152:
-            gems.remove(self)
+            return True
 
 all_sprites = pygame.sprite.Group()
 pipes = pygame.sprite.Group()
-gems = pygame.sprite.Group()
 backgrounds = pygame.sprite.Group()
 buttons = pygame.sprite.Group()
 player = Player()
@@ -364,6 +362,7 @@ def song_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         pygame.display.update()
 
 def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset, song=""):
+    gems = pygame.sprite.Group()
     mixer.music.load(song)
     mixer.music.set_volume(0.5)
     level = OtherLevel(song)
@@ -443,6 +442,8 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
                 gem.play_collect_sound()
                 player.score += 50 
                 gems.remove(gem)
+            if gem.did_leave_screen():
+                gems.remove(gem)
 
         backgrounds.draw(screen)
         gems.draw(screen)
@@ -452,10 +453,12 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         if player.did_leave_screen():
             death_sound.play()
             offset = scripts.shake()
+            gems.empty()
             game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
 
         did_player_collide = scripts.check_collisions(player, pipes)
         if did_player_collide == True and not player.dev_mode:
+            gems.empty()
             death_sound.play()
             offset = scripts.shake()
             game_over(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
