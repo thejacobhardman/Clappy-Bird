@@ -178,9 +178,7 @@ func GetAllUsers() gin.HandlerFunc {
 			users = append(users, singleUser)
 		}
 
-		c.JSON(http.StatusOK,
-			responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": users}},
-		)
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": users}})
 	}
 }
 
@@ -213,12 +211,26 @@ func AuthenticateUser() gin.HandlerFunc {
 			return
 		}
 
-		tokenString, err := auth.GenerateJWT(user_auth.Username, user_auth.Password)
+		tokenString, err := auth.GenerateJWT(string(user.Id.Hex()))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error(), "token": tokenString}})
 		}
 
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user, "token": tokenString}})
+	}
+}
+
+func RefreshToken() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		userId := c.Param("userId")
+
+		tokenString, err := auth.GenerateJWT(userId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error(), "token": tokenString}})
+		}
+
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"token": tokenString}})
 	}
 }
 

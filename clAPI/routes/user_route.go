@@ -20,13 +20,19 @@ func UserRoute(router *gin.Engine) {
 		user.GET("/index/friendcode", controllers.MakeIndexCode())
 		*/
 
-		secure := user.Group("/secure").Use(middlewares.Auth())
+		secure := user.Group("/secure").Use(middlewares.AuthUser())
 		{
 			secure.GET("/:userId", controllers.GetAUser())
 			secure.PUT("/:userId", controllers.EditAUser())
 			secure.DELETE("/:userId", controllers.DeleteAUser())
-			secure.GET("/all", controllers.GetAllUsers())
-			secure.GET("/skedaddle", controllers.CheckToken())
+			secure.GET("/refresh/:userId", controllers.RefreshToken())
+
+		}
+
+		s2 := user.Group("/s2").Use(middlewares.Auth())
+		{
+			s2.GET("/all", controllers.GetAllUsers())
+			s2.GET("/skedaddle", controllers.CheckToken())
 		}
 	}
 }

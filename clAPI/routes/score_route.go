@@ -11,9 +11,9 @@ func ScoreRoute(router *gin.Engine) {
 
 	// Score routes
 
-	score := router.Group("/score").Use(middlewares.Auth())
+	score := router.Group("/score").Use(middlewares.AuthUser())
 	{
-		score.POST("", controllers.CreateScore())
+		score.POST("/:userId", controllers.CreateScore())
 		score.GET("/:userId/:leaderboard", controllers.GetAScore())
 		score.PUT("/:userId/:leaderboard", controllers.EditAScore())
 		score.DELETE("/:userId/:leaderboard", controllers.DeleteAScore())
