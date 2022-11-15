@@ -373,6 +373,7 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     first_run = True
     counter = 3
     birds_sound.stop()
+    noMiddlePipe = True
     while True:
         # Plays a countdown at the start of the game.
         if first_run:
@@ -424,6 +425,19 @@ def game_loop(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
             all_sprites.add(top_pipe)
             all_sprites.add(bottom_pipe)
             pipeIncr += 1
+            noMiddlePipe = True
+        elif pipeIncr < len(pipe_list) and pipeIncr != 0 and musicTick >= pipe_list[pipeIncr-1]['spawn'] + ((pipe_list[pipeIncr]['spawn'] - pipe_list[pipeIncr-1]['spawn'])/2) and noMiddlePipe:
+            top_pipe = Pipe("top", 500, pipe_list[pipeIncr-1]['height'] + (pipe_list[pipeIncr]['height']-pipe_list[pipeIncr-1]['height'])/2 - 540)
+            bottom_pipe = Pipe("bottom", 500, pipe_list[pipeIncr-1]['height'] + (pipe_list[pipeIncr]['height'] -pipe_list[pipeIncr-1]['height'])/2 + 540)
+            #top_pipe = Pipe("top", 500, pipe_list[pipeIncr-1]['height'] - 540)
+            #bottom_pipe = Pipe("bottom", 500, pipe_list[pipeIncr-1]['height'] + 540)
+            #gem = Gem(500, pipe_list[pipeIncr]['height'], top_pipe, bottom_pipe)
+            pipes.add(top_pipe)
+            pipes.add(bottom_pipe) 
+            #gems.add(gem)
+            all_sprites.add(top_pipe)
+            all_sprites.add(bottom_pipe)
+            noMiddlePipe = False
         
         gems.update()
         backgrounds.update()
