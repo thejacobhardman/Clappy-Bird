@@ -42,6 +42,7 @@ func CreateScore() gin.HandlerFunc {
 
 		newScore := models.Score{
 			Player:      score.Player,
+			Username:    score.Username,
 			Leaderboard: score.Leaderboard,
 			HighScore:   score.HighScore,
 		}
@@ -113,7 +114,7 @@ func EditAScore() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"highscore": score.HighScore}
+		update := bson.M{"username": score.Username, "highscore": score.HighScore}
 		result, err := scoreCollection.UpdateOne(ctx, bson.M{"player": objId, "leaderboard": leaderboard}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -218,7 +219,7 @@ func GetTopTenBoardScores() gin.HandlerFunc {
 		}
 
 		find_options := options.Find()
-		find_options.SetSort(bson.D{{"highscore", -1}})
+		find_options.SetSort(bson.D{primitive.E{Key: "highscore", Value: -1}})
 		find_options.SetLimit(int64(docs))
 		results, err := scoreCollection.Find(ctx, bson.M{"leaderboard": leaderboard}, find_options)
 
