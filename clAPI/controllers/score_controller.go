@@ -178,7 +178,9 @@ func GetBoardScores() gin.HandlerFunc {
 			return
 		}
 
-		results, err := scoreCollection.Find(ctx, bson.M{"leaderboard": leaderboard})
+		find_options := options.Find()
+		find_options.SetSort(bson.D{primitive.E{Key: "highscore", Value: -1}})
+		results, err := scoreCollection.Find(ctx, bson.M{"leaderboard": leaderboard}, find_options)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.ScoreResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
