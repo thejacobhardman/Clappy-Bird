@@ -61,13 +61,13 @@ class Level:
             for i in range(chunk_size):
                 if pitches_processed + i >= len(pitch_list):
                     break
-                if pitch_list[i] == 0:
+                if pitch_list[pitches_processed + i] == 0:
                     pipe_height_list.append(570)
                 else:
                     if mx - mn == 0:
                         pipe_height_list.append(375)
                     else:
-                        pipe_height_list.append(-420 * ((pitch_list[i] - mn) / (mx - mn)) + 570)
+                        pipe_height_list.append(-420 * ((pitch_list[pitches_processed + i] - mn) / (mx - mn)) + 570)
 
             if pitches_processed >= len(pitch_list) - 1:
                 done = True
