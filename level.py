@@ -42,18 +42,36 @@ class Level:
         for x in beat_frames:
             pitch_list.append(detect_pitch(x, magnitude, pitches))
 
-        mx = pitch_list[0]
-        mn = pitch_list[0]
-        for pitch in pitch_list:
-            if pitch > mx:
-                mx = pitch
-            if (pitch < mn and pitch != 0) or mn == 0:
-                mn = pitch
+        done = False
+        pitches_processed = 0
+        chunk_size = 10
         pipe_height_list = []
 
-        for i in range(len(pitch_list)):
-            if pitch_list[i] == 0:
-                pipe_height_list.append(570)
-            else:
-                pipe_height_list.append(-420 * ((pitch_list[i] - mn) / (mx - mn))+570)
+        while not done:
+            mx = pitch_list[pitches_processed]
+            mn = pitch_list[pitches_processed]
+            for i in range(chunk_size):
+                if pitches_processed + i >= len(pitch_list):
+                    break
+                if pitch_list[pitches_processed + i] > mx:
+                    mx = pitch_list[pitches_processed + i]
+                if (pitch_list[pitches_processed + i] < mn and pitch_list[pitches_processed + i] != 0) or mn == 0:
+                    mn = pitch_list[pitches_processed + i]
+
+            for i in range(chunk_size):
+                if pitches_processed + i >= len(pitch_list):
+                    break
+                if pitch_list[i] == 0:
+                    pipe_height_list.append(570)
+                else:
+                    if mx - mn == 0:
+                        pipe_height_list.append(375)
+                    else:
+                        pipe_height_list.append(-420 * ((pitch_list[i] - mn) / (mx - mn)) + 570)
+
+            if pitches_processed >= len(pitch_list) - 1:
+                done = True
+
+            pitches_processed += 1
+
         return pipe_height_list

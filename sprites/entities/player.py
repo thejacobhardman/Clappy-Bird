@@ -33,7 +33,7 @@ class Player(pg.sprite.Sprite):
         self.acceleration = g.vec(0, 0)
         self.score = 0
         self.key_down = False
-        self.absolute_unit = False  # <- Set this to True to make the player an absolute unit
+        self.absolute_unit = True  # <- Set this to True to make the player an absolute unit
 
     def reset(self):
         self.position = g.vec(g.WIDTH/2-250, g.HEIGHT/2)
