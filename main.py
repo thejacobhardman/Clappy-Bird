@@ -16,6 +16,9 @@ pg.display.set_icon(g.icon)
 
 g.backgrounds.add(Background(g.vec(g.WIDTH / 2, g.HEIGHT / 2)),
                   Background(g.vec(g.WIDTH / 2 + 2560, g.HEIGHT / 2)))
+
+scenes[g.current_scene].init()
+
 # Game loop
 while True:
     g.events = pg.event.get()

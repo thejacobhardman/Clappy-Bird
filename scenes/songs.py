@@ -11,6 +11,9 @@ class Songs(Menu):
         super().__init__(sprites)
 
     def init(self):
+        if not g.pg.mixer.get_busy():
+            g.birds_sound.play(-1)
+
         level_paths = [f for f in listdir("Levels") if isfile(join("Levels", f))]
         level_buttons = []
         i = 0
