@@ -99,6 +99,44 @@ class Player(pygame.sprite.Sprite):
         if self.position.y < 0:
             return True
 
+class Right_Hand(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Assets/Art/right_hand.png")
+        self.original_image = self.image
+        self.position = vec(WIDTH/2-250, HEIGHT/2)
+        self.rect = self.image.get_rect(center=self.position)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, 0)
+        self.id = "player"
+
+    def reset(self):
+        self.position = vec(WIDTH/2-250, HEIGHT/2)
+        self.image = pygame.transform.rotate(self.original_image, 0)
+        self.rect = self.image.get_rect(center=self.position)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, 0)
+
+class Left_Hand(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Assets/Art/left_hand.png")
+        self.original_image = self.image
+        self.position = vec(WIDTH/2-250, HEIGHT/2)
+        self.rect = self.image.get_rect(center=self.position)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, 0)
+        self.id = "player"
+
+    def reset(self):
+        self.position = vec(WIDTH/2-250, HEIGHT/2)
+        self.image = pygame.transform.rotate(self.original_image, 0)
+        self.rect = self.image.get_rect(center=self.position)
+        self.vel = vec(0, 0)
+        self.acceleration = vec(0, 0)
+
+        
+
 class Pipe(pygame.sprite.Sprite):
     def __init__(self, y_side, x_offset):
         pygame.sprite.Sprite.__init__(self)
