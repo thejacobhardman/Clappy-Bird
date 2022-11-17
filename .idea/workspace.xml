@@ -2,16 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54825ea5-6a9c-4432-ab42-bf4227ede052" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/globals.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scene.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/countdown.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/game.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/load_song.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/menu.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/songs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/background.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/entities/gem.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/entities/pipe.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/entities/player.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/ui/button.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/ui/quit_button.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/ui/scene_button.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/ui/song_button.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/ui/sprite.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sprites/ui/text.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C Major Scale.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Levels/C Major Scale.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Garf.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Levels/Garf.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Uk.wav" beforeDir="false" afterPath="$PROJECT_DIR$/Levels/Uk.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C Major Scale.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Uk.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/c major with clicks.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/level.py" beforeDir="false" afterPath="$PROJECT_DIR$/level.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/otherLevel.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,10 +55,17 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/scenes" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\matt7\SEPYGAME\Clappy-Bird\scenes" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\matt7\SEPYGAME\Clappy-Bird\sprites" />
+      <recent name="C:\Users\matt7\SEPYGAME\Clappy-Bird\sprites\entities" />
+      <recent name="C:\Users\matt7\SEPYGAME\Clappy-Bird\sprites\ui" />
+      <recent name="C:\Users\matt7\SEPYGAME\Clappy-Bird\states" />
       <recent name="C:\Users\matt7\SEPYGAME\Clappy-Bird\Levels" />
     </key>
   </component>
