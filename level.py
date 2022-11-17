@@ -1,7 +1,6 @@
 import librosa
 import warnings
 
-
 class Level:
     def __init__(self, song: str):
         self.song = song
@@ -44,34 +43,34 @@ class Level:
 
         done = False
         pitches_processed = 0
-        chunk_size = 10
+        chunk_size = 5
         pipe_height_list = []
 
         while not done:
             mx = pitch_list[pitches_processed]
             mn = pitch_list[pitches_processed]
+            
             for i in range(chunk_size):
                 if pitches_processed + i >= len(pitch_list):
                     break
                 if pitch_list[pitches_processed + i] > mx:
                     mx = pitch_list[pitches_processed + i]
-                if (pitch_list[pitches_processed + i] < mn and pitch_list[pitches_processed + i] != 0) or mn == 0:
+                if pitch_list[pitches_processed + i] < mn:
                     mn = pitch_list[pitches_processed + i]
 
             for i in range(chunk_size):
-                if pitches_processed + i >= len(pitch_list):
+                if pitches_processed >= len(pitch_list):
                     break
-                if pitch_list[pitches_processed + i] == 0:
+                if pitch_list[pitches_processed] == 0:
                     pipe_height_list.append(570)
                 else:
                     if mx - mn == 0:
                         pipe_height_list.append(375)
                     else:
-                        pipe_height_list.append(-420 * ((pitch_list[pitches_processed + i] - mn) / (mx - mn)) + 570)
+                        pipe_height_list.append(-420 * ((pitch_list[pitches_processed] - mn) / (mx - mn)) + 570)
+                pitches_processed += 1
 
             if pitches_processed >= len(pitch_list) - 1:
                 done = True
-
-            pitches_processed += 1
 
         return pipe_height_list
