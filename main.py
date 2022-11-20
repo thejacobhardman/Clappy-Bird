@@ -1,4 +1,4 @@
-# Version 0.2.0
+# Version 0.3.0
 
 # Gem image credit - https://pngtree.com/freepng/purple-luminous-gemstone-diamond_6070400.html
 
