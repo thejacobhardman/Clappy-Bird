@@ -1,9 +1,11 @@
+import random
 import pygame as pg
 import globals as g
 import scripts
 import sprites.entities.gem
 import sprites.entities.pipe
 import sprites.entities.player
+import hashlib
 
 
 class Game:
@@ -20,10 +22,15 @@ class Game:
         self.pipeIncr = 0
         self.levelTick = 0
         self.noMiddlePipe = True
+        self.spawnChance = 0
+        self.difficulty = ""
+        self.songseed = 0
 
     def set_song(self, path, data):
         self.song_path = path
+        print(path)
         self.level = data
+        self.songseed = int(hashlib.sha1(path.encode("utf-8")).hexdigest(), 16) % (10 ** 8)
 
     def spawn_pipe_set(self, height, gap_size, has_gem):
         top_pipe = sprites.entities.pipe.Pipe("top", 500, height - gap_size)
@@ -35,6 +42,9 @@ class Game:
 
         self.pipes.add(top_pipe)
         self.pipes.add(bottom_pipe)
+    
+    def set_difficulty(self, difficulty):
+        self.difficulty = difficulty
 
     def init(self):
         g.birds_sound.stop()
@@ -47,10 +57,18 @@ class Game:
         self.pipeIncr = 0
         self.levelTick = 0
         self.noMiddlePipe = True
+        print(self.songseed)
+        random.seed(self.songseed)
 
     def update(self):
 
         # Oof
+        if self.difficulty == 'Normal':
+            self.spawnChance = random.randint(0,8)
+        elif self.difficulty == 'Hard':
+            self.spawnChance = random.randint(0,3)
+        elif self.difficulty == 'Extreme':
+            self.spawnChance = 2
         self.levelTick += 1
         musicTick = (pg.time.get_ticks() - self.start_ticks) / 1000
         pipe_list = self.level.pipe_list
@@ -62,7 +80,7 @@ class Game:
             self.pipeIncr += 1
             self.noMiddlePipe = True
         elif self.pipeIncr < len(pipe_list) and self.pipeIncr != 0 and musicTick >= pipe_list[self.pipeIncr - 1]['spawn'] + (
-                (pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) and self.noMiddlePipe:
+                (pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) and self.noMiddlePipe and self.spawnChance == 2:
             self.spawn_pipe_set(pipe_list[self.pipeIncr - 1]['height'] + (
                         pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 520, False)
             self.noMiddlePipe = False

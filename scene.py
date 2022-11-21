@@ -2,6 +2,7 @@ import globals as g
 import sprites.ui.song_button
 import sprites.ui.scene_button
 import sprites.ui.quit_button
+import sprites.ui.difficulty_button
 import scenes.menu
 import sprites.ui.sprite
 import sprites.ui.text
@@ -84,6 +85,37 @@ scenes = {
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Quit-Button.png",
                 (g.WIDTH/2+175, g.HEIGHT/2+100)
+            )
+        ]
+    ),
+
+    "difficulty": scenes.menu.Menu(
+        [
+            sprites.ui.text.Text(
+                "Choose Difficulty",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.difficulty_button.DifficultyButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
+                text="Easy"
+            ),
+            sprites.ui.difficulty_button.DifficultyButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2+175, g.HEIGHT/2),
+                text="Normal"
+            ),
+            sprites.ui.difficulty_button.DifficultyButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                text="Hard"
+            ),
+            sprites.ui.difficulty_button.DifficultyButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2+175, g.HEIGHT/2+100),
+                text="Extreme"
             )
         ]
     ),

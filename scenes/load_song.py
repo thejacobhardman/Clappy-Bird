@@ -29,5 +29,5 @@ class LoadSong(Menu):
             pg.mixer.music.set_volume(0.5)
             song_data = Level(self.song)
             scene.game_scene.set_song(self.song, song_data)
-            scripts.change_scene("countdown")
+            scripts.change_scene("difficulty")
             self.drew_load = True
