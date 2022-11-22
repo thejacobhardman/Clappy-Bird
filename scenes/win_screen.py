@@ -4,10 +4,10 @@ import globals as g
 from scenes.menu import Menu
 
 
-class WinScreen(Menu):
+class WinScreen:
 
-    def __init__(self, sprites):
-        self.sprites = pg.sprite.Group(sprites)
+    def __init__(self, sprites_param):
+        self.sprites = pg.sprite.Group(sprites_param)
 
     def __handle_click(self):
         mouseX, mouseY = pg.mouse.get_pos()
@@ -22,7 +22,6 @@ class WinScreen(Menu):
 
     def init(self):
         g.applause_sound.play()
-            
 
     def update(self):
         self.sprites.draw(g.screen)

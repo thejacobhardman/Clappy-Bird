@@ -1,6 +1,5 @@
 import scripts
 import sprites.ui.button
-import globals as g
 import scene
 
 

@@ -4,7 +4,7 @@ import globals as g
 import scene
 
 
-# Button that navigates pages when there are many songs
+# Button that navigates pages when there are many songs.
 class SongArrowButton(sprites.ui.button.Button):
 
     def __init__(self, position, facing_right):

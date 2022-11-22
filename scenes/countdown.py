@@ -1,16 +1,13 @@
 import scripts
-from scenes.menu import Menu
-from level import Level
-import scene
 import globals as g
 import pygame as pg
 import sprites.ui.text
 
 
-class Countdown(Menu):
+# This scene counts down from 3, and then immediately transitions to the game scene
+class Countdown:
 
     def __init__(self):
-        super().__init__([])
         self.number = 3
         self.text = sprites.ui.text.Text(
                 "3",

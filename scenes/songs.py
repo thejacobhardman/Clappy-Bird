@@ -7,6 +7,8 @@ import math
 import sprites.ui.song_arrow_button
 
 
+# Custom menu that generates buttons based on the songs in the Levels directory. Note that this inherits from menu
+# so that button clicking functionality works.
 class Songs(Menu):
 
     def __init__(self, sprites_param):

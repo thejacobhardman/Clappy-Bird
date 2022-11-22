@@ -1,15 +1,15 @@
 import scripts
-from scenes.menu import Menu
 from level import Level
 import scene
 import globals as g
 import pygame as pg
 
 
-class LoadSong(Menu):
+# This displays a loading screen while a song is being loaded by librosa.
+class LoadSong:
 
     def __init__(self, sprites):
-        super().__init__(sprites)
+        self.sprites = sprites
         self.drew_load = False
         self.song = ""
 

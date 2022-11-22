@@ -5,7 +5,6 @@ import globals as g
 from sprites.background import Background
 from scene import scenes
 import sys
-import scripts
 
 pg.display.set_caption("Clappy Bird")
 pg.display.set_icon(g.icon)
@@ -17,10 +16,14 @@ scenes[g.current_scene].init()
 
 # Game loop
 while True:
+
+    # Collect pygame events
     g.events = pg.event.get()
 
+    # Draw backgrounds
     g.backgrounds.draw(g.screen)
 
+    # Call update() on the currently active scene
     scenes[g.current_scene].update()
 
     g.fps_clock.tick(g.FPS)

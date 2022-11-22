@@ -8,6 +8,7 @@ import sprites.entities.player
 import hashlib
 
 
+# This is the scene where the player is able to actually control Clappy Bird and fly through pipes.
 class Game:
 
     def __init__(self):
@@ -50,6 +51,7 @@ class Game:
     def set_difficulty(self, difficulty):
         self.difficulty = difficulty
 
+    # Called as soon as the game scene is switched to with scripts.change_scene()
     def init(self):
         g.birds_sound.stop()
         self.player = sprites.entities.player.Player()
@@ -64,6 +66,7 @@ class Game:
         random.seed(self.songseed)
         pg.mixer.music.set_endevent(g.Song_win)
 
+    # Called every frame that this scene is active (see scene.py)
     def update(self):
 
         # Oof
