@@ -15,5 +15,5 @@ def yt_download(video_url):
     print("Download complete... {}".format(filename))
 
 
-##Currently set to download this random video, as an mp3 in the current directory
+##Currently set to download this random video, as an mp3 in the current directory - this sample code can be deleted
 yt_download("https://www.youtube.com/watch?v=anDMyE6bEdI")
