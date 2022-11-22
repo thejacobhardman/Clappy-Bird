@@ -31,5 +31,3 @@ while True:
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
-        elif event.type == g.Song_win:
-            scripts.change_scene("Win_screen")

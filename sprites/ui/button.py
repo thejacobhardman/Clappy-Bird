@@ -12,7 +12,13 @@ class Button(ABC, pg.sprite.Sprite):
         self.position = position
         self.rect = self.image.get_rect(center=self.position)
         self.text = text
-        self.font = pg.font.SysFont("Arial", 30, bold=True)
+
+        # Adjust the size of the text based on how long it is
+        self.font_size = 30
+        if len(text) > 20:
+            self.font_size = 30 - (len(text) - 19)
+
+        self.font = pg.font.SysFont("Arial", self.font_size, bold=True)
         self.text_renderer = self.font.render(text, True, pg.Color(255, 255, 255))
         self.image.blit(self.text_renderer, [self.image.get_width() / 2 - self.text_renderer.get_width() / 2,
                                              self.image.get_height() / 2 - self.text_renderer.get_height() / 2])

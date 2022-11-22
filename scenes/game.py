@@ -89,6 +89,10 @@ class Game:
                         pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 520, False, True)
             self.noMiddlePipe = False
 
+        for event in g.events:
+            if event.type == g.Song_win:
+                scripts.change_scene("Win_screen")
+
         # Only update the background when the game is happening
         g.backgrounds.update()
 

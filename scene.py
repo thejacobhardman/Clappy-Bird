@@ -154,7 +154,7 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Select Level",
-                (g.WIDTH/2, g.HEIGHT/8),
+                (g.WIDTH/2, g.HEIGHT/12),
                 60,
                 pg.Color(0, 0, 0)
             ),
