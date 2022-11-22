@@ -9,7 +9,7 @@ import pygame as pg
 class LoadSong:
 
     def __init__(self, sprites):
-        self.sprites = sprites
+        self.sprites = pg.sprite.Group(sprites)
         self.drew_load = False
         self.song = ""
 
