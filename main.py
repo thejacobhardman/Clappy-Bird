@@ -5,6 +5,7 @@ import globals as g
 from sprites.background import Background
 from scene import scenes
 import sys
+import scripts
 
 pg.display.set_caption("Clappy Bird")
 pg.display.set_icon(g.icon)
@@ -30,3 +31,5 @@ while True:
         if event.type == pg.QUIT:
             pg.quit()
             sys.exit()
+        elif event.type == g.Song_win:
+            scripts.change_scene("Win_screen")

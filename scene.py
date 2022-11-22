@@ -4,6 +4,7 @@ import sprites.ui.scene_button
 import sprites.ui.quit_button
 import sprites.ui.difficulty_button
 import scenes.menu
+import scenes.win_screen
 import sprites.ui.sprite
 import sprites.ui.text
 import pygame as pg
@@ -64,6 +65,35 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "GAME OVER",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
+                load_scene="main_menu"
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Leaderboard-Button.png",
+                (g.WIDTH/2+175, g.HEIGHT/2),
+                load_scene="leaderboard"
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Options-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+100)
+            ),
+            sprites.ui.quit_button.QuitButton(
+                "Assets/Art/UI/Quit-Button.png",
+                (g.WIDTH/2+175, g.HEIGHT/2+100)
+            )
+        ]
+    ),
+
+    "Win_screen": scenes.win_screen.WinScreen(
+        [
+            sprites.ui.text.Text(
+                "SONG COMPLETED!!!",
                 (g.WIDTH/2, g.HEIGHT/2-150),
                 60,
                 pg.Color(0, 0, 0)
