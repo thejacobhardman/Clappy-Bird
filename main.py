@@ -1,4 +1,4 @@
-# Version 0.2.2
+# Version 0.4.1
 
 import pygame, random, math, sys
 from itertools import repeat
