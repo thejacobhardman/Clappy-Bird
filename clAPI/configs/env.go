@@ -14,3 +14,27 @@ func EnvMongoURI() string {
 	}
 	return os.Getenv("MONGOURI")
 }
+
+func EnvEncKey() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("ENCKEY")
+}
+
+func EnvS1() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("S1")
+}
+
+func EnvS2() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return os.Getenv("S2")
+}

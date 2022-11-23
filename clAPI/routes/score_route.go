@@ -2,6 +2,7 @@ package routes
 
 import (
 	"clAPI/controllers"
+	"clAPI/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,11 +10,20 @@ import (
 func ScoreRoute(router *gin.Engine) {
 
 	// Score routes
-	router.POST("/score", controllers.CreateScore())
-	router.GET("/score/:userId/:leaderboard", controllers.GetAScore())
-	router.PUT("/score/:userId/:leaderboard", controllers.EditAScore())
-	router.DELETE("/score/:userId/:leaderboard", controllers.DeleteAScore())
-	router.GET("/scores/:leaderboard", controllers.GetBoardScores())
-	router.GET("/scoreslimit/:docs/:leaderboard", controllers.GetTopTenBoardScores())
-	router.GET("/scores/makeindex", controllers.MakeIndex())
+
+	score := router.Group("/score").Use(middlewares.AuthUser())
+	{
+		score.POST("/:userId", controllers.CreateScore())
+		score.GET("/:userId/:leaderboard", controllers.GetAScore())
+		score.PUT("/:userId/:leaderboard", controllers.EditAScore())
+		score.DELETE("/:userId/:leaderboard", controllers.DeleteAScore())
+		// Testing endpoint for generating an Index
+		// score.GET("/makeindex", controllers.MakeIndex())
+	}
+
+	scores := router.Group("/scores")
+	{
+		scores.GET("/:leaderboard", controllers.GetBoardScores())
+		scores.GET("/limit/:docs/:leaderboard", controllers.GetTopTenBoardScores())
+	}
 }

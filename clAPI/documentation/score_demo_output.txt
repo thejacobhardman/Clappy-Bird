@@ -1,6 +1,7 @@
 
 GET ALL REQUEST: http://localhost:8000/scores/<int:leaderboard>
 EXAMPLE REQUEST: http://localhost:8000/scores/1
+HEADERS: None
 REQUEST BODY:
 None
 RESPONSE:
@@ -10,22 +11,25 @@ RESPONSE:
     "data": {
         "data": [
             {
-                "player": "6364192c4ecfe34167f0a9a0",
+                "player": "63731637537de5b26c8a9b7e",
+                "username": "GGkachu",
                 "leaderboard": 1,
-                "highscore": 985
+                "highscore": 50
             },
             {
-                "player": "636419c24ecfe34167f0a9a2",
+                "player": "63731613537de5b26c8a9b7c",
+                "username": "HarryJ91",
                 "leaderboard": 1,
-                "highscore": 77
+                "highscore": 82
             }
         ]
     }
 }
 
 
-GET TOP 'x' BOARD REQUEST: http://localhost:8000/scoreslimit/<int:x>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/scoreslimit/3/1
+GET TOP 'x' BOARD REQUEST: http://localhost:8000/scores/limit/<int:x>/<int:leaderboard>
+EXAMPLE REQUEST: http://localhost:8000/scores/limit/3/1
+HEADERS: None
 REQUEST BODY:
 None
 RESPONSE:
@@ -35,38 +39,42 @@ RESPONSE:
     "data": {
         "data": [
             {
-                "player": "6364192c4ecfe34167f0a9a0",
+                "player": "63731613537de5b26c8a9b7c",
+                "username": "HarryJ91",
                 "leaderboard": 1,
-                "highscore": 985
+                "highscore": 82
             },
             {
-                "player": "636419c24ecfe34167f0a9a2",
+                "player": "63731637537de5b26c8a9b7e",
+                "username": "GGkachu",
                 "leaderboard": 1,
-                "highscore": 77
+                "highscore": 50
             }
         ]
     }
 }
 
 
-POST REQUEST: http://localhost:8000/score
-EXAMPLE REQUEST: http://localhost:8000/score
+POST REQUEST: http://localhost:8000/score/<str:userId>
+EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
-{'player': '6364208b9761cecb7c2b305d', 'leaderboard': 1, 'highscore': 985}
+{'player': '63731613537de5b26c8a9b7c', 'username': 'HarryJ91', 'leaderboard': 99, 'highscore': 985}
 RESPONSE:
 {
     "status": 201,
     "message": "success",
     "data": {
         "data": {
-            "InsertedID": "636c7a88a67ff6ab373ba738"
+            "InsertedID": "6373f4a98f2b988aed35c747"
         }
     }
 }
 
 
 GET SINGLE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
+EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c/99
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
 RESPONSE:
@@ -75,8 +83,9 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "player": "6364208b9761cecb7c2b305d",
-            "leaderboard": 1,
+            "player": "63731613537de5b26c8a9b7c",
+            "username": "HarryJ91",
+            "leaderboard": 99,
             "highscore": 985
         }
     }
@@ -84,17 +93,19 @@ RESPONSE:
 
 
 UPDATE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
+EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c/99
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
-{'player': '6364208b9761cecb7c2b305d', 'leaderboard': 1, 'highscore': 1000}
+{'player': '63731613537de5b26c8a9b7c', 'username': 'HarryJ91', 'leaderboard': 99, 'highscore': 1000}
 RESPONSE:
 {
     "status": 200,
     "message": "success",
     "data": {
         "data": {
-            "player": "6364208b9761cecb7c2b305d",
-            "leaderboard": 1,
+            "player": "63731613537de5b26c8a9b7c",
+            "username": "HarryJ91",
+            "leaderboard": 99,
             "highscore": 1000
         }
     }
@@ -102,7 +113,8 @@ RESPONSE:
 
 
 DELETE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/score/6364208b9761cecb7c2b305d/1
+EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c/99
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
 RESPONSE:
