@@ -35,7 +35,12 @@ birds_sound.set_volume(0.25)
 gem_sound = pg.mixer.Sound("Assets/SFX/collect.wav")
 gem_sound.set_volume(0.25)
 
+applause_sound = pg.mixer.Sound("Assets/SFX/applause.mp3")
+applause_sound.set_volume(0.25)
+
 vec = pg.math.Vector2
+
+Song_win = pg.USEREVENT + 1
 
 # Used to shake the screen upon player death.
 offset = itertools.repeat((0, 0))  # <- Set with "scripts.shake()"

@@ -1,15 +1,15 @@
 import scripts
-from scenes.menu import Menu
 from level import Level
 import scene
 import globals as g
 import pygame as pg
 
 
-class LoadSong(Menu):
+# This displays a loading screen while a song is being loaded by librosa.
+class LoadSong:
 
     def __init__(self, sprites):
-        super().__init__(sprites)
+        self.sprites = pg.sprite.Group(sprites)
         self.drew_load = False
         self.song = ""
 
@@ -29,5 +29,5 @@ class LoadSong(Menu):
             pg.mixer.music.set_volume(0.5)
             song_data = Level(self.song)
             scene.game_scene.set_song(self.song, song_data)
-            scripts.change_scene("countdown")
+            scripts.change_scene("difficulty")
             self.drew_load = True

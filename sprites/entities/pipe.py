@@ -22,6 +22,9 @@ class Pipe(pg.sprite.Sprite):
         self.passed_player = False
         self.id = "pipe"
 
+    def set_width(self, new_width):
+        self.image = pg.transform.scale(self.image, (new_width,self.image.get_height()))
+
     def update(self):
         self.position += self.vel
         self.rect.center = self.position
