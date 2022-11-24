@@ -52,7 +52,7 @@ class Songs(Menu):
                 sprites.ui.song_button.SongButton(
                     "Assets/Art/UI/Empty-Button.png",
                     (x_pos, (g.HEIGHT / 4) + (120 * (i % 4))),
-                    text=level,
+                    text=level[:-4],
                     song="Levels/" + level
                 )
             )
