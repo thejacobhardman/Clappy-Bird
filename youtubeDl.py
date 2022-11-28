@@ -1,31 +1,19 @@
-from __future__ import unicode_literals
 import youtube_dl
 
-class MyLogger(object):
-    def debug(self, msg):
-        pass
+def yt_download(video_url):
+    video_info = youtube_dl.YoutubeDL().extract_info(url = video_url,download=False)
+    filename = f"{video_info['title']}.mp3"
+    options={
+        'format':'bestaudio/best',
+        'keepvideo':False,
+        'outtmpl':filename,
+    }
 
-    def warning(self, msg):
-        pass
+    with youtube_dl.YoutubeDL(options) as ydl:
+        ydl.download([video_info['webpage_url']])
 
-    def error(self, msg):
-        print(msg)
-
-
-def my_hook(d):
-    if d['status'] == 'finished':
-        print('Done downloading, now converting ...')
+    print("Download complete... {}".format(filename))
 
 
-ydl_opts = {
-    'format': 'bestaudio/best',
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
-    'logger': MyLogger(),
-    'progress_hooks': [my_hook],
-}
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download(['https://www.youtube.com/watch?v=dQw4w9WgXcQ'])
+##Currently set to download this random video, as an mp3 in the current directory - this sample code can be deleted
+yt_download("https://www.youtube.com/watch?v=anDMyE6bEdI")
