@@ -45,5 +45,5 @@ func EnvHostPort() string {
 		log.Fatal("Error loading .env file, default port used (8080)")
 		return "8080"
 	}
-	return os.Getenv("ASPNETCORE_PORT")
+	return os.Getenv("PORT")
 }
