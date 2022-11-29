@@ -68,7 +68,8 @@ scenes = {
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100)
+                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                load_scene="options"
             ),
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Quit-Button.png",
@@ -81,6 +82,22 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Leaderboard",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                load_scene="main_menu"
+            ),
+        ]
+    ),
+
+    "options": scenes.menu.Menu(
+        [
+            sprites.ui.text.Text(
+                "Options",
                 (g.WIDTH/2, g.HEIGHT/2-150),
                 60,
                 pg.Color(0, 0, 0)
