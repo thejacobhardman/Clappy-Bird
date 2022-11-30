@@ -351,7 +351,9 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
 
 def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     back_button = Button("Assets/Art/UI/Back-Button.png", (WIDTH/2-500, HEIGHT/2-200))
-    login_menu_buttons = [back_button]
+    login_button = Button("Assets/Art/UI/logintemp.png", (WIDTH/2+300, HEIGHT/2+250))
+    
+    login_menu_buttons = [back_button, login_button]
     buttons.add(login_menu_buttons)
 
     username_rect = pygame.Rect(500,350,280,80)
@@ -373,12 +375,13 @@ def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, off
     passwordActive = False
 
     while True:
+
+        #Initial UI drawing
         screen.fill((0, 0, 0))
         backgrounds.draw(screen)
         buttons.draw(screen)
 
         scripts.draw_text("LOGIN", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
-
         scripts.draw_text("USERNAME", game_font, (0, 0, 0), screen, WIDTH/2-300, HEIGHT/2+30)
         scripts.draw_text("PASSWORD", game_font, (0, 0, 0), screen, WIDTH/2-300, HEIGHT/2+130)
         
@@ -388,31 +391,41 @@ def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, off
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                #Handling for Selecting Username Text field
                 if username_rect.collidepoint(event.pos):
                     usernameActive = True
                 else:
                     usernameActive = False
                     
+                #Handling for Selecting Password Text field
                 if password_rect.collidepoint(event.pos):
                     passwordActive = True
                 else:
                     passwordActive = False
+                
+                #Handling for Back Button
                 if event.button == 1:
                     if back_button.click((mouseX, mouseY)):
                         buttons.remove(login_menu_buttons)
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
             if event.type == pygame.KEYDOWN:
+
+                #Handling for backspacing in username and password text entry
                 if event.key == pygame.K_BACKSPACE:
                     if usernameActive:
                         username_entry = username_entry[:-1]
                     if passwordActive:
                         password_entry = password_entry[:-1]
+
+                #Handling for typing in username and password text entry
                 else:
                     if usernameActive:
                         username_entry += event.unicode
                     if passwordActive:
                         password_entry += event.unicode
 
+        #Logic for selected color for username and password text entry
         if usernameActive:
             username_color = color_active
         else:
@@ -423,8 +436,7 @@ def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, off
         else:
             password_color = color_passive
 
-        
-
+        #Drawing text boxes and rendering entry variables
         pygame.draw.rect(screen, username_color, username_rect)
         pygame.draw.rect(screen, password_color, password_rect)
         user_text_surface = game_font.render(username_entry, True, (255, 255, 255))
@@ -443,7 +455,9 @@ def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, off
 
 def register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     back_button = Button("Assets/Art/UI/Back-Button.png", (WIDTH/2-500, HEIGHT/2-200))
-    register_menu_buttons = [back_button]
+    register_button = Button("Assets/Art/UI/registertemp.png", (WIDTH/2+300, HEIGHT/2+250))
+
+    register_menu_buttons = [back_button, register_button]
     buttons.add(register_menu_buttons)
 
     username_rect = pygame.Rect(500,350,280,80)
@@ -465,6 +479,7 @@ def register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, 
     passwordActive = False
 
     while True:
+        #Initial UI drawing
         screen.fill((0, 0, 0))
         backgrounds.draw(screen)
         buttons.draw(screen)
@@ -480,31 +495,42 @@ def register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, 
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                #Handling for Selecting Username Text field
                 if username_rect.collidepoint(event.pos):
                     usernameActive = True
                 else:
                     usernameActive = False
                     
+                #Handling for Selecting Password Text field
                 if password_rect.collidepoint(event.pos):
                     passwordActive = True
                 else:
                     passwordActive = False
+
+                #Handling for Back Button
                 if event.button == 1:
                     if back_button.click((mouseX, mouseY)):
                         buttons.remove(register_menu_buttons)
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
             if event.type == pygame.KEYDOWN:
+
+                 #Handling for backspacing in username and password text entry
                 if event.key == pygame.K_BACKSPACE:
                     if usernameActive:
                         username_entry = username_entry[:-1]
                     if passwordActive:
                         password_entry = password_entry[:-1]
+
+                #Handling for typing in username and password text entry
                 else:
                     if usernameActive:
                         username_entry += event.unicode
                     if passwordActive:
                         password_entry += event.unicode
 
+        #Logic for selected color for username and password text entry
         if usernameActive:
             username_color = color_active
         else:
@@ -516,6 +542,7 @@ def register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, 
             password_color = color_passive
 
         
+         #Drawing text boxes and rendering entry variables
 
         pygame.draw.rect(screen, username_color, username_rect)
         pygame.draw.rect(screen, password_color, password_rect)
