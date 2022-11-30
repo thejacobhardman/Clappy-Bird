@@ -219,12 +219,14 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
 
-    login_button = Button("Assets/Art/UI/logintemp.png", (WIDTH/2-50, HEIGHT/2+250))
-
+    login_button = Button("Assets/Art/UI/logintemp.png", (WIDTH/2-175, HEIGHT/2+250))
+    register_button = Button("Assets/Art/UI/registertemp.png", (WIDTH/2+175, HEIGHT/2+250))
+    
    
 
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(play_button, level_select_button, options_button, login_button, quit_button)
+    main_menu_buttons = [play_button, level_select_button, options_button, login_button, register_button, quit_button]
+    buttons.add(main_menu_buttons)
 
     while True:
         screen.fill((0, 0, 0))
@@ -251,8 +253,13 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
 
                     if login_button.click((mouseX, mouseY)):
                         #need to remove all buttons on current menu before loading new menu, otherwise they layer on top
-                        buttons.remove(play_button, level_select_button, options_button, login_button, quit_button)
+                        buttons.remove(main_menu_buttons)
                         login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
+                    if register_button.click((mouseX, mouseY)):
+                        #need to remove all buttons on current menu before loading new menu, otherwise they layer on top
+                        buttons.remove(main_menu_buttons)
+                        register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
 
                     if quit_button.click((mouseX, mouseY)):
                         pygame.quit()
@@ -334,7 +341,8 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
 
 def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     back_button = Button("Assets/Art/UI/Back-Button.png", (WIDTH/2-500, HEIGHT/2-200))
-    buttons.add(back_button)
+    login_menu_buttons = [back_button]
+    buttons.add(login_menu_buttons)
 
     username_rect = pygame.Rect(500,350,280,80)
     password_rect = pygame.Rect(500,450,280,80)
@@ -381,6 +389,99 @@ def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, off
                     passwordActive = False
                 if event.button == 1:
                     if back_button.click((mouseX, mouseY)):
+                        buttons.remove(login_menu_buttons)
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    if usernameActive:
+                        username_entry = username_entry[:-1]
+                    if passwordActive:
+                        password_entry = password_entry[:-1]
+                else:
+                    if usernameActive:
+                        username_entry += event.unicode
+                    if passwordActive:
+                        password_entry += event.unicode
+
+        if usernameActive:
+            username_color = color_active
+        else:
+            username_color = color_passive
+
+        if passwordActive:
+            password_color = color_active
+        else:
+            password_color = color_passive
+
+        
+
+        pygame.draw.rect(screen, username_color, username_rect)
+        pygame.draw.rect(screen, password_color, password_rect)
+        user_text_surface = game_font.render(username_entry, True, (255, 255, 255))
+        pass_text_surface = game_font.render(password_entry, True, (255,255,255))
+
+        screen.blit(user_text_surface, (username_rect.x+5, username_rect.y+5))
+        screen.blit(pass_text_surface, (password_rect.x+5, password_rect.y+5))
+
+        username_rect.w = max(100, user_text_surface.get_width()+10)
+        password_rect.w = max(100, pass_text_surface.get_width()+10)
+
+        fps_clock.tick(FPS)
+        org_screen.blit(screen, next(offset))
+        pygame.display.update()
+
+
+def register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
+    back_button = Button("Assets/Art/UI/Back-Button.png", (WIDTH/2-500, HEIGHT/2-200))
+    register_menu_buttons = [back_button]
+    buttons.add(register_menu_buttons)
+
+    username_rect = pygame.Rect(500,350,280,80)
+    password_rect = pygame.Rect(500,450,280,80)
+
+    base_font = pygame.font.Font(None, 32)
+
+    #BACKEND - here is where username and password end up being stored
+    username_entry = ''
+    password_entry = ''
+
+    color_active = pygame.Color('gold')
+    color_passive = pygame.Color('lightblue3')
+
+    username_color = color_passive
+    password_color = color_passive
+
+    usernameActive = False
+    passwordActive = False
+
+    while True:
+        screen.fill((0, 0, 0))
+        backgrounds.draw(screen)
+        buttons.draw(screen)
+
+        scripts.draw_text("REGISTER", title_font, (0, 0, 0), screen, WIDTH/2, HEIGHT/2-100)
+
+        scripts.draw_text("NEW USERNAME", game_font, (0, 0, 0), screen, WIDTH/2-300, HEIGHT/2+30)
+        scripts.draw_text("NEW PASSWORD", game_font, (0, 0, 0), screen, WIDTH/2-300, HEIGHT/2+130)
+        
+        mouseX, mouseY = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if username_rect.collidepoint(event.pos):
+                    usernameActive = True
+                else:
+                    usernameActive = False
+                    
+                if password_rect.collidepoint(event.pos):
+                    passwordActive = True
+                else:
+                    passwordActive = False
+                if event.button == 1:
+                    if back_button.click((mouseX, mouseY)):
+                        buttons.remove(register_menu_buttons)
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
