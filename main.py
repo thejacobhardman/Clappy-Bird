@@ -16,6 +16,7 @@ FPS = 60
 fps_clock = pygame.time.Clock()
 title_font = pygame.font.SysFont(None, 64)
 game_font = pygame.font.SysFont(None, 48)
+body_font = pygame.font.SysFont(None,24)
 
 org_screen = pygame.display.set_mode((WIDTH, HEIGHT))
 screen = org_screen.copy()
@@ -201,6 +202,7 @@ backgrounds = pygame.sprite.Group()
 buttons = pygame.sprite.Group()
 player = Player()
 pipe_count = 0
+logged_in = False
 
 def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset):
     mixer.music.load("Assets/SFX/happy.mp3")
@@ -214,6 +216,7 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     background_1 = Background(vec(WIDTH/2, HEIGHT/2))
     background_2 = Background(vec(WIDTH/2+2560, HEIGHT/2))
     backgrounds.add(background_1, background_2)
+
 
     play_button = Button("Assets/Art/UI/Play-Button.png", (WIDTH/2-175, HEIGHT/2))
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
@@ -233,6 +236,11 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
         buttons.draw(screen)
 
         scripts.draw_image("Assets/Art/clappy-bird-logo.png", screen, WIDTH/2, HEIGHT/2-150)
+
+        if logged_in:
+            scripts.draw_text("LOGGED IN", body_font, (0, 0, 0), screen, WIDTH/2-400, HEIGHT/2-300)
+        else:
+            scripts.draw_text("NOT LOGGED IN, PLEASE REGISTER", body_font, (0, 0, 0), screen, WIDTH/2-400, HEIGHT/2-300)
         
         mouseX, mouseY = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -409,6 +417,13 @@ def login_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, off
                     if back_button.click((mouseX, mouseY)):
                         buttons.remove(login_menu_buttons)
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                        
+
+                 #Handling for Login Button - INCOMPLETE, logged_in property also not changed yet
+                    if login_button.click((mouseX, mouseY)):
+                        buttons.remove(login_menu_buttons)
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
             if event.type == pygame.KEYDOWN:
 
                 #Handling for backspacing in username and password text entry
@@ -513,6 +528,12 @@ def register_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, 
                     if back_button.click((mouseX, mouseY)):
                         buttons.remove(register_menu_buttons)
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
+                #Handling for Register Button - INCOMPLETE, simply reroutes to main menu
+                    if register_button.click((mouseX, mouseY)):
+                        buttons.remove(register_menu_buttons)
+                        main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+                    
 
             if event.type == pygame.KEYDOWN:
 
