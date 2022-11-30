@@ -222,7 +222,6 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
     login_button = Button("Assets/Art/UI/logintemp.png", (WIDTH/2-175, HEIGHT/2+250))
     register_button = Button("Assets/Art/UI/registertemp.png", (WIDTH/2+175, HEIGHT/2+250))
     
-   
 
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
     main_menu_buttons = [play_button, level_select_button, options_button, login_button, register_button, quit_button]
@@ -249,6 +248,7 @@ def main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offs
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
 
                     if options_button.click((mouseX, mouseY)):
+                        buttons.remove(main_menu_buttons)
                         options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
 
                     if login_button.click((mouseX, mouseY)):
@@ -309,7 +309,10 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
     level_select_button = Button("Assets/Art/UI/Level-Select-Button.png", (WIDTH/2+175, HEIGHT/2))
     options_button = Button("Assets/Art/UI/Options-Button.png", (WIDTH/2-175, HEIGHT/2+100))
     quit_button = Button("Assets/Art/UI/Quit-Button.png", (WIDTH/2+175, HEIGHT/2+100))
-    buttons.add(main_menu_button, level_select_button, options_button, quit_button)
+
+    options_menu_buttons = [main_menu_button, level_select_button, options_button, quit_button]
+
+    buttons.add(options_menu_buttons)
 
     while True:
         screen.fill((0, 0, 0))
@@ -325,12 +328,19 @@ def options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, o
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+
                     if main_menu_button.click((mouseX, mouseY)):
+                        buttons.remove(options_menu_buttons)
                         main_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
                     if level_select_button.click((mouseX, mouseY)):
+                        buttons.remove(options_menu_buttons)
                         leaderboard_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
                     if options_button.click((mouseX, mouseY)):
+                        buttons.remove(options_menu_buttons)
                         options_menu(all_sprites, pipes, backgrounds, buttons, player, pipe_count, offset)
+
                     if quit_button.click((mouseX, mouseY)):
                         pygame.quit()
                         sys.exit()
