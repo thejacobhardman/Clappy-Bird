@@ -1,6 +1,100 @@
 
-GET ALL REQUEST: http://localhost:6000/users
-EXAMPLE REQUEST: http://localhost:6000/users
+
+REGISTER REQUEST: http://localhost:8000/user/register
+EXAMPLE REQUEST: http://localhost:8000/user/register
+HEADERS: None
+REQUEST BODY:
+{'username': 'ExampleDude1', 'password': 'SuperSecurePass', 'friendcode': 'GGGGGG'}
+RESPONSE:
+{
+    "status": 201,
+    "message": "success",
+    "data": {
+        "data": {
+            "InsertedID": "6373ebba8f2b988aed35c745",
+            "result": {
+                "InsertedID": "6373ebba8f2b988aed35c746"
+            }
+        }
+    }
+}
+
+
+LOGIN REQUEST: http://localhost:8000/user/auth
+EXAMPLE REQUEST: http://localhost:8000/user/auth
+HEADERS: None
+REQUEST BODY:
+{'username': 'ExampleDude1', 'password': 'SuperSecurePass'}
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "id": "6373ebba8f2b988aed35c745",
+            "username": "ExampleDude1",
+            "friendcode": "GGGGGG"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3M2ViYmE4ZjJiOTg4YWVkMzVjNzQ1IiwiZXhwIjoxNjY4NTQ0OTc0fQ.hNvSAu0rkae7iPqeeyEy5zLOH24ALkwBhVlIL77BFLM"
+    }
+}
+
+
+GET SINGLE REQUEST: http://localhost:8000/user/secure/<str:userId>
+EXAMPLE REQUEST: http://localhost:8000/user/secure/6373ebba8f2b988aed35c745
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "id": "6373ebba8f2b988aed35c745",
+            "username": "ExampleDude1",
+            "friendcode": "GGGGGG"
+        }
+    }
+}
+
+
+UPDATE REQUEST: http://localhost:8000/user/secure/<str:userId>
+EXAMPLE REQUEST: http://localhost:8000/user/secure/6373ebba8f2b988aed35c745
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+{'username': 'ExampleDude1', 'password': 'UpdatedPassword', 'friendcode': 'ABCDEFGHI'}
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "id": "6373ebba8f2b988aed35c745",
+            "username": "ExampleDude1",
+            "friendcode": "ABCDEFGHI"
+        }
+    }
+}
+
+
+REFRESH TOKEN REQUEST: http://localhost:8000/user/secure/refresh/<str:userId>
+EXAMPLE REQUEST: http://localhost:8000/user/secure/refresh/6373ebba8f2b988aed35c745
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3M2ViYmE4ZjJiOTg4YWVkMzVjNzQ1IiwiZXhwIjoxNjY4NTQ0OTg2fQ.wJEackctk__oAsBvZwKLHvF5B0Y2gpyK5BvFIOirSyk"
+    }
+}
+
+GET ALL REQUEST: http://localhost:8000/user/s2/all
+EXAMPLE REQUEST: http://localhost:8000/user/s2/all
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
 RESPONSE:
@@ -10,49 +104,28 @@ RESPONSE:
     "data": {
         "data": [
             {
-                "id": "6364192c4ecfe34167f0a9a0",
+                "id": "63731613537de5b26c8a9b7c",
                 "username": "HarryJ91",
-                "password": "UpdatedPassword",
-                "friendcode": "ABCDEFGEH"
+                "friendcode": "ABCDEF"
             },
             {
-                "id": "636419c24ecfe34167f0a9a2",
-                "username": "SlimJim2",
-                "password": "oiusaehfiuoy",
-                "friendcode": "DHTJCCEFH"
+                "id": "63731637537de5b26c8a9b7e",
+                "username": "GGkachu",
+                "friendcode": "GHIJKL"
             },
             {
-                "id": "6364208b9761cecb7c2b305d",
-                "username": "ggkachu",
-                "password": "pasidjfaidjfopi",
-                "friendcode": "UTMJJKISF"
+                "id": "6373ebba8f2b988aed35c745",
+                "username": "ExampleDude1",
+                "friendcode": "ABCDEFGHI"
             }
         ]
     }
 }
 
 
-POST REQUEST: http://localhost:6000/user
-EXAMPLE REQUEST: http://localhost:6000/user
-REQUEST BODY:
-{'username': 'ExampleDude1', 'password': 'SuperSecurePass', 'friendcode': 'ABCDEFGHI'}
-RESPONSE:
-{
-    "status": 201,
-    "message": "success",
-    "data": {
-        "data": {
-            "InsertedID": "636a0f657ccba6fb2ae56e9b",
-            "result": {
-                "InsertedID": "636a0f657ccba6fb2ae56e9c"
-            }
-        }
-    }
-}
-
-
-GET SINGLE REQUEST: http://localhost:6000/user/<str:userId>
-EXAMPLE REQUEST: http://localhost:6000/user/636a0f657ccba6fb2ae56e9b
+PING/VALIDATE TOKEN REQUEST: http://localhost:8000/user/s2/skedaddle
+EXAMPLE REQUEST: http://localhost:8000/user/s2/skedaddle
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
 RESPONSE:
@@ -60,37 +133,14 @@ RESPONSE:
     "status": 200,
     "message": "success",
     "data": {
-        "data": {
-            "id": "636a0f657ccba6fb2ae56e9b",
-            "username": "ExampleDude1",
-            "password": "SuperSecurePass",
-            "friendcode": "ABCDEFGHI"
-        }
+        "data": "skedoodle"
     }
 }
 
 
-UPDATE REQUEST: http://localhost:6000/user/<str:userId>
-EXAMPLE REQUEST: http://localhost:6000/user/636a0f657ccba6fb2ae56e9b
-REQUEST BODY:
-{'username': 'ExampleDude1', 'password': 'UpdatedPassword', 'friendcode': 'ABCDEFGHI'}
-RESPONSE:
-{
-    "status": 200,
-    "message": "success",
-    "data": {
-        "data": {
-            "id": "636a0f657ccba6fb2ae56e9b",
-            "username": "ExampleDude1",
-            "password": "UpdatedPassword",
-            "friendcode": "ABCDEFGHI"
-        }
-    }
-}
-
-
-DELETE REQUEST: http://localhost:6000/user/<str:userId>
-EXAMPLE REQUEST: http://localhost:6000/user/636a0f657ccba6fb2ae56e9b
+DELETE REQUEST: http://localhost:8000/user/secure/<str:userId>
+EXAMPLE REQUEST: http://localhost:8000/user/secure/6373ebba8f2b988aed35c745
+HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
 RESPONSE:
