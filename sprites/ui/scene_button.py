@@ -1,9 +1,8 @@
 import scripts
 from sprites.ui.button import Button
-import globals as g
 
 
-# Button that navigates between menus
+# Button that navigates between scenes.
 class SceneButton(Button):
 
     def __init__(self, image_file, position, text="", load_scene=""):

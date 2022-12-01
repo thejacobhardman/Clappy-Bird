@@ -1,4 +1,4 @@
-# Version 0.3.0
+# Version 0.5.2
 
 import pygame as pg
 import globals as g
@@ -16,10 +16,14 @@ scenes[g.current_scene].init()
 
 # Game loop
 while True:
+
+    # Collect pygame events
     g.events = pg.event.get()
 
+    # Draw backgrounds
     g.backgrounds.draw(g.screen)
 
+    # Call update() on the currently active scene
     scenes[g.current_scene].update()
 
     g.fps_clock.tick(g.FPS)

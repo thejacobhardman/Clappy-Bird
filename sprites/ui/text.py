@@ -2,6 +2,7 @@ import pygame as pg
 
 
 # https://stackoverflow.com/questions/23056597/python-pygame-writing-text-in-sprite
+# Basic text sprite. Allows you to add text to your scenes in scene.py.
 class Text(pg.sprite.Sprite):
     def __init__(self, text, position, size, color):
 

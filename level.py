@@ -43,7 +43,7 @@ class Level:
 
         done = False
         pitches_processed = 0
-        chunk_size = 5
+        chunk_size = 10
         pipe_height_list = []
 
         while not done:
