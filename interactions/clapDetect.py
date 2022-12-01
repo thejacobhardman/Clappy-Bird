@@ -1,7 +1,5 @@
 import pyaudio
 import struct
-#import matplotlib.pyplot as plt
-#import numpy as np
 import time
 from pynput.keyboard import Key, Controller
 
@@ -52,22 +50,7 @@ class ClapTester(object):
         return stream
 
     # listens for loud objects, and prints them to console
-    def listen(self):
-
-        
-        #fig, (ax,ax1) = plt.subplots(2)  
-        #x_fft = np.linspace(0, RATE, INPUT_FRAMES_PER_BLOCK)                                           
-        #x = np.arange(0,INPUT_FRAMES_PER_BLOCK*2,2)                        
-        #line, = ax.plot(x, np.random.rand(INPUT_FRAMES_PER_BLOCK),'r')
-        #line_fft, = ax1.semilogx(x_fft, np.random.rand(INPUT_FRAMES_PER_BLOCK), 'b')  #makes another graph for frequency
-              
-
-
-        #ax.set_ylim(-32000,3200)                                           
-        #ax.set_xlim = (0,INPUT_FRAMES_PER_BLOCK)
-        #ax1.set_xlim(20,RATE/2)           #                                
-        #ax1.set_ylim = (0,1)              #sets y to be 0-1 due to normalization              
-        # fig.show()                                                          
+    def listen(self):                                                       
 
         start = time.time()
 
@@ -77,8 +60,6 @@ class ClapTester(object):
             amp_mem.append(0)
 
         amp_itter = 0
-
-        keyboard = Controller()
 
         # while true
         while 1:
@@ -95,6 +76,7 @@ class ClapTester(object):
                         if amp_itter == 200:
                             amp_itter = 0              
 
+                    # average amplitude of the noise
                     amplitude_noise = sum(amp_mem) / len(amp_mem)
 
                     count = 0
@@ -110,35 +92,16 @@ class ClapTester(object):
                         if count <= 2 and count > 0 and stop - start > 0.3:     
                             start = time.time()
 
-                            # jump in clappy bird    
-                            keyboard.press(Key.space)
+                            # clap in clappy bird
+                            with open('interactions\interactions.txt', 'w') as writer:
+                                writer.write("CLAP")    
+                            
                             time.sleep(0.1)
-                            keyboard.release(Key.space)
 
-                            print("JUMP via Spacebar")
-                            #print(x)
                             break
-                    
-
-                    # break out of audio block if loud object found (if x is above certain amplitude)
-                    """if x > 20000 and stop - start > 0.2:
-                        start = time.time()
-                        print(amp_mem)
-                        
-                        print("loud object")
-                        print(x)
-                        break"""
-                
-                # constantly redraw audio data to plot
-                #line.set_ydata(dataInt)
-                #line_fft.set_ydata(np.abs(np.fft.fft(dataInt))*2/(11000*INPUT_FRAMES_PER_BLOCK)) # gets frequency with fast fourier transform
-                #fig.canvas.draw()
-                #fig.canvas.flush_events()
             
-            # errors printed to console
-            except IOError as e:
-                self.errorcount += 1
-                print( "(%d) Error recording: %s"%(self.errorcount,e) )
+            # return upon error
+            except:
                 return
             
 # runs on main thread
