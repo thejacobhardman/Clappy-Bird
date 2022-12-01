@@ -85,14 +85,14 @@ class Game:
             self.music_started = True
             pg.mixer.music.play()
         if self.pipeIncr < len(pipe_list) and musicTick >= pipe_list[self.pipeIncr]['spawn']:
-            self.spawn_pipe_set(self.level.pipe_list[self.pipeIncr]['height'], 520, True, False)
+            self.spawn_pipe_set(self.level.pipe_list[self.pipeIncr]['height'], 620, True, False)
             self.pipeIncr += 1
             self.noMiddlePipe = True
         elif self.pipeIncr < len(pipe_list) and self.pipeIncr != 0 and musicTick >= pipe_list[self.pipeIncr - 1]['spawn'] + (
                 (pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) and musicTick < pipe_list[self.pipeIncr - 1]['spawn'] + (
                 ((pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) + .05) and self.noMiddlePipe and self.spawnChance == 2:
             self.spawn_pipe_set(pipe_list[self.pipeIncr - 1]['height'] + (
-                        pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 520, False, True)
+                        pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 580, False, True)
             self.noMiddlePipe = False
 
         for event in g.events:
@@ -112,3 +112,4 @@ class Game:
 
         # Draw the player's score
         scripts.draw_text(str(round(self.player.score)), g.game_font, (0, 0, 0), g.screen, 50, 50)
+        scripts.draw_text("Hitpoints: "+str(round(self.player.life)), g.game_font, (0, 0, 0), g.screen, 300, 50)
