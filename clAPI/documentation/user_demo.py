@@ -4,7 +4,7 @@ import requests
 import json
 import time
 
-api_url = "http://localhost:8000"
+api_url = "https://clap-api.herokuapp.com"
 userId = ""
 token = ""
 
