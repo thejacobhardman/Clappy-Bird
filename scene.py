@@ -7,11 +7,13 @@ import scenes.menu
 import scenes.win_screen
 import sprites.ui.sprite
 import sprites.ui.text
+import sprites.entities.textbox
 import pygame as pg
 import scenes.songs
 import scenes.load_song
 import scenes.game
 import scenes.countdown
+import scenes.upload
 
 game_scene = scenes.game.Game()
 
@@ -71,6 +73,12 @@ scenes = {
                 (g.WIDTH/2-175, g.HEIGHT/2+100),
                 load_scene="options"
             ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                text="Upload",
+                load_scene="Upload_screen",
+            )
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Quit-Button.png",
                 (g.WIDTH/2+175, g.HEIGHT/2+100)
@@ -167,6 +175,25 @@ scenes = {
             )
         ]
     ),
+
+    "Upload_screen": scenes.upload.UploadScreen(
+        [
+            sprites.ui.text.Text(
+                "Upload a Song",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
+                load_scene="main_menu"
+            ),
+        ],
+        sprites.entities.textbox.TextBox()
+    ),
+
+
 
     "difficulty": scenes.menu.Menu(
         [
