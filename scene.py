@@ -189,8 +189,21 @@ scenes = {
                 (g.WIDTH/2-400, g.HEIGHT/2-275),
                 load_scene="main_menu"
             ),
+
+            sprites.ui.text.Text(
+                "Enter URL:",
+                (g.WIDTH/2, g.HEIGHT/2-75),
+                30,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+100),
+                text="Upload",
+                load_scene="Upload_screen",
+            ),
         ],
-        sprites.entities.textbox.TextBox(500,300)
+        sprites.entities.textbox.TextBox(500,350)
     ),
 
 
