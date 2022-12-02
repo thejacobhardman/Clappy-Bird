@@ -70,7 +70,7 @@ scenes = {
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                (g.WIDTH/2+175, g.HEIGHT/2+100),
                 load_scene="options"
             ),
             sprites.ui.scene_button.SceneButton(
@@ -78,10 +78,10 @@ scenes = {
                 (g.WIDTH/2-175, g.HEIGHT/2+100),
                 text="Upload",
                 load_scene="Upload_screen",
-            )
+            ),
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Quit-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2+100)
+                (g.WIDTH/2, g.HEIGHT/2+200)
             )
         ]
     ),
