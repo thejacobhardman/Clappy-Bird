@@ -1,7 +1,7 @@
 import pygame
 import globals as g
 import scene
-
+import random
 
 # Draws text to the screen 
 def draw_text(text, font, color, surface, x, y):
@@ -44,6 +44,25 @@ def draw_image(image, surface, x, y):
     image_rect.center = (x, y)
     surface.blit(image, image_rect)
 
+# This will generate a random funny hint on the loading screen.
+def generate_loading_hint():
+    strings = [
+        "Don't die.",
+        "Be better at the game.",
+        "Do better.",
+        "Avoid the pipes.",
+        "The cake is a lie.",
+        "42",
+        "Use the force.",
+        "Live long and prosper.",
+        "Do, or do not. There is no try.",
+        "Use the hidden ability!",
+        "help me they're in my house"
+    ]
+
+    hint = "Hint: " + strings[random.randint(0, len(strings)-1)]
+    
+    return hint
 
 # Run this whenever you need to change the scene, as it initializes the new scene
 def change_scene(new_scene):

@@ -22,6 +22,7 @@ class LoadSong:
     def update(self):
         if not self.drew_load:
             self.sprites.draw(g.screen)
+            scripts.draw_text(scripts.generate_loading_hint(), g.game_font, pg.Color(0, 0, 0), g.screen, g.WIDTH/2, g.HEIGHT/2+50)
             self.drew_load = True
         else:
             # Load music

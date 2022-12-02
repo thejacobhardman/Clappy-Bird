@@ -1,7 +1,6 @@
 
-
-REGISTER REQUEST: http://localhost:8000/user/register
-EXAMPLE REQUEST: http://localhost:8000/user/register
+REGISTER REQUEST: https://clap-api.herokuapp.com/user/register
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/register
 HEADERS: None
 REQUEST BODY:
 {'username': 'ExampleDude1', 'password': 'SuperSecurePass', 'friendcode': 'GGGGGG'}
@@ -11,17 +10,17 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "InsertedID": "6373ebba8f2b988aed35c745",
+            "InsertedID": "6385353508248b78796438a5",
             "result": {
-                "InsertedID": "6373ebba8f2b988aed35c746"
+                "InsertedID": "6385353508248b78796438a6"
             }
         }
     }
 }
 
 
-LOGIN REQUEST: http://localhost:8000/user/auth
-EXAMPLE REQUEST: http://localhost:8000/user/auth
+LOGIN REQUEST: https://clap-api.herokuapp.com/user/auth
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/auth
 HEADERS: None
 REQUEST BODY:
 {'username': 'ExampleDude1', 'password': 'SuperSecurePass'}
@@ -31,17 +30,17 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "id": "6373ebba8f2b988aed35c745",
+            "id": "6385353508248b78796438a5",
             "username": "ExampleDude1",
             "friendcode": "GGGGGG"
         },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3M2ViYmE4ZjJiOTg4YWVkMzVjNzQ1IiwiZXhwIjoxNjY4NTQ0OTc0fQ.hNvSAu0rkae7iPqeeyEy5zLOH24ALkwBhVlIL77BFLM"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM4NTM1MzUwODI0OGI3ODc5NjQzOGE1IiwiZXhwIjoxNjY5Njc3ODk1fQ.Mu8zVgZrEPQWpZXme2gcSKq39Khn2TCNE8HigQ_CNb8"
     }
 }
 
 
-GET SINGLE REQUEST: http://localhost:8000/user/secure/<str:userId>
-EXAMPLE REQUEST: http://localhost:8000/user/secure/6373ebba8f2b988aed35c745
+GET SINGLE REQUEST: https://clap-api.herokuapp.com/user/secure/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/6385353508248b78796438a5
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
@@ -51,7 +50,7 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "id": "6373ebba8f2b988aed35c745",
+            "id": "6385353508248b78796438a5",
             "username": "ExampleDude1",
             "friendcode": "GGGGGG"
         }
@@ -59,8 +58,8 @@ RESPONSE:
 }
 
 
-UPDATE REQUEST: http://localhost:8000/user/secure/<str:userId>
-EXAMPLE REQUEST: http://localhost:8000/user/secure/6373ebba8f2b988aed35c745
+UPDATE REQUEST: https://clap-api.herokuapp.com/user/secure/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/6385353508248b78796438a5
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 {'username': 'ExampleDude1', 'password': 'UpdatedPassword', 'friendcode': 'ABCDEFGHI'}
@@ -70,7 +69,7 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "id": "6373ebba8f2b988aed35c745",
+            "id": "6385353508248b78796438a5",
             "username": "ExampleDude1",
             "friendcode": "ABCDEFGHI"
         }
@@ -78,8 +77,8 @@ RESPONSE:
 }
 
 
-REFRESH TOKEN REQUEST: http://localhost:8000/user/secure/refresh/<str:userId>
-EXAMPLE REQUEST: http://localhost:8000/user/secure/refresh/6373ebba8f2b988aed35c745
+REFRESH TOKEN REQUEST: https://clap-api.herokuapp.com/user/secure/refresh/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/refresh/6385353508248b78796438a5
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
@@ -88,12 +87,12 @@ RESPONSE:
     "status": 200,
     "message": "success",
     "data": {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3M2ViYmE4ZjJiOTg4YWVkMzVjNzQ1IiwiZXhwIjoxNjY4NTQ0OTg2fQ.wJEackctk__oAsBvZwKLHvF5B0Y2gpyK5BvFIOirSyk"
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM4NTM1MzUwODI0OGI3ODc5NjQzOGE1IiwiZXhwIjoxNjY5Njc3OTAyfQ.bn2InPqDF8d2zTyqcfxySYSEm2I26_n1K7uICOREowg"
     }
 }
 
-GET ALL REQUEST: http://localhost:8000/user/s2/all
-EXAMPLE REQUEST: http://localhost:8000/user/s2/all
+GET ALL REQUEST: https://clap-api.herokuapp.com/user/s2/all
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/s2/all
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
@@ -114,7 +113,7 @@ RESPONSE:
                 "friendcode": "GHIJKL"
             },
             {
-                "id": "6373ebba8f2b988aed35c745",
+                "id": "6385353508248b78796438a5",
                 "username": "ExampleDude1",
                 "friendcode": "ABCDEFGHI"
             }
@@ -123,8 +122,8 @@ RESPONSE:
 }
 
 
-PING/VALIDATE TOKEN REQUEST: http://localhost:8000/user/s2/skedaddle
-EXAMPLE REQUEST: http://localhost:8000/user/s2/skedaddle
+PING/VALIDATE TOKEN REQUEST: https://clap-api.herokuapp.com/user/s2/skedaddle
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/s2/skedaddle
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
@@ -138,8 +137,8 @@ RESPONSE:
 }
 
 
-DELETE REQUEST: http://localhost:8000/user/secure/<str:userId>
-EXAMPLE REQUEST: http://localhost:8000/user/secure/6373ebba8f2b988aed35c745
+DELETE REQUEST: https://clap-api.herokuapp.com/user/secure/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/6385353508248b78796438a5
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
