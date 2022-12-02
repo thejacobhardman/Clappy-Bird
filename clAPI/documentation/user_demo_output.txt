@@ -1,0 +1,152 @@
+
+REGISTER REQUEST: https://clap-api.herokuapp.com/user/register
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/register
+HEADERS: None
+REQUEST BODY:
+{'username': 'ExampleDude1', 'password': 'SuperSecurePass', 'friendcode': 'GGGGGG'}
+RESPONSE:
+{
+    "status": 201,
+    "message": "success",
+    "data": {
+        "data": {
+            "InsertedID": "6385353508248b78796438a5",
+            "result": {
+                "InsertedID": "6385353508248b78796438a6"
+            }
+        }
+    }
+}
+
+
+LOGIN REQUEST: https://clap-api.herokuapp.com/user/auth
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/auth
+HEADERS: None
+REQUEST BODY:
+{'username': 'ExampleDude1', 'password': 'SuperSecurePass'}
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "id": "6385353508248b78796438a5",
+            "username": "ExampleDude1",
+            "friendcode": "GGGGGG"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM4NTM1MzUwODI0OGI3ODc5NjQzOGE1IiwiZXhwIjoxNjY5Njc3ODk1fQ.Mu8zVgZrEPQWpZXme2gcSKq39Khn2TCNE8HigQ_CNb8"
+    }
+}
+
+
+GET SINGLE REQUEST: https://clap-api.herokuapp.com/user/secure/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/6385353508248b78796438a5
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "id": "6385353508248b78796438a5",
+            "username": "ExampleDude1",
+            "friendcode": "GGGGGG"
+        }
+    }
+}
+
+
+UPDATE REQUEST: https://clap-api.herokuapp.com/user/secure/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/6385353508248b78796438a5
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+{'username': 'ExampleDude1', 'password': 'UpdatedPassword', 'friendcode': 'ABCDEFGHI'}
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": {
+            "id": "6385353508248b78796438a5",
+            "username": "ExampleDude1",
+            "friendcode": "ABCDEFGHI"
+        }
+    }
+}
+
+
+REFRESH TOKEN REQUEST: https://clap-api.herokuapp.com/user/secure/refresh/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/refresh/6385353508248b78796438a5
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM4NTM1MzUwODI0OGI3ODc5NjQzOGE1IiwiZXhwIjoxNjY5Njc3OTAyfQ.bn2InPqDF8d2zTyqcfxySYSEm2I26_n1K7uICOREowg"
+    }
+}
+
+GET ALL REQUEST: https://clap-api.herokuapp.com/user/s2/all
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/s2/all
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": [
+            {
+                "id": "63731613537de5b26c8a9b7c",
+                "username": "HarryJ91",
+                "friendcode": "ABCDEF"
+            },
+            {
+                "id": "63731637537de5b26c8a9b7e",
+                "username": "GGkachu",
+                "friendcode": "GHIJKL"
+            },
+            {
+                "id": "6385353508248b78796438a5",
+                "username": "ExampleDude1",
+                "friendcode": "ABCDEFGHI"
+            }
+        ]
+    }
+}
+
+
+PING/VALIDATE TOKEN REQUEST: https://clap-api.herokuapp.com/user/s2/skedaddle
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/s2/skedaddle
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": "skedoodle"
+    }
+}
+
+
+DELETE REQUEST: https://clap-api.herokuapp.com/user/secure/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/secure/6385353508248b78796438a5
+HEADERS: Authorization : <str:token>
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": "User successfully deleted!"
+    }
+}
