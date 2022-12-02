@@ -12,6 +12,9 @@ class Player(pg.sprite.Sprite):
 
         self.max_speed = 5
 
+        self.life = 4
+        self.invincibility = 0
+
         self.frames = [
             pg.image.load("Assets/Art/Bird Sprite/frame-1.png"),
             pg.image.load("Assets/Art/Bird Sprite/frame-2.png"),
@@ -45,7 +48,7 @@ class Player(pg.sprite.Sprite):
 
     def handle_movement(self):
         # Constantly descending
-        self.acceleration += g.vec(0, 0.4)
+        self.acceleration += g.vec(0, 0.25)
 
         # clap if instructed to clap
         with open('interactions\interactions.txt', 'r') as reader:
@@ -78,14 +81,21 @@ class Player(pg.sprite.Sprite):
                 pg.mixer.music.unload()
                 scene.game_scene.gems.empty()
                 scripts.change_scene("game_over")
-        if scripts.check_collisions(self, scene.game_scene.pipes):
-            g.death_sound.play()
-            g.offset = scripts.shake()
+        if scripts.check_collisions(self, scene.game_scene.pipes) and self.invincibility == 0:
             if not self.absolute_unit:
+                self.life -= 1
+                self.invincibility = 40
+                g.death_sound.play()
+                g.offset = scripts.shake()
+            if self.life <= 0:
                 pg.mixer.music.stop()
                 pg.mixer.music.unload()
                 scene.game_scene.gems.empty()
                 scripts.change_scene("game_over")
+
+    def isInvincible(self):
+        self.invincibility -= 1
+        print(self.invincibility)
 
     def did_leave_screen(self):
         if self.position.y > g.HEIGHT:
@@ -96,3 +106,5 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.handle_movement()
         self.handle_collisions()
+        if self.invincibility > 0:
+            self.isInvincible()
