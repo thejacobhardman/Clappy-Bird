@@ -186,11 +186,11 @@ scenes = {
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2),
+                (g.WIDTH/2-400, g.HEIGHT/2-275),
                 load_scene="main_menu"
             ),
         ],
-        sprites.entities.textbox.TextBox()
+        sprites.entities.textbox.TextBox(500,300)
     ),
 
 
