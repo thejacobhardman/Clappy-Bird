@@ -2,6 +2,7 @@ import scripts
 import globals as g
 import requests
 import hashlib
+import json
 from sprites.ui.button import Button
 
 
@@ -18,7 +19,8 @@ class LoginSignupButton(Button):
         if self.login:
             bodyData = {"username": self.username_field.text,
                         "password": hashlib.sha256(self.password_field.text.encode('utf8')).hexdigest()}
-            response = requests.get(g.api_url + "/user/auth", bodyData)
+            response = requests.get((g.api_url + "/user/auth"), json=bodyData)
+            print(json.dumps(response.json(), indent=4))
             if response.status_code == 200:
                 # Save data from HTTP response
                 g.token = response.json()["data"]["token"]
@@ -34,8 +36,10 @@ class LoginSignupButton(Button):
         else:
             bodyData = {"username": self.username_field.text,
                         "password": hashlib.sha256((self.password_field.text).encode('utf8')).hexdigest(),
-                        "friendcode": "ABCDEFLMAO"}
-            response = requests.post(g.api_url + "/user/register", bodyData)
+                        "friendcode": "ABCDEF"}
+            response = requests.post(
+                (g.api_url + "/user/register"), json=bodyData)
+            print(json.dumps(response.json(), indent=4))
             if response.status_code == 201:
                 # Save data from HTTP response
                 g.userId = response.json()["data"]["data"]["InsertedID"]
@@ -43,7 +47,7 @@ class LoginSignupButton(Button):
                 print(g.userId)
 
                 # Navigate to new menu
-                scripts.change_scene("main_menu")
+                scripts.change_scene("login")
             else:
                 print(response.status_code)
 
