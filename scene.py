@@ -14,6 +14,7 @@ import scenes.load_song
 import scenes.game
 import scenes.countdown
 import scenes.upload
+import scenes.login_screen
 
 game_scene = scenes.game.Game()
 
@@ -51,6 +52,31 @@ game_scene = scenes.game.Game()
 
 
 scenes = {
+
+    "login": scenes.login_screen.LoginScreen(
+        [
+            sprites.ui.text.Text(
+                "Login",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Username",
+                (g.WIDTH*0.4, g.HEIGHT/2),
+                20,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.entities.textbox.TextBox((g.WIDTH/2, g.HEIGHT/2)),
+            sprites.ui.text.Text(
+                "Password",
+                (g.WIDTH*0.4, g.HEIGHT*0.6),
+                20,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.entities.textbox.TextBox((g.WIDTH/2, g.HEIGHT*0.6)),
+        ]
+    ),
 
     "main_menu": scenes.menu.Menu(
         [
@@ -190,7 +216,7 @@ scenes = {
                 load_scene="main_menu"
             ),
         ],
-        sprites.entities.textbox.TextBox()
+        sprites.entities.textbox.TextBox((20, 20))
     ),
 
 

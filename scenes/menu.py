@@ -33,4 +33,5 @@ class Menu:
 
     def update(self):
         self.sprites.draw(g.screen)
+        self.sprites.update()
         self.__handle_click()
