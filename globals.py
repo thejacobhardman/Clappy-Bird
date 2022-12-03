@@ -51,3 +51,9 @@ current_scene = "login"  # Do not manually change this, use scrips.set_scene() i
 
 # This is set to pg.event.get() every tick
 events = []
+
+# HTTP Stuffs :DDDDDD
+api_url = "https://clap-api.herokuapp.com"
+username = ""
+token = ""
+userId = ""
