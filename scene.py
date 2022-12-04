@@ -3,6 +3,7 @@ import sprites.ui.song_button
 import sprites.ui.scene_button
 import sprites.ui.quit_button
 import sprites.ui.difficulty_button
+import sprites.ui.upload_button
 import scenes.menu
 import scenes.win_screen
 import sprites.ui.sprite
@@ -190,7 +191,6 @@ scenes = {
                 load_scene="main_menu"
             ),
         ],
-        sprites.entities.textbox.TextBox()
     ),
 
 

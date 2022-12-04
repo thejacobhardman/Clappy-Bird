@@ -1,14 +1,16 @@
 import pygame as pg
 import sprites.ui.button
+import sprites.ui.upload_button
+import sprites.entities.textbox
 import globals as g
 from scenes.menu import Menu
 
 
 class UploadScreen(Menu):
 
-    def __init__(self, sprites, textBox):
+    def __init__(self, sprites):
+        super().__init__([])
         self.sprites = pg.sprite.Group(sprites)
-        self.textBox = pg.sprite.Group(textBox)
 
     def __handle_click(self):
         mouseX, mouseY = pg.mouse.get_pos()
@@ -24,8 +26,13 @@ class UploadScreen(Menu):
     def init(self):
         if not g.pg.mixer.get_busy():
             g.birds_sound.play(-1)
+        self.textBox = sprites.entities.textbox.TextBox((g.WIDTH/2, g.HEIGHT/2 - 300))
 
-    def update(self):
-        self.sprites.draw(g.screen)
-        self.textBox.update()
-        self.__handle_click()
+        self.uploadButton = sprites.ui.upload_button.UploadButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2+175, g.HEIGHT/2),
+                text="Upload Song",
+                textBox=self.textBox,
+            ),
+        self.sprites.add(self.textBox)
+        self.sprites.add(self.uploadButton)
