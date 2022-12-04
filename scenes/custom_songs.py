@@ -53,7 +53,8 @@ class CustomSongs(Menu):
                     "Assets/Art/UI/Empty-Button.png",
                     (x_pos, (g.HEIGHT / 4) + (120 * (i % 4))),
                     text=level[:-4],
-                    song="CustomLevels/" + level
+                    song="CustomLevels/" + level,
+                    flag=True
                 )
             )
             i += 1
