@@ -50,14 +50,15 @@ class Player(pg.sprite.Sprite):
         # Constantly descending
         self.acceleration += g.vec(0, 0.25)
 
-        keys = pg.key.get_pressed()
-        if keys[pg.K_SPACE] and not self.key_down:
-            self.key_down = True
-            g.jump_sound.play()
-            self.acceleration += g.vec(0, -self.max_speed * 2)
-            self.frame_index = 0
-        if not keys[pg.K_SPACE]:
-            self.key_down = False
+        # clap if instructed to clap
+        with open('interactions\interactions.txt', 'r') as reader:
+            if reader.readlines() == ['CLAP']:
+                g.jump_sound.play()
+                self.acceleration += g.vec(0, -self.max_speed * 2)
+                self.frame_index = 0
+                with open('interactions\interactions.txt', 'w') as writer:
+                    writer.write("FALL")
+
         if self.frame_index < 6:
             self.image = scripts.animate_sprite(self.frames, self.frame_index)
             self.frame_index += 1

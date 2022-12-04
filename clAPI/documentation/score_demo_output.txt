@@ -1,34 +1,6 @@
 
-GET ALL REQUEST: http://localhost:8000/scores/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/scores/1
-HEADERS: None
-REQUEST BODY:
-None
-RESPONSE:
-{
-    "status": 200,
-    "message": "success",
-    "data": {
-        "data": [
-            {
-                "player": "63731637537de5b26c8a9b7e",
-                "username": "GGkachu",
-                "leaderboard": 1,
-                "highscore": 50
-            },
-            {
-                "player": "63731613537de5b26c8a9b7c",
-                "username": "HarryJ91",
-                "leaderboard": 1,
-                "highscore": 82
-            }
-        ]
-    }
-}
-
-
-GET TOP 'x' BOARD REQUEST: http://localhost:8000/scores/limit/<int:x>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/scores/limit/3/1
+GET ALL REQUEST: https://clap-api.herokuapp.com/scores/<int:leaderboard>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/scores/1
 HEADERS: None
 REQUEST BODY:
 None
@@ -55,8 +27,36 @@ RESPONSE:
 }
 
 
-POST REQUEST: http://localhost:8000/score/<str:userId>
-EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c
+GET TOP 'x' BOARD REQUEST: https://clap-api.herokuapp.com/scores/limit/<int:x>/<int:leaderboard>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/scores/limit/3/1
+HEADERS: None
+REQUEST BODY:
+None
+RESPONSE:
+{
+    "status": 200,
+    "message": "success",
+    "data": {
+        "data": [
+            {
+                "player": "63731613537de5b26c8a9b7c",
+                "username": "HarryJ91",
+                "leaderboard": 1,
+                "highscore": 82
+            },
+            {
+                "player": "63731637537de5b26c8a9b7e",
+                "username": "GGkachu",
+                "leaderboard": 1,
+                "highscore": 50
+            }
+        ]
+    }
+}
+
+
+POST REQUEST: https://clap-api.herokuapp.com/score/<str:userId>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/score/63731613537de5b26c8a9b7c
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 {'player': '63731613537de5b26c8a9b7c', 'username': 'HarryJ91', 'leaderboard': 99, 'highscore': 985}
@@ -66,14 +66,14 @@ RESPONSE:
     "message": "success",
     "data": {
         "data": {
-            "InsertedID": "6373f4a98f2b988aed35c747"
+            "InsertedID": "638534d608248b78796438a4"
         }
     }
 }
 
 
-GET SINGLE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c/99
+GET SINGLE REQUEST: https://clap-api.herokuapp.com/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/score/63731613537de5b26c8a9b7c/99
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
@@ -92,8 +92,8 @@ RESPONSE:
 }
 
 
-UPDATE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c/99
+UPDATE REQUEST: https://clap-api.herokuapp.com/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/score/63731613537de5b26c8a9b7c/99
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 {'player': '63731613537de5b26c8a9b7c', 'username': 'HarryJ91', 'leaderboard': 99, 'highscore': 1000}
@@ -112,8 +112,8 @@ RESPONSE:
 }
 
 
-DELETE REQUEST: http://localhost:8000/score/<str:userId>/<int:leaderboard>
-EXAMPLE REQUEST: http://localhost:8000/score/63731613537de5b26c8a9b7c/99
+DELETE REQUEST: https://clap-api.herokuapp.com/score/<str:userId>/<int:leaderboard>
+EXAMPLE REQUEST: https://clap-api.herokuapp.com/score/63731613537de5b26c8a9b7c/99
 HEADERS: Authorization : <str:token>
 REQUEST BODY:
 None
