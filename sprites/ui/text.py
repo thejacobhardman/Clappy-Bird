@@ -1,4 +1,5 @@
 import pygame as pg
+import globals as g
 
 
 # https://stackoverflow.com/questions/23056597/python-pygame-writing-text-in-sprite

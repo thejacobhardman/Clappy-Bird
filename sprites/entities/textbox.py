@@ -4,9 +4,11 @@ import globals as g
 
 class TextBox(pg.sprite.Sprite):
 
-    def __init__(self, pos):
+    def __init__(self, pos, hidden_text=False):
         pg.sprite.Sprite.__init__(self)
         self.text = ""
+        self.hidden_text = ""
+        self.has_hidden_text = hidden_text
         self.font = pg.font.SysFont("Arial", 30, bold=True)
         self.image = self.font.render(self.text, True, pg.Color(0, 0, 0))
         self.position = pos
@@ -20,10 +22,13 @@ class TextBox(pg.sprite.Sprite):
         self.drawTextBox()
 
     def drawTextBox(self):
-        self.image = self.font.render(self.text, True, pg.Color(0, 0, 0))
+        if self.has_hidden_text:
+            self.image = self.font.render(self.hidden_text, True, pg.Color(0, 0, 0))
+        else:
+            self.image = self.font.render(self.text, True, pg.Color(0, 0, 0))
         pg.draw.rect(g.screen, self.color, self.rect)
         g.screen.blit(self.image, (self.rect.x + 5, self.rect.y + 5))
-        self.rect.w = max(100, self.image.get_width() + 10)
+        self.rect.w = max(200, self.image.get_width() + 10)
 
         if self.active:
             self.color = self.color_active
@@ -40,6 +45,10 @@ class TextBox(pg.sprite.Sprite):
         return self.text
 
     def update(self):
+
+        self.hidden_text = ""
+        for char in self.text:
+            self.hidden_text += "*"
 
         for event in g.events:
             if self.active:
