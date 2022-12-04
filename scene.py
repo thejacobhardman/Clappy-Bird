@@ -3,6 +3,7 @@ import sprites.ui.song_button
 import sprites.ui.scene_button
 import sprites.ui.quit_button
 import sprites.ui.difficulty_button
+import sprites.ui.upload_button
 import scenes.menu
 import scenes.win_screen
 import sprites.ui.sprite
@@ -10,6 +11,7 @@ import sprites.ui.text
 import sprites.entities.textbox
 import pygame as pg
 import scenes.songs
+import scenes.custom_songs
 import scenes.load_song
 import scenes.game
 import scenes.countdown
@@ -61,7 +63,7 @@ scenes = {
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Play-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
-                load_scene="songs"
+                load_scene="play_menu"
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Leaderboard-Button.png",
@@ -83,6 +85,34 @@ scenes = {
                 "Assets/Art/UI/Quit-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2+200)
             )
+        ]
+    ),
+
+    "play_menu": scenes.menu.Menu(
+        [
+            sprites.ui.text.Text(
+                "Select Mode",
+                (g.WIDTH/2, g.HEIGHT/12),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
+                text="Songs",
+                load_scene="songs"
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2+175, g.HEIGHT/2),
+                text="Custom Songs",
+                load_scene="custom_songs"
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+100),
+                load_scene="main_menu"
+            ),
         ]
     ),
 
@@ -180,8 +210,14 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Upload a Song",
-                (g.WIDTH/2, g.HEIGHT/2-150),
+                (g.WIDTH/2, g.HEIGHT/2-250),
                 60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Enter a Youtube url",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                30,
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
@@ -190,7 +226,6 @@ scenes = {
                 load_scene="main_menu"
             ),
         ],
-        sprites.entities.textbox.TextBox()
     ),
 
 
@@ -227,6 +262,22 @@ scenes = {
     ),
 
     "songs": scenes.songs.Songs(
+        [
+            sprites.ui.text.Text(
+                "Select Level",
+                (g.WIDTH/2, g.HEIGHT/12),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH / 2, (g.HEIGHT / 2) + 300),
+                load_scene="main_menu"
+            )
+        ]
+    ),
+
+    "custom_songs": scenes.custom_songs.CustomSongs(
         [
             sprites.ui.text.Text(
                 "Select Level",

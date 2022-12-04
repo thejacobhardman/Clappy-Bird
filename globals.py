@@ -2,6 +2,7 @@ import pygame as pg
 import itertools
 
 pg.init()
+pg.key.set_repeat(500, 100)
 
 # Constants
 WIDTH = 1280
