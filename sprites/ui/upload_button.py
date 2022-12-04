@@ -11,3 +11,4 @@ class UploadButton(sprites.ui.button.Button):
 
     def on_click(self):
         print(self.textBox.getText())
+        self.textBox.text = ''
