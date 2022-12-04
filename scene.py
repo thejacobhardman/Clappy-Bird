@@ -181,8 +181,14 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Upload a Song",
-                (g.WIDTH/2, g.HEIGHT/2-150),
+                (g.WIDTH/2, g.HEIGHT/2-250),
                 60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Enter a Youtube url",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                30,
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
