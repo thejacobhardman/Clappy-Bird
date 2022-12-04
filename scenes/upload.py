@@ -9,8 +9,7 @@ from scenes.menu import Menu
 class UploadScreen(Menu):
 
     def __init__(self, sprites):
-        super().__init__([])
-        self.sprites = pg.sprite.Group(sprites)
+        super().__init__(sprites)
 
     def __handle_click(self):
         mouseX, mouseY = pg.mouse.get_pos()
