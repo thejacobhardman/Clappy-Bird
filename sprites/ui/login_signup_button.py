@@ -34,12 +34,14 @@ class LoginSignupButton(Button):
             g.token = response.json()["data"]["token"]
             g.username = response.json()["data"]["data"]["username"]
             g.userId = response.json()["data"]["data"]["id"]
+            g.logged_in = True
 
             print(g.token, g.username, g.userId)
             # Navigate to new menu
             scripts.change_scene("main_menu")
         elif response.status_code == 400:
-            self.status_text.change_text("Please enter both username and password above")
+            self.status_text.change_text(
+                "Please enter both username and password above")
         elif response.status_code == 500:
             self.status_text.change_text("Invalid username and/or password")
         else:
@@ -61,44 +63,9 @@ class LoginSignupButton(Button):
             # Navigate to new menu
             scripts.change_scene("login")
         elif response.status_code == 400:
-            self.status_text.change_text("Please enter both username and password above")
+            self.status_text.change_text(
+                "Please enter both username and password above")
         elif response.status_code == 500:
             self.status_text.change_text("Username provided already exists")
         else:
             self.status_text.change_text("Failed to signup")
-
-
-
-"""
-# AUTHENTICATE USER/LOGIN
-bodyData = {"username": "ExampleDude1", "password": "SuperSecurePass"}
-print("\n\nLOGIN REQUEST: " + api_url + "/user/auth")
-print("EXAMPLE REQUEST: " + api_url + "/user/auth")
-print("HEADERS: " + "None")
-print("REQUEST BODY:\n" + str(bodyData))
-print("RESPONSE:")
-response = requests.get(api_url + "/user/auth", json=bodyData)
-print(json.dumps(response.json(), indent=4))
-if response.status_code == 200:
-    token = response.json()["data"]["token"]
-time.sleep(2)
-
-LOGIN REQUEST: https://clap-api.herokuapp.com/user/auth
-EXAMPLE REQUEST: https://clap-api.herokuapp.com/user/auth
-HEADERS: None
-REQUEST BODY:
-{'username': 'ExampleDude1', 'password': 'SuperSecurePass'}
-RESPONSE:
-{
-    "status": 200,
-    "message": "success",
-    "data": {
-        "data": {
-            "id": "6385353508248b78796438a5",
-            "username": "ExampleDude1",
-            "friendcode": "GGGGGG"
-        },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM4NTM1MzUwODI0OGI3ODc5NjQzOGE1IiwiZXhwIjoxNjY5Njc3ODk1fQ.Mu8zVgZrEPQWpZXme2gcSKq39Khn2TCNE8HigQ_CNb8"
-    }
-}
-"""

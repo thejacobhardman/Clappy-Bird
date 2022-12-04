@@ -54,6 +54,7 @@ events = []
 
 # HTTP Stuffs :DDDDDD
 api_url = "https://clap-api.herokuapp.com"
+logged_in = False
 username = ""
 token = ""
 userId = ""
