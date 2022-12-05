@@ -71,14 +71,14 @@ userId = ""
 
 # Big list its a list now hehehe of song mappings
 songs = [
-    "Levels/Blue Skies - Silent Partner.mp3",
-    "Levels/Buddha.mp3",
+    "Levels/Blue Skies - Silent Partner.wav",
+    "Levels/Buddha.wav",
     "Levels/C Major Scale.wav",
-    "Levels/Jam Jam Jam.mp3",
-    "Levels/Octagon of Destiny.mp3",
-    "Levels/Parking.mp3",
-    "Levels/Remix 10.mp3",
-    "Levels/Spartacus.mp3",
+    "Levels/Jam Jam Jam.wav",
+    "Levels/Octagon of Destiny.wav",
+    "Levels/Parking.wav",
+    "Levels/Remix 10.wav",
+    "Levels/Spartacus.wav",
     "Levels/Stuffing Your Face.wav",
     "Levels/Uk.wav",
     # etc
