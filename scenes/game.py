@@ -105,7 +105,7 @@ class Game:
 
         for event in g.events:
             if event.type == g.Song_win:
-                if g.logged_in & g.songs.has_key(self.song_path) & (self.songFlag == False):
+                if g.logged_in & g.songs.has_key(self.song_path) & (self.customSong == False):
 
                     headers = {"Authorization": g.token}
                     response = requests.get(g.api_url + "/score/" +

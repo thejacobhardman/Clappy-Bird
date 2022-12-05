@@ -62,7 +62,15 @@ userId = ""
 
 # Big dictionary of song mappings
 songs = {
-    "Levels/C Major Scale.wav": 1,
-    "Levels\C Major Scale.wav": 1,
+    "Levels\\Blue Skies - Silent Partner.mp3": 1,
+    "Levels\\Buddha.mp3": 2,
+    "Levels\\C Major Scale.mp3": 3,
+    "Levels\\Jam Jam Jam.mp3": 4,
+    "Levels\\Octagon of Destiny.mp3": 5,
+    "Levels\\Parking.mp3": 6,
+    "Levels\\Remix 10.mp3": 7,
+    "Levels\\Spartacus.mp3": 8,
+    "Levels\\Stuffing Your Face.mp3": 9,
+    "Levels\\Uk.mp3": 10,
     # etc
 }

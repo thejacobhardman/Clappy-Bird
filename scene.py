@@ -235,8 +235,7 @@ scenes = {
                 (g.WIDTH/2-175, g.HEIGHT/2),
                 load_scene="main_menu"
             ),
-        ],
-        sprites.entities.textbox.TextBox((20, 20))
+        ]
     ),
 
 
