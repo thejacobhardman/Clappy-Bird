@@ -4,6 +4,9 @@ import scene
 import scripts
 import globals as g
 
+import os
+from pathlib import Path
+
 
 class Player(pg.sprite.Sprite):
 
@@ -38,6 +41,9 @@ class Player(pg.sprite.Sprite):
         self.key_down = False
         self.absolute_unit = False  # <- Set this to True to make the player an absolute unit
         self.clapTimer = 10
+        
+        self.dir_path = dir_path = Path(os.path.dirname(os.path.realpath(__file__)))
+        self.base_path = dir_path.parent.parent
 
     def reset(self):
         self.position = g.vec(g.WIDTH/2-250, g.HEIGHT/2)
@@ -52,10 +58,10 @@ class Player(pg.sprite.Sprite):
         self.acceleration += g.vec(0, 0.25)
 
         # clap if instructed to clap
-        with open('interactions\interactions.txt', 'r') as reader:
+        with open(self.base_path + '\\interactions\interactions.txt', 'r') as reader:
             if reader.readlines() == ['CLAP']:
                 self.clapflap()
-                with open('interactions\interactions.txt', 'w') as writer:
+                with open(self.base_path + '\\interactions\interactions.txt', 'w') as writer:
                     writer.write("FALL")
 
         if self.clapTimer > 0:

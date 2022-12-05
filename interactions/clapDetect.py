@@ -3,6 +3,8 @@ import struct
 import time
 from pynput.keyboard import Key, Controller
 
+import os
+
 
 # Base16 format that .wav is saved as
 FORMAT = pyaudio.paInt16 
@@ -24,6 +26,9 @@ INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 
 # Clap detect minimum interval - claps cannot be detected faster than this float in seconds
 MIN_CLAP = 0.2
+
+# File path that should be used for read/write
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
 
@@ -96,9 +101,8 @@ class ClapTester(object):
                             start = time.time()
 
                             # clap in clappy bird
-                            with open('interactions\interactions.txt', 'w') as writer:
+                            with open(DIR_PATH + '\\interactions.txt', 'w') as writer:
                                 writer.write("CLAP")    
-
                             break
             
             # return upon error
