@@ -46,7 +46,8 @@ class Game:
             "bottom", 500, height + gap_size)
 
         if has_gem:
-            gem = sprites.entities.gem.Gem(500, height, top_pipe, bottom_pipe, self.gemValue)
+            gem = sprites.entities.gem.Gem(
+                500, height, top_pipe, bottom_pipe, self.gemValue)
             self.gems.add(gem)
 
         if mid_pipe:
@@ -118,7 +119,7 @@ class Game:
 
         for event in g.events:
             if event.type == g.Song_win:
-                if g.logged_in & g.songs.has_key(self.song_path) & (self.songFlag == False):
+                if g.logged_in & g.songs.has_key(self.song_path) & (self.customSong == False):
 
                     headers = {"Authorization": g.token}
                     response = requests.get(g.api_url + "/score/" +
@@ -144,7 +145,6 @@ class Game:
                         scripts.change_scene("Win_screen")
                 else:
                     scripts.change_scene("Win_screen")
-                
 
         # Only update the background when the game is happening
         g.backgrounds.update()
