@@ -27,6 +27,7 @@ class Game:
         self.spawnChance = 0
         self.difficulty = ""
         self.songseed = 0
+        self.customSong = False
 
     def set_song(self, path, data):
         self.song_path = path
@@ -34,6 +35,9 @@ class Game:
         # Hashing code taken from - https://stackoverflow.com/questions/16008670/how-to-hash-a-string-into-8-digits
         self.songseed = int(hashlib.sha1(
             path.encode("utf-8")).hexdigest(), 16) % (10 ** 8)
+
+    def set_songFlag(self, flag):
+        self.customSong = flag
 
     def spawn_pipe_set(self, height, gap_size, has_gem, mid_pipe):
         top_pipe = sprites.entities.pipe.Pipe("top", 500, height - gap_size)

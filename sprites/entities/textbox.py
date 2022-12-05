@@ -1,7 +1,6 @@
 import pygame as pg
 import globals as g
 
-
 class TextBox(pg.sprite.Sprite):
 
     def __init__(self, pos, hidden_text=False):
