@@ -48,7 +48,21 @@ offset = itertools.repeat((0, 0))  # <- Set with "scripts.shake()"
 
 backgrounds = pg.sprite.Group()
 
-current_scene = "main_menu"  # Do not manually change this, use scrips.set_scene() instead
+current_scene = "login"  # Do not manually change this, use scrips.set_scene() instead
 
 # This is set to pg.event.get() every tick
 events = []
+
+# HTTP Stuffs :DDDDDD
+api_url = "https://clap-api.herokuapp.com"
+logged_in = False
+username = ""
+token = ""
+userId = ""
+
+# Big dictionary of song mappings
+songs = {
+    "Levels/C Major Scale.wav": 1,
+    "Levels\C Major Scale.wav": 1,
+    # etc
+}

@@ -1,4 +1,4 @@
-# Version 0.5.6
+# Version 0.5.7
 
 import pygame as pg
 import globals as g
