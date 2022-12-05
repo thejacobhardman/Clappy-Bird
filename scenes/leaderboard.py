@@ -48,13 +48,6 @@ class Leaderboard(Menu):
 
     def display_leaderboard(self):
 
-        response = requests.get(g.api_url + "/scores/limit/10/" + str(self.page_num))
-        if response.status_code == 200:
-            print(json.dumps(response.json(), indent=4))
-
-        # I regret to inform you that Lad Boi Johnson I and II have tragically passed away in a terrible accident
-        player_scores = response.json()["data"]["data"]
-
         # Remove all text sprites
         for sprite in self.sprites:
             if isinstance(sprite, sprites.ui.text.Text):
@@ -67,34 +60,50 @@ class Leaderboard(Menu):
             pg.Color(0, 0, 0)
         )]
 
-        if player_scores is not None:
-            for i in range(len(player_scores)):
-                lb_sprites.append(sprites.ui.text.Text(
-                    player_scores[i]["username"],
-                    (g.WIDTH * 0.3, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
-                    20,
-                    pg.Color(0, 0, 0)
-                ))
+        # Get the top 10 scores
+        response = requests.get(g.api_url + "/scores/limit/10/" + str(self.page_num))
 
-            for i in range(len(player_scores)):
-                lb_sprites.append(sprites.ui.text.Text(
-                    ". . . . . . . . . . . . . . . . . . . . . . . . . .",
-                    (g.WIDTH * 0.5, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
-                    20,
-                    pg.Color(0, 0, 0)
-                ))
+        if response.status_code == 200:
+            # I regret to inform you that Lad Boi Johnson I and II have tragically passed away in a terrible accident
+            player_scores_data = response.json()["data"]["data"]
 
-            for i in range(len(player_scores)):
-                lb_sprites.append(sprites.ui.text.Text(
-                    str(player_scores[i]["highscore"]),
-                    (g.WIDTH * 0.7, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
-                    20,
-                    pg.Color(0, 0, 0)
-                ))
+            if player_scores_data is not None:
+
+                player_scores = []
+    
+                # Remove all the invalid scores
+                for i in player_scores_data:
+                    if "username" in i and "highscore" in i:
+                        player_scores.append(i)
+
+                for i in range(len(player_scores)):
+                    lb_sprites.append(sprites.ui.text.Text(
+                        player_scores[i]["username"],
+                        (g.WIDTH * 0.3, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
+                        20,
+                        pg.Color(0, 0, 0)
+                    ))
+
+                for i in range(len(player_scores)):
+                    lb_sprites.append(sprites.ui.text.Text(
+                        ". . . . . . . . . . . . . . . . . . . . . . . . . .",
+                        (g.WIDTH * 0.5, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
+                        20,
+                        pg.Color(0, 0, 0)
+                    ))
+
+                for i in range(len(player_scores)):
+                    lb_sprites.append(sprites.ui.text.Text(
+                        str(player_scores[i]["highscore"]),
+                        (g.WIDTH * 0.7, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
+                        20,
+                        pg.Color(0, 0, 0)
+                    ))
+        else:
+            print("Error retrieving leaderboard scores")
 
         for i in lb_sprites:
             self.sprites.add(i)
-
 
     def init(self):
         if not g.pg.mixer.get_busy():
