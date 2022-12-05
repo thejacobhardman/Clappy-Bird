@@ -119,7 +119,7 @@ class Game:
 
             print(self.song_path)
 
-            if g.logged_in & (g.songs.get(self.song_path) != None) & (self.customSong == False):
+            if g.logged_in & (g.songs.get(self.song_path) != None) & (self.customSong == False) & (self.player.absolute_unit == False):
 
                 headers = {"Authorization": g.token}
                 response = requests.get(g.api_url + "/score/" +
@@ -167,7 +167,7 @@ class Game:
 
         for event in g.events:
             if event.type == g.Song_win:
-                if g.logged_in & (g.songs.get(self.song_path) != None) & (self.customSong == False):
+                if g.logged_in & (g.songs.get(self.song_path) != None) & (self.customSong == False) & (self.player.absolute_unit == False):
 
                     headers = {"Authorization": g.token}
                     response = requests.get(g.api_url + "/score/" +
