@@ -72,11 +72,19 @@ class Player(pg.sprite.Sprite):
         self.position += self.vel
         self.rect.center = self.position
 
+    def bounce(self):
+        self.life -= 1
+        g.death_sound.play()
+        g.offset = scripts.shake()
+        self.acceleration += g.vec(0, -self.max_speed * 3)
+        self.frame_index = 0
+        self.invincibility = 20
+
     def handle_collisions(self):
         if self.did_leave_screen():
-            g.death_sound.play()
-            g.offset = scripts.shake()
-            if not self.absolute_unit:
+            if not self.absolute_unit and self.invincibility == 0:
+                self.bounce()
+            if self.life <= 0:
                 pg.mixer.music.stop()
                 pg.mixer.music.unload()
                 scene.game_scene.gems.empty()
@@ -95,7 +103,6 @@ class Player(pg.sprite.Sprite):
 
     def isInvincible(self):
         self.invincibility -= 1
-        print(self.invincibility)
 
     def did_leave_screen(self):
         if self.position.y > g.HEIGHT:
