@@ -69,17 +69,17 @@ username = ""
 token = ""
 userId = ""
 
-# Big dictionary of song mappings
-songs = {
-    "Levels/Blue Skies - Silent Partner.mp3": 1,
-    "Levels/Buddha.mp3": 2,
-    "Levels/C Major Scale.mp3": 3,
-    "Levels/Jam Jam Jam.mp3": 4,
-    "Levels/Octagon of Destiny.mp3": 5,
-    "Levels/Parking.mp3": 6,
-    "Levels/Remix 10.mp3": 7,
-    "Levels/Spartacus.mp3": 8,
-    "Levels/Stuffing Your Face.mp3": 9,
-    "Levels/Uk.mp3": 10,
+# Big list its a list now hehehe of song mappings
+songs = [
+    "Levels/Blue Skies - Silent Partner.mp3",
+    "Levels/Buddha.mp3",
+    "Levels/C Major Scale.mp3",
+    "Levels/Jam Jam Jam.mp3",
+    "Levels/Octagon of Destiny.mp3",
+    "Levels/Parking.mp3",
+    "Levels/Remix 10.mp3",
+    "Levels/Spartacus.mp3",
+    "Levels/Stuffing Your Face.mp3",
+    "Levels/Uk.mp3",
     # etc
-}
+]

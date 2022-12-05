@@ -1,9 +1,6 @@
 import sprites.ui.song_button
-from os import listdir
-from os.path import isfile, join
 import globals as g
 from scenes.menu import Menu
-import math
 import sprites.ui.arrow_button
 import pygame as pg
 import requests
@@ -17,11 +14,7 @@ class Leaderboard(Menu):
         sprites_param = []
 
         self.page_num = 1
-        self.all_level_paths = []
-        for i in g.songs:
-            self.all_level_paths.append(i)
-            print(i)
-        self.max_page_num = len(self.all_level_paths)
+        self.max_page_num = len(g.songs)
 
         # Add back button
         sprites_param.append(sprites.ui.scene_button.SceneButton(
@@ -55,60 +48,49 @@ class Leaderboard(Menu):
 
     def display_leaderboard(self):
 
-        response = requests.get(g.api_url + "/scores/limit/10/1")
+        response = requests.get(g.api_url + "/scores/limit/10/" + str(self.page_num))
         if response.status_code == 200:
             print(json.dumps(response.json(), indent=4))
 
         # I regret to inform you that Lad Boi Johnson I and II have tragically passed away in a terrible accident
-        player_scores = [
-            ["Lad Boi Johnson III", 5000],
-            ["Lad Boi Johnson IV", 4500],
-            ["Lad Boi Johnson V", 4000],
-            ["Lad Boi Johnson VI", 3500],
-            ["Lad Boi Johnson VII", 3000],
-            ["Lad Boi Johnson VIII", 2500],
-            ["Lad Boi Johnson IX", 2000],
-            ["Lad Boi Johnson X", 1500],
-            ["Lad Boi Johnson XI", 1000],
-            ["Lad Boi Johnson XII", 500]
-        ]
+        player_scores = response.json()["data"]["data"]
 
         # Remove all text sprites
         for sprite in self.sprites:
             if isinstance(sprite, sprites.ui.text.Text):
                 sprite.kill()
 
-        lb_sprites = []
-        lb_sprites.append(sprites.ui.text.Text(
-            "[Song " + str(self.page_num) + " Name Here]",
+        lb_sprites = [sprites.ui.text.Text(
+            g.songs[self.page_num - 1][7:-4],
             (g.WIDTH * 0.5, g.HEIGHT * 0.15),
             50,
             pg.Color(0, 0, 0)
-        ))
+        )]
 
-        for i in range(len(player_scores)):
-            lb_sprites.append(sprites.ui.text.Text(
-                player_scores[i][0],
-                (g.WIDTH * 0.3, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
-                20,
-                pg.Color(0, 0, 0)
-            ))
+        if player_scores is not None:
+            for i in range(len(player_scores)):
+                lb_sprites.append(sprites.ui.text.Text(
+                    player_scores[i]["username"],
+                    (g.WIDTH * 0.3, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
+                    20,
+                    pg.Color(0, 0, 0)
+                ))
 
-        for i in range(10):
-            lb_sprites.append(sprites.ui.text.Text(
-                ". . . . . . . . . . . . . . . . . . . . . . . . . .",
-                (g.WIDTH * 0.5, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
-                20,
-                pg.Color(0, 0, 0)
-            ))
+            for i in range(len(player_scores)):
+                lb_sprites.append(sprites.ui.text.Text(
+                    ". . . . . . . . . . . . . . . . . . . . . . . . . .",
+                    (g.WIDTH * 0.5, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
+                    20,
+                    pg.Color(0, 0, 0)
+                ))
 
-        for i in range(len(player_scores)):
-            lb_sprites.append(sprites.ui.text.Text(
-                str(player_scores[i][1]),
-                (g.WIDTH * 0.7, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
-                20,
-                pg.Color(0, 0, 0)
-            ))
+            for i in range(len(player_scores)):
+                lb_sprites.append(sprites.ui.text.Text(
+                    str(player_scores[i]["highscore"]),
+                    (g.WIDTH * 0.7, g.HEIGHT * (0.25 + ((i + 1) * 0.04))),
+                    20,
+                    pg.Color(0, 0, 0)
+                ))
 
         for i in lb_sprites:
             self.sprites.add(i)
