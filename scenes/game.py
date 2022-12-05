@@ -7,6 +7,7 @@ import sprites.entities.pipe
 import sprites.entities.player
 import hashlib
 import requests
+import json
 
 
 # This is the scene where the player is able to actually control Clappy Bird and fly through pipes.
@@ -28,6 +29,7 @@ class Game:
         self.difficulty = ""
         self.songseed = 0
         self.customSong = False
+        self.gemValue = 50
 
     def set_song(self, path, data):
         self.song_path = path
@@ -45,7 +47,8 @@ class Game:
             "bottom", 500, height + gap_size)
 
         if has_gem:
-            gem = sprites.entities.gem.Gem(500, height, top_pipe, bottom_pipe)
+            gem = sprites.entities.gem.Gem(
+                500, height, top_pipe, bottom_pipe, self.gemValue)
             self.gems.add(gem)
 
         if mid_pipe:
@@ -74,7 +77,13 @@ class Game:
         pg.mixer.music.set_endevent(g.Song_win)
         if self.difficulty == 'Easy':
             self.spawnChance = 0
+            self.gemValue = 5
+        elif self.difficulty == 'Normal':
+            self.gemValue = 10
+        elif self.difficulty == 'Hard':
+            self.gemValue = 15
         elif self.difficulty == 'Extreme':
+            self.gemValue = 25
             self.spawnChance = 2
 
     # Called every frame that this scene is active (see scene.py)
@@ -103,33 +112,107 @@ class Game:
                 pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 580, False, True)
             self.noMiddlePipe = False
 
-        for event in g.events:
-            if event.type == g.Song_win:
-                if g.logged_in & g.songs.has_key(self.song_path) & (self.songFlag == False):
+        if self.player.life <= 0:
+            pg.mixer.music.stop()
+            pg.mixer.music.unload()
+            self.gems.empty()
 
-                    headers = {"Authorization": g.token}
-                    response = requests.get(g.api_url + "/score/" +
-                                            g.userId + "/" + g.songs(self.song_path), headers=headers)
+            print(self.song_path)
+
+            if g.logged_in & (self.song_path in g.songs) & (self.customSong == False) & (self.player.absolute_unit == False):
+
+                headers = {"Authorization": g.token}
+                response = requests.get(g.api_url + "/score/" +
+                                        g.userId + "/" + str(g.songs.index(self.song_path) + 1), headers=headers)
+                print(json.dumps(response.json(), indent=4))
+
+                # First time playing level, so post score
+                if response.status_code == 500:
+                    bodyData = {"player": g.userId,
+                                "username": g.username,
+                                "leaderboard": g.songs.index(self.song_path) + 1,
+                                "highscore": int(self.player.score)}
+                    response = requests.post(
+                        (g.api_url + "/score/" + g.userId), json=bodyData, headers=headers)
+
+                    if response.status_code != 201:
+                        # Save data from HTTP response
+                        print("Error updating score")
+                    print(json.dumps(response.json(), indent=4))
+                    print(int(self.player.score))
+                    scripts.change_scene("game_over")
+
+                # Already has score, so update if new score is higher
+                else:
                     high_score = response.json()["data"]["data"]["highscore"]
 
                     if self.player.score > high_score:
 
                         bodyData = {"player": g.userId,
                                     "username": g.username,
-                                    "leaderboard": g.songs(self.song_path),
-                                    "highscore": self.player.score}
+                                    "leaderboard": g.songs.index(self.song_path) + 1,
+                                    "highscore": int(self.player.score)}
                         response = requests.put(
-                            (g.api_url + "/score/" + g.userId + "/" + g.songs(self.song_path)), json=bodyData, headers=headers)
+                            (g.api_url + "/score/" + g.userId + "/" + str(g.songs.index(self.song_path) + 1)), json=bodyData, headers=headers)
 
                         if response.status_code != 200:
                             # Save data from HTTP response
                             print("Error updating score")
 
                             # Navigate to new menu
-                        scripts.change_scene("Win_screen")
+                        scripts.change_scene("game_over")
                     else:
-                        scripts.change_scene("Win_screen")
+                        scripts.change_scene("game_over")
+            else:
+                scripts.change_scene("game_over")
 
+        for event in g.events:
+            if event.type == g.Song_win:
+                if g.logged_in & (g.songs.index(self.song_path) != None) & (self.customSong == False) & (self.player.absolute_unit == False):
+
+                    headers = {"Authorization": g.token}
+                    response = requests.get(g.api_url + "/score/" +
+                                            g.userId + "/" +
+                                            str(g.songs.index(self.song_path) + 1),
+                                            headers=headers)
+
+                    # First time playing level, so post score
+                    if response.status_code == 500:
+                        bodyData = {"player": g.userId,
+                                    "username": g.username,
+                                    "leaderboard": g.songs.index(self.song_path) + 1,
+                                    "highscore": int(self.player.score)}
+                        response = requests.post(
+                            (g.api_url + "/score/" + g.userId), json=bodyData, headers=headers)
+
+                        if response.status_code != 201:
+                            # Save data from HTTP response
+                            print("Error updating score")
+
+                        scripts.change_scene("game_over")
+
+                    # Already has score, so update if new score is higher
+                    else:
+                        high_score = response.json(
+                        )["data"]["data"]["highscore"]
+
+                        if self.player.score > high_score:
+
+                            bodyData = {"player": g.userId,
+                                        "username": g.username,
+                                        "leaderboard": str(g.songs.index(self.song_path) + 1),
+                                        "highscore": int(self.player.score)}
+                            response = requests.put(
+                                (g.api_url + "/score/" + g.userId + "/" + str(g.songs.index(self.song_path) + 1)), json=bodyData, headers=headers)
+
+                            if response.status_code != 200:
+                                # Save data from HTTP response
+                                print("Error updating score")
+
+                                # Navigate to new menu
+                            scripts.change_scene("Win_screen")
+                        else:
+                            scripts.change_scene("Win_screen")
                 else:
                     scripts.change_scene("Win_screen")
 

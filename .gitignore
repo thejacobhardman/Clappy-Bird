@@ -3,3 +3,7 @@
 *.pyc
 .env
 *.txt
+*.txt
+.idea/Clappy-Bird.iml
+.idea/misc.xml
+.idea/workspace.xml
