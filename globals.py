@@ -21,23 +21,31 @@ screen = org_screen.copy()
 
 icon = pg.image.load('Assets/Art/Bird Sprite/frame-1.png')
 
+sounds = []
+
 jump_sound = pg.mixer.Sound("Assets/SFX/slime_jump.wav")
 jump_sound.set_volume(0.75)
+sounds.append(jump_sound)
 
 death_sound = pg.mixer.Sound("Assets/SFX/death.wav")
 death_sound.set_volume(0.75)
+sounds.append(death_sound)
 
 countdown_sound = pg.mixer.Sound("Assets/SFX/Countdown.wav")
 countdown_sound.set_volume(0.25)
+sounds.append(countdown_sound)
 
 birds_sound = pg.mixer.Sound("Assets/SFX/birds-isaiah658.wav")
 birds_sound.set_volume(0.25)
+sounds.append(birds_sound)
 
 gem_sound = pg.mixer.Sound("Assets/SFX/collect.wav")
 gem_sound.set_volume(0.25)
+sounds.append(gem_sound)
 
 applause_sound = pg.mixer.Sound("Assets/SFX/applause.mp3")
 applause_sound.set_volume(0.25)
+sounds.append(applause_sound)
 
 vec = pg.math.Vector2
 
