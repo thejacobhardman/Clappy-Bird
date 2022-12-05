@@ -57,7 +57,7 @@ offset = itertools.repeat((0, 0))  # <- Set with "scripts.shake()"
 backgrounds = pg.sprite.Group()
 
 # Do not manually change this, use scrips.set_scene() instead
-current_scene = "login"
+current_scene = "main_menu"
 
 # This is set to pg.event.get() every tick
 events = []
@@ -73,13 +73,13 @@ userId = ""
 songs = [
     "Levels/Blue Skies - Silent Partner.mp3",
     "Levels/Buddha.mp3",
-    "Levels/C Major Scale.mp3",
+    "Levels/C Major Scale.wav",
     "Levels/Jam Jam Jam.mp3",
     "Levels/Octagon of Destiny.mp3",
     "Levels/Parking.mp3",
     "Levels/Remix 10.mp3",
     "Levels/Spartacus.mp3",
-    "Levels/Stuffing Your Face.mp3",
-    "Levels/Uk.mp3",
+    "Levels/Stuffing Your Face.wav",
+    "Levels/Uk.wav",
     # etc
 ]
