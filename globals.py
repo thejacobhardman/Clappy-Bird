@@ -58,3 +58,10 @@ logged_in = False
 username = ""
 token = ""
 userId = ""
+
+# Big dictionary of song mappings
+songs = {
+    "Levels/C Major Scale.wav": 1,
+    "Levels\C Major Scale.wav": 1,
+    # etc
+}
