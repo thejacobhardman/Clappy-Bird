@@ -18,7 +18,7 @@ def yt_download(video_url):
             'preferredquality': '192',
             
          }], 
-         'outtmpl': '/'.join(os.getcwd().split('/')[:3]) + {video_info['title']},  
+         'outtmpl': f"{video_info['title']}"
     }
 
     with youtube_dl.YoutubeDL(options) as ydl:
