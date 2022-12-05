@@ -48,7 +48,7 @@ offset = itertools.repeat((0, 0))  # <- Set with "scripts.shake()"
 
 backgrounds = pg.sprite.Group()
 
-current_scene = "login"  # Do not manually change this, use scrips.set_scene() instead
+current_scene = "main_menu"  # Do not manually change this, use scrips.set_scene() instead
 
 # This is set to pg.event.get() every tick
 events = []

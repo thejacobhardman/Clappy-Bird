@@ -236,7 +236,6 @@ scenes = {
                 load_scene="main_menu"
             ),
         ],
-        sprites.entities.textbox.TextBox((20, 20))
     ),
 
 
