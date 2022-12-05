@@ -23,6 +23,9 @@ class LoginSignupButton(Button):
         else:
             self.signup_user()
 
+        self.username_field.text = ""
+        self.password_field.text = ""
+
     def login_user(self):
         bodyData = {"username": self.username_field.text,
                     "password": hashlib.sha256(self.password_field.text.encode('utf8')).hexdigest()}

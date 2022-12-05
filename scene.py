@@ -15,6 +15,7 @@ import scenes.game
 import scenes.countdown
 import scenes.upload
 import scenes.login_signup
+import sprites.ui.logout_button
 
 game_scene = scenes.game.Game()
 
@@ -83,9 +84,14 @@ scenes = {
                 text="Upload",
                 load_scene="Upload_screen",
             ),
+            sprites.ui.logout_button.LogoutButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+200),
+                text="Log Out"
+            ),
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Quit-Button.png",
-                (g.WIDTH/2, g.HEIGHT/2+200)
+                (g.WIDTH/2+175, g.HEIGHT/2+200)
             )
         ]
     ),

@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54825ea5-6a9c-4432-ab42-bf4227ede052" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/sprites/ui/logout_button.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/login_signup.py" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/login_signup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprites/entities/textbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/sprites/entities/textbox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scene.py" beforeDir="false" afterPath="$PROJECT_DIR$/scene.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sprites/ui/login_signup_button.py" beforeDir="false" afterPath="$PROJECT_DIR$/sprites/ui/login_signup_button.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sprites/ui/text.py" beforeDir="false" afterPath="$PROJECT_DIR$/sprites/ui/text.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
