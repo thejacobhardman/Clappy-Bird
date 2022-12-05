@@ -22,6 +22,9 @@ INPUT_BLOCK_TIME = 0.1
 # Total frames per block (length of our numpy array)
 INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 
+# Clap detect minimum interval - claps cannot be detected faster than this float in seconds
+MIN_CLAP = 0.2
+
 
 
 class ClapTester(object):
@@ -89,14 +92,12 @@ class ClapTester(object):
                                 count += 1
                             if count > 2: 
                                 break
-                        if count <= 2 and count > 0 and stop - start > 0.3:     
+                        if count <= 2 and count > 0 and stop - start > MIN_CLAP:     
                             start = time.time()
 
                             # clap in clappy bird
                             with open('interactions\interactions.txt', 'w') as writer:
                                 writer.write("CLAP")    
-                            
-                            time.sleep(0.1)
 
                             break
             

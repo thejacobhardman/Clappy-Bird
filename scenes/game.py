@@ -6,6 +6,7 @@ import sprites.entities.gem
 import sprites.entities.pipe
 import sprites.entities.player
 import hashlib
+import requests
 
 
 # This is the scene where the player is able to actually control Clappy Bird and fly through pipes.
@@ -26,16 +27,22 @@ class Game:
         self.spawnChance = 0
         self.difficulty = ""
         self.songseed = 0
+        self.customSong = False
 
     def set_song(self, path, data):
         self.song_path = path
         self.level = data
         # Hashing code taken from - https://stackoverflow.com/questions/16008670/how-to-hash-a-string-into-8-digits
-        self.songseed = int(hashlib.sha1(path.encode("utf-8")).hexdigest(), 16) % (10 ** 8)
+        self.songseed = int(hashlib.sha1(
+            path.encode("utf-8")).hexdigest(), 16) % (10 ** 8)
+
+    def set_songFlag(self, flag):
+        self.customSong = flag
 
     def spawn_pipe_set(self, height, gap_size, has_gem, mid_pipe):
         top_pipe = sprites.entities.pipe.Pipe("top", 500, height - gap_size)
-        bottom_pipe = sprites.entities.pipe.Pipe("bottom", 500, height + gap_size)
+        bottom_pipe = sprites.entities.pipe.Pipe(
+            "bottom", 500, height + gap_size)
 
         if has_gem:
             gem = sprites.entities.gem.Gem(500, height, top_pipe, bottom_pipe)
@@ -47,7 +54,7 @@ class Game:
 
         self.pipes.add(top_pipe)
         self.pipes.add(bottom_pipe)
-    
+
     def set_difficulty(self, difficulty):
         self.difficulty = difficulty
 
@@ -75,9 +82,9 @@ class Game:
 
         # Oof
         if self.difficulty == 'Normal':
-            self.spawnChance = random.randint(0,20)
+            self.spawnChance = random.randint(0, 20)
         elif self.difficulty == 'Hard':
-            self.spawnChance = random.randint(0,10)
+            self.spawnChance = random.randint(0, 10)
         self.levelTick += 1
         musicTick = (pg.time.get_ticks() - self.start_ticks) / 1000
         pipe_list = self.level.pipe_list
@@ -85,19 +92,46 @@ class Game:
             self.music_started = True
             pg.mixer.music.play()
         if self.pipeIncr < len(pipe_list) and musicTick >= pipe_list[self.pipeIncr]['spawn']:
-            self.spawn_pipe_set(self.level.pipe_list[self.pipeIncr]['height'], 620, True, False)
+            self.spawn_pipe_set(
+                self.level.pipe_list[self.pipeIncr]['height'], 620, True, False)
             self.pipeIncr += 1
             self.noMiddlePipe = True
         elif self.pipeIncr < len(pipe_list) and self.pipeIncr != 0 and musicTick >= pipe_list[self.pipeIncr - 1]['spawn'] + (
                 (pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) and musicTick < pipe_list[self.pipeIncr - 1]['spawn'] + (
                 ((pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) + .05) and self.noMiddlePipe and self.spawnChance == 2:
             self.spawn_pipe_set(pipe_list[self.pipeIncr - 1]['height'] + (
-                        pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 580, False, True)
+                pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 580, False, True)
             self.noMiddlePipe = False
 
         for event in g.events:
             if event.type == g.Song_win:
-                scripts.change_scene("Win_screen")
+                if g.logged_in & g.songs.has_key(self.song_path) & (self.songFlag == False):
+
+                    headers = {"Authorization": g.token}
+                    response = requests.get(g.api_url + "/score/" +
+                                            g.userId + "/" + g.songs(self.song_path), headers=headers)
+                    high_score = response.json()["data"]["data"]["highscore"]
+
+                    if self.player.score > high_score:
+
+                        bodyData = {"player": g.userId,
+                                    "username": g.username,
+                                    "leaderboard": g.songs(self.song_path),
+                                    "highscore": self.player.score}
+                        response = requests.put(
+                            (g.api_url + "/score/" + g.userId + "/" + g.songs(self.song_path)), json=bodyData, headers=headers)
+
+                        if response.status_code != 200:
+                            # Save data from HTTP response
+                            print("Error updating score")
+
+                            # Navigate to new menu
+                        scripts.change_scene("Win_screen")
+                    else:
+                        scripts.change_scene("Win_screen")
+
+                else:
+                    scripts.change_scene("Win_screen")
 
         # Only update the background when the game is happening
         g.backgrounds.update()
@@ -111,5 +145,7 @@ class Game:
         self.pipes.draw(g.screen)\
 
         # Draw the player's score
-        scripts.draw_text(str(round(self.player.score)), g.game_font, (0, 0, 0), g.screen, 50, 50)
-        scripts.draw_text("Hitpoints: "+str(round(self.player.life)), g.game_font, (0, 0, 0), g.screen, 300, 50)
+        scripts.draw_text(str(round(self.player.score)),
+                          g.game_font, (0, 0, 0), g.screen, 50, 50)
+        scripts.draw_text("Hitpoints: "+str(round(self.player.life)),
+                          g.game_font, (0, 0, 0), g.screen, 300, 50)
