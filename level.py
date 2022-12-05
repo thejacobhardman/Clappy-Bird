@@ -8,8 +8,9 @@ class Level:
         self.beat_frames = self.get_beat_frames(x, sr)
         self.pipe_height_list = self.get_pitch_range(self.beat_frames, x , sr)
         self.pipe_spawnList = self.get_times(self.beat_frames, sr)
+        print(len(self.pipe_spawnList))
         self.pipe_list = []
-        for x in range(len(self.pipe_spawnList)):
+        for x in range(len(self.pipe_spawnList)-1):
             self.pipe_list += [dict(spawn=self.pipe_spawnList[x], height=self.pipe_height_list[x])]
 
     # get time signature beat onsets as frames
