@@ -76,12 +76,9 @@ class Player(pg.sprite.Sprite):
         self.rect.center = self.position
 
     def bounce(self):
-        self.life -= 1
-        g.death_sound.play()
-        g.offset = scripts.shake()
         self.acceleration += g.vec(0, -self.max_speed * 3)
         self.frame_index = 0
-        self.invincibility = 20
+        self.get_hurt(20)
 
     def clapflap(self):
         if self.clapTimer <= 0:
@@ -91,25 +88,33 @@ class Player(pg.sprite.Sprite):
             self.clapTimer = 10
 
     def handle_collisions(self):
-        if self.did_leave_screen():
+        if self.did_leave_bottom_screen():
             if not self.absolute_unit and self.invincibility == 0:
                 self.bounce()
-                
+        if self.did_leave_top_screen():
+            if not self.absolute_unit and self.invincibility == 0:
+                self.get_hurt(20)
         if scripts.check_collisions(self, scene.game_scene.pipes) and self.invincibility == 0:
             if not self.absolute_unit:
-                self.life -= 1
-                self.invincibility = 40
-                g.death_sound.play()
-                g.offset = scripts.shake()
+                self.get_hurt(40)
+
 
     def isInvincible(self):
         self.invincibility -= 1
 
-    def did_leave_screen(self):
-        if self.position.y > g.HEIGHT:
-            return True
+    def did_leave_top_screen(self):
         if self.position.y < 0:
             return True
+    
+    def did_leave_bottom_screen(self):
+        if self.position.y > g.HEIGHT:
+            return True
+
+    def get_hurt(self, invincibility):
+        self.life -= 1
+        self.invincibility = invincibility
+        g.death_sound.play()
+        g.offset = scripts.shake()
 
     def update(self):
         self.handle_movement()
