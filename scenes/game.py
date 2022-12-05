@@ -28,6 +28,7 @@ class Game:
         self.difficulty = ""
         self.songseed = 0
         self.customSong = False
+        self.gemValue = 50
 
     def set_song(self, path, data):
         self.song_path = path
@@ -45,7 +46,7 @@ class Game:
             "bottom", 500, height + gap_size)
 
         if has_gem:
-            gem = sprites.entities.gem.Gem(500, height, top_pipe, bottom_pipe)
+            gem = sprites.entities.gem.Gem(500, height, top_pipe, bottom_pipe, self.gemValue)
             self.gems.add(gem)
 
         if mid_pipe:
@@ -74,7 +75,13 @@ class Game:
         pg.mixer.music.set_endevent(g.Song_win)
         if self.difficulty == 'Easy':
             self.spawnChance = 0
+            self.gemValue = 5
+        elif self.difficulty == 'Normal':
+            self.gemValue = 10
+        elif self.difficulty == 'Hard':
+            self.gemValue = 15
         elif self.difficulty == 'Extreme':
+            self.gemValue = 25
             self.spawnChance = 2
 
     # Called every frame that this scene is active (see scene.py)
@@ -108,6 +115,7 @@ class Game:
             pg.mixer.music.unload()
             self.gems.empty()
             scripts.change_scene("game_over")
+
         for event in g.events:
             if event.type == g.Song_win:
                 if g.logged_in & g.songs.has_key(self.song_path) & (self.songFlag == False):
