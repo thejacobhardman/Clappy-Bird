@@ -103,6 +103,11 @@ class Game:
                 pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 580, False, True)
             self.noMiddlePipe = False
 
+        if self.player.life <= 0:
+            pg.mixer.music.stop()
+            pg.mixer.music.unload()
+            self.gems.empty()
+            scripts.change_scene("game_over")
         for event in g.events:
             if event.type == g.Song_win:
                 if g.logged_in & g.songs.has_key(self.song_path) & (self.songFlag == False):
@@ -129,9 +134,9 @@ class Game:
                         scripts.change_scene("Win_screen")
                     else:
                         scripts.change_scene("Win_screen")
-
                 else:
                     scripts.change_scene("Win_screen")
+                
 
         # Only update the background when the game is happening
         g.backgrounds.update()

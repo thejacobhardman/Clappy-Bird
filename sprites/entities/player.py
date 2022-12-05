@@ -84,22 +84,13 @@ class Player(pg.sprite.Sprite):
         if self.did_leave_screen():
             if not self.absolute_unit and self.invincibility == 0:
                 self.bounce()
-            if self.life <= 0:
-                pg.mixer.music.stop()
-                pg.mixer.music.unload()
-                scene.game_scene.gems.empty()
-                scripts.change_scene("game_over")
+                
         if scripts.check_collisions(self, scene.game_scene.pipes) and self.invincibility == 0:
             if not self.absolute_unit:
                 self.life -= 1
                 self.invincibility = 40
                 g.death_sound.play()
                 g.offset = scripts.shake()
-            if self.life <= 0:
-                pg.mixer.music.stop()
-                pg.mixer.music.unload()
-                scene.game_scene.gems.empty()
-                scripts.change_scene("game_over")
 
     def isInvincible(self):
         self.invincibility -= 1
