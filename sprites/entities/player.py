@@ -46,7 +46,6 @@ class Player(pg.sprite.Sprite):
         self.vel = g.vec(0, 0)
         self.score = 0
         self.acceleration = g.vec(0, 0)
-        
 
     def handle_movement(self):
         # Constantly descending
@@ -58,7 +57,7 @@ class Player(pg.sprite.Sprite):
                 self.clapflap()
                 with open('interactions\interactions.txt', 'w') as writer:
                     writer.write("FALL")
-        
+
         if self.clapTimer > 0:
             self.clapTimer -= 1
 
@@ -98,14 +97,13 @@ class Player(pg.sprite.Sprite):
             if not self.absolute_unit:
                 self.get_hurt(40)
 
-
     def isInvincible(self):
         self.invincibility -= 1
 
     def did_leave_top_screen(self):
         if self.position.y < 0:
             return True
-    
+
     def did_leave_bottom_screen(self):
         if self.position.y > g.HEIGHT:
             return True
