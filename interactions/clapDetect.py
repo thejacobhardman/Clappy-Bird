@@ -2,6 +2,7 @@ import pyaudio
 import struct
 import time
 from pynput.keyboard import Key, Controller
+import globals as g
 
 
 # Base16 format that .wav is saved as
@@ -49,7 +50,10 @@ class ClapTester(object):
                                  channels = CHANNELS,
                                  rate = RATE,
                                  input = True,
-                                 frames_per_buffer = INPUT_FRAMES_PER_BLOCK)
+                                 frames_per_buffer = INPUT_FRAMES_PER_BLOCK,
+                                 input_device_index=g.selected_audio_device.get('index'))
+        print(g.selected_audio_device.get('index'))
+        print(g.selected_audio_device.get('name'))
         return stream
 
     # listens for loud objects, and prints them to console
