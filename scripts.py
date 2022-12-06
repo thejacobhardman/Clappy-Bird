@@ -128,3 +128,7 @@ def generate_select_microphone_ui():
     )
 
     return elements
+
+# # This is supposed to dynamically return a variable from the globals based on input
+# def get_updated_global_variable(variable):
+#     return g.variable
