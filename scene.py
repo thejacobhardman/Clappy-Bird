@@ -140,36 +140,21 @@ scenes = {
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH/2-300, g.HEIGHT/2),
+                (g.WIDTH/2-350, g.HEIGHT/2),
+                text="Mic Check",
                 load_scene="mic_check"
-            ),
-            sprites.ui.text.Text(
-                "Mic Check",
-                (g.WIDTH/2-300, g.HEIGHT/2),
-                40,
-                pg.Color(255, 255, 255)
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2),
+                text="Mic Sensitivity",
                 load_scene="mic_sensitivity"
-            ),
-            sprites.ui.text.Text(
-                "Mic Sensitivity",
-                (g.WIDTH/2, g.HEIGHT/2),
-                40,
-                pg.Color(255, 255, 255)
             ),
             sprites.ui.toggle_button.ToggleButton(
                 "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH/2, g.HEIGHT/2+300),
+                (g.WIDTH/2+350, g.HEIGHT/2),
+                text="Absolute Unit Mode",
                 function="toggle_absolute_unit_mode"
-            ),
-            sprites.ui.text.Text(
-                "Absolute Unit Mode",
-                (g.WIDTH/2, g.HEIGHT/2+300),
-                40,
-                pg.Color(255, 255, 255)
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
