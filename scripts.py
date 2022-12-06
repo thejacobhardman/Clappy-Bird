@@ -105,12 +105,20 @@ def execute_script(function=None):
 def generate_select_microphone_ui():
     elements = []
     elements.append(
-        sprites.ui.text.Text(
-            "Select Microphone",
-            (g.WIDTH/2, g.HEIGHT/2-250),
-            60,
-            pygame.Color(0, 0, 0)
-        )
+        [
+            sprites.ui.text.Text(
+                "Your Input Devices",
+                (g.WIDTH/2, g.HEIGHT/2-300),
+                60,
+                pygame.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Change your default input device in your system settings to change the in-game microphone.",
+                (g.WIDTH/2, g.HEIGHT/2-250),
+                30,
+                pygame.Color(0, 0, 0)
+            )
+        ]
     )
     for i in range(0, len(g.audio_devices_display)):
         elements.append(
@@ -125,7 +133,7 @@ def generate_select_microphone_ui():
     elements.append(
         sprites.ui.text.Text(
             ("Currently Selected Input Device: " + g.selected_audio_device_display),
-            (g.WIDTH/2, g.HEIGHT/2+175),
+            (g.WIDTH/2, g.HEIGHT/2+200),
             30,
             pygame.Color(0, 0, 0)
         )
@@ -134,7 +142,7 @@ def generate_select_microphone_ui():
     elements.append(
         sprites.ui.scene_button.SceneButton(
             "Assets/Art/UI/Options-Button.png",
-            (g.WIDTH/2, g.HEIGHT/2+250),
+            (g.WIDTH/2, g.HEIGHT/2+275),
             load_scene="options"
         )
     )
