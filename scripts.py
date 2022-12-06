@@ -2,6 +2,11 @@ import pygame
 import globals as g
 import scene
 import random
+from sprites.entities.player import Player
+
+# This executes a scripts that is called by a toggle button
+def execute_script(function=""):
+    function()
 
 # Draws text to the screen 
 def draw_text(text, font, color, surface, x, y):
@@ -66,6 +71,10 @@ def generate_loading_hint():
     hint = "Hint: " + strings[random.randint(0, len(strings)-1)]
     
     return hint
+
+# Toggles absolute unit mode on and off
+def toggle_absolute_unit_mode():
+    Player.toggle_absolute_unit_mode()
 
 # Run this whenever you need to change the scene, as it initializes the new scene
 def change_scene(new_scene):
