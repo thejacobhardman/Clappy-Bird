@@ -4,6 +4,7 @@ import sprites.ui.scene_button
 import sprites.ui.quit_button
 import sprites.ui.difficulty_button
 import sprites.ui.upload_button
+import sprites.ui.toggle_button
 import scenes.menu
 import scenes.win_screen
 import sprites.ui.sprite
@@ -139,12 +140,34 @@ scenes = {
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH/2-250, g.HEIGHT/2),
+                (g.WIDTH/2-300, g.HEIGHT/2),
                 load_scene="mic_check"
             ),
             sprites.ui.text.Text(
                 "Mic Check",
-                (g.WIDTH/2-250, g.HEIGHT/2),
+                (g.WIDTH/2-300, g.HEIGHT/2),
+                40,
+                pg.Color(255, 255, 255)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2),
+                load_scene="mic_sensitivity"
+            ),
+            sprites.ui.text.Text(
+                "Mic Sensitivity",
+                (g.WIDTH/2, g.HEIGHT/2),
+                40,
+                pg.Color(255, 255, 255)
+            ),
+            sprites.ui.toggle_button.ToggleButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+300),
+                function="toggle_absolute_unit_mode"
+            ),
+            sprites.ui.text.Text(
+                "Absolute Unit Mode",
+                (g.WIDTH/2, g.HEIGHT/2+300),
                 40,
                 pg.Color(255, 255, 255)
             ),
@@ -160,6 +183,22 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Mic Check",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Options-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+100),
+                load_scene="options"
+            ),
+        ]
+    ),
+
+    "mic_sensitivity": scenes.menu.Menu(
+        [
+            sprites.ui.text.Text(
+                "Adjust Microphone Sensitivity",
                 (g.WIDTH/2, g.HEIGHT/2-150),
                 60,
                 pg.Color(0, 0, 0)
