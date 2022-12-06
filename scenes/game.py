@@ -30,6 +30,9 @@ class Game:
         self.songseed = 0
         self.customSong = False
         self.gemValue = 50
+        self.pipe_gap = 620
+        self.midpipe_gap = 580
+        self.variance = 0
 
     def set_song(self, path, data):
         self.song_path = path
@@ -73,18 +76,36 @@ class Game:
         self.pipeIncr = 0
         self.levelTick = 0
         self.noMiddlePipe = True
+        self.set_difficulty_changes()
         random.seed(self.songseed)
         pg.mixer.music.set_endevent(g.Song_win)
+
+    def set_difficulty_changes(self):
         if self.difficulty == 'Easy':
             self.spawnChance = 0
             self.gemValue = 5
+            self.player.life = 10
+            self.player.change = 4
+            self.pipe_gap = 620
+            self.midpipe_gap = 580
         elif self.difficulty == 'Normal':
             self.gemValue = 10
+            self.player.life = 5
+            self.player.change = 3
+            self.pipe_gap = 600
+            self.midpipe_gap = 560
         elif self.difficulty == 'Hard':
             self.gemValue = 15
+            self.player.life = 4
+            self.pipe_gap = 600
+            self.midpipe_gap = 540
         elif self.difficulty == 'Extreme':
             self.gemValue = 25
             self.spawnChance = 2
+            self.player.life = 2
+            self.player.change = 1.5
+            self.pipe_gap = 600
+            self.midpipe_gap = 550
 
     # Called every frame that this scene is active (see scene.py)
     def update(self):
@@ -94,6 +115,9 @@ class Game:
             self.spawnChance = random.randint(0, 20)
         elif self.difficulty == 'Hard':
             self.spawnChance = random.randint(0, 10)
+            self.variance == random.randint(-20,0)
+        elif self.difficulty == 'Extreme':
+            self.variance == random.randint(-50,-20)
         self.levelTick += 1
         musicTick = (pg.time.get_ticks() - self.start_ticks) / 1000
         pipe_list = self.level.pipe_list
@@ -102,14 +126,14 @@ class Game:
             pg.mixer.music.play()
         if self.pipeIncr < len(pipe_list) and musicTick >= pipe_list[self.pipeIncr]['spawn']:
             self.spawn_pipe_set(
-                self.level.pipe_list[self.pipeIncr]['height'], 620, True, False)
+                self.level.pipe_list[self.pipeIncr]['height'], self.pipe_gap + self.variance, True, False)
             self.pipeIncr += 1
             self.noMiddlePipe = True
         elif self.pipeIncr < len(pipe_list) and self.pipeIncr != 0 and musicTick >= pipe_list[self.pipeIncr - 1]['spawn'] + (
                 (pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) and musicTick < pipe_list[self.pipeIncr - 1]['spawn'] + (
                 ((pipe_list[self.pipeIncr]['spawn'] - pipe_list[self.pipeIncr - 1]['spawn']) / 2) + .05) and self.noMiddlePipe and self.spawnChance == 2:
             self.spawn_pipe_set(pipe_list[self.pipeIncr - 1]['height'] + (
-                pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, 580, False, True)
+                pipe_list[self.pipeIncr]['height'] - pipe_list[self.pipeIncr - 1]['height']) / 2, self.midpipe_gap + self.variance, False, True)
             self.noMiddlePipe = False
 
         if self.player.life <= 0:
