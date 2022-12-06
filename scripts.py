@@ -83,7 +83,6 @@ def generate_loading_hint():
 # Toggles absolute unit mode on and off
 def toggle_absolute_unit_mode():
     g.absolute_unit_mode = not g.absolute_unit_mode
-    print("Absolute unit mode = " + str(g.absolute_unit_mode))
 
 # Run this whenever you need to change the scene, as it initializes the new scene
 
