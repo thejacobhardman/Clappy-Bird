@@ -10,8 +10,8 @@ from sprites.ui.button import Button
 class LoginSignupButton(Button):
 
     def __init__(self, image_file, position, text="", username_field=None, password_field=None, status_text=None,
-                 login=True):
-        super().__init__(image_file, position, text)
+                 login=True, size=None):
+        super().__init__(image_file, position, text, size=size)
         self.username_field = username_field
         self.password_field = password_field
         self.status_text = status_text
