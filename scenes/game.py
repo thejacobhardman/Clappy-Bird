@@ -73,98 +73,12 @@ class Game:
             self.spawn_pipe_set(self.level.pipe_list[self.pipeIncr - 1]['height'] + (
                 self.level.pipe_list[self.pipeIncr]['height'] - self.level.pipe_list[self.pipeIncr - 1]['height']) / 2, self.midpipe_gap + self.variance, False, True)
             self.noMiddlePipe = False
-    #Song Methods -------------------------------------------------------
 
-    def set_song(self, path, data):
-        self.song_path = path
-        self.level = data
-        # Hashing code taken from - https://stackoverflow.com/questions/16008670/how-to-hash-a-string-into-8-digits
-        self.songseed = int(hashlib.sha1(
-            path.encode("utf-8")).hexdigest(), 16) % (10 ** 8)
 
-    def set_songFlag(self, flag):
-        self.customSong = flag
-
-    def start_music(self):
-        self.music_started = True
-        pg.mixer.music.play()
-
-    #Spawn pipe Method --------------------------------------------------
-
-    def spawn_pipe_set(self, height, gap_size, has_gem, mid_pipe):
-        top_pipe = sprites.entities.pipe.Pipe("top", 500, height - gap_size)
-        bottom_pipe = sprites.entities.pipe.Pipe(
-            "bottom", 500, height + gap_size)
-
-        if has_gem:
-            gem = sprites.entities.gem.Gem(
-                500, height, top_pipe, bottom_pipe, self.gemValue)
-            self.gems.add(gem)
-
-        if mid_pipe:
-            top_pipe.set_width(100)
-            bottom_pipe.set_width(100)
-
-        self.pipes.add(top_pipe)
-        self.pipes.add(bottom_pipe)
-
-    def is_beat_pipe_spawn(self, musicTick):
-
-        # return if the pipe_list still has pipes to spawn, and the music tick matches or exceeds the pipe spawn time
-        if self.pipeIncr < len(self.level.pipe_list) and musicTick >= self.level.pipe_list[self.pipeIncr]['spawn']:
-            return True
-
-    def is_mid_pipe_spawn(self, musicTick):
-
-        # return if the pipe_list still has pipes to spawn, the music tick matches or exceeds the pipe spawn time, and a middle pipe can spawn
-        # middle pipe conditions - no middle pipe already, and must spawn at the average distance between two beat pipes
-        if self.pipeIncr < len(self.level.pipe_list) and self.pipeIncr != 0 and musicTick >= self.level.pipe_list[self.pipeIncr - 1]['spawn'] + (
-                (self.level.pipe_list[self.pipeIncr]['spawn'] - self.level.pipe_list[self.pipeIncr - 1]['spawn']) / 2) and musicTick < self.level.pipe_list[self.pipeIncr - 1]['spawn'] + (
-                ((self.level.pipe_list[self.pipeIncr]['spawn'] - self.level.pipe_list[self.pipeIncr - 1]['spawn']) / 2) + .05) and self.noMiddlePipe and self.spawnChance == 2:
-            return True
-
-    #Difficulty Methods --------------------------------------------------------
-
-    def set_difficulty(self, difficulty):
-        self.difficulty = difficulty
-
-    def set_static_difficulty_changes(self, difficulty):
-        if difficulty == 'Easy':
-            self.spawnChance = 0
-            self.gemValue = 5
-            self.player.life = 10
-            self.player.change = 4
-            self.pipe_gap = 620
-            self.midpipe_gap = 580
-        elif difficulty == 'Normal':
-            self.gemValue = 10
-            self.player.life = 5
-            self.player.change = 3
-            self.pipe_gap = 600
-            self.midpipe_gap = 560
-        elif difficulty == 'Hard':
-            self.gemValue = 15
-            self.player.life = 4
-            self.pipe_gap = 600
-            self.midpipe_gap = 540
-        elif difficulty == 'Extreme':
-            self.gemValue = 25
-            self.spawnChance = 2
-            self.player.life = 2
-            self.player.change = 1.5
-            self.pipe_gap = 600
-            self.midpipe_gap = 550
-
-    def set_nonstatic_difficulty_changes(self, difficulty):
-        if difficulty == 'Normal':
-            self.spawnChance = random.randint(0, 20)
-        elif difficulty == 'Hard':
-            self.spawnChance = random.randint(0, 10)
-            self.variance == random.randint(-20,0)
-        elif difficulty == 'Extreme':
-            self.variance == random.randint(-50,-20)
-            print(self.song_path)
-
+        print(self.song_path)
+        if self.player.life <= 0:
+            pg.mixer.music.stop()
+            self.gems.empty()
             if g.logged_in & (self.song_path in g.songs) & (self.customSong == False) & (self.player.absolute_unit == False):
 
                 headers = {"Authorization": g.token}
@@ -275,6 +189,97 @@ class Game:
 
         # Draw the player's score
         scripts.draw_text(str(round(self.player.score)),
-                          g.game_font, (0, 0, 0), g.screen, 50, 50)
+                            g.game_font, (0, 0, 0), g.screen, 50, 50)
         scripts.draw_text("Hitpoints: "+str(round(self.player.life)),
-                          g.game_font, (0, 0, 0), g.screen, 300, 50)
+                            g.game_font, (0, 0, 0), g.screen, 300, 50)
+
+    #Song Methods -------------------------------------------------------
+
+    def set_song(self, path, data):
+        self.song_path = path
+        self.level = data
+        # Hashing code taken from - https://stackoverflow.com/questions/16008670/how-to-hash-a-string-into-8-digits
+        self.songseed = int(hashlib.sha1(
+            path.encode("utf-8")).hexdigest(), 16) % (10 ** 8)
+
+    def set_songFlag(self, flag):
+        self.customSong = flag
+
+    def start_music(self):
+        self.music_started = True
+        pg.mixer.music.play()
+
+    #Spawn pipe Method --------------------------------------------------
+
+    def spawn_pipe_set(self, height, gap_size, has_gem, mid_pipe):
+        top_pipe = sprites.entities.pipe.Pipe("top", 500, height - gap_size)
+        bottom_pipe = sprites.entities.pipe.Pipe(
+            "bottom", 500, height + gap_size)
+
+        if has_gem:
+            gem = sprites.entities.gem.Gem(
+                500, height, top_pipe, bottom_pipe, self.gemValue)
+            self.gems.add(gem)
+
+        if mid_pipe:
+            top_pipe.set_width(100)
+            bottom_pipe.set_width(100)
+
+        self.pipes.add(top_pipe)
+        self.pipes.add(bottom_pipe)
+
+    def is_beat_pipe_spawn(self, musicTick):
+
+        # return if the pipe_list still has pipes to spawn, and the music tick matches or exceeds the pipe spawn time
+        if self.pipeIncr < len(self.level.pipe_list) and musicTick >= self.level.pipe_list[self.pipeIncr]['spawn']:
+            return True
+
+    def is_mid_pipe_spawn(self, musicTick):
+
+        # return if the pipe_list still has pipes to spawn, the music tick matches or exceeds the pipe spawn time, and a middle pipe can spawn
+        # middle pipe conditions - no middle pipe already, and must spawn at the average distance between two beat pipes
+        if self.pipeIncr < len(self.level.pipe_list) and self.pipeIncr != 0 and musicTick >= self.level.pipe_list[self.pipeIncr - 1]['spawn'] + (
+                (self.level.pipe_list[self.pipeIncr]['spawn'] - self.level.pipe_list[self.pipeIncr - 1]['spawn']) / 2) and musicTick < self.level.pipe_list[self.pipeIncr - 1]['spawn'] + (
+                ((self.level.pipe_list[self.pipeIncr]['spawn'] - self.level.pipe_list[self.pipeIncr - 1]['spawn']) / 2) + .05) and self.noMiddlePipe and self.spawnChance == 2:
+            return True
+
+    #Difficulty Methods --------------------------------------------------------
+
+    def set_difficulty(self, difficulty):
+        self.difficulty = difficulty
+
+    def set_static_difficulty_changes(self, difficulty):
+        if difficulty == 'Easy':
+            self.spawnChance = 0
+            self.gemValue = 5
+            self.player.life = 10
+            self.player.change = 4
+            self.pipe_gap = 620
+            self.midpipe_gap = 580
+        elif difficulty == 'Normal':
+            self.gemValue = 10
+            self.player.life = 5
+            self.player.change = 3
+            self.pipe_gap = 600
+            self.midpipe_gap = 560
+        elif difficulty == 'Hard':
+            self.gemValue = 15
+            self.player.life = 4
+            self.pipe_gap = 600
+            self.midpipe_gap = 540
+        elif difficulty == 'Extreme':
+            self.gemValue = 25
+            self.spawnChance = 2
+            self.player.life = 2
+            self.player.change = 1.5
+            self.pipe_gap = 600
+            self.midpipe_gap = 550
+
+    def set_nonstatic_difficulty_changes(self, difficulty):
+        if difficulty == 'Normal':
+            self.spawnChance = random.randint(0, 20)
+        elif difficulty == 'Hard':
+            self.spawnChance = random.randint(0, 10)
+            self.variance == random.randint(-20,0)
+        elif difficulty == 'Extreme':
+            self.variance == random.randint(-50,-20)
