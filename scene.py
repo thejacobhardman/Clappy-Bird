@@ -154,7 +154,9 @@ scenes = {
             sprites.ui.toggle_button.ToggleButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2+350, g.HEIGHT/2),
-                text="Absolute Unit Mode",
+                display_text=("Absolute Unit Mode " + str(g.absolute_unit_mode)),
+                option_text="Absolute Unit Mode",
+                global_variable=g.absolute_unit_mode,
                 function="toggle_absolute_unit_mode"
             ),
             sprites.ui.scene_button.SceneButton(
