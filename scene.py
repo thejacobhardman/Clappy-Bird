@@ -163,16 +163,18 @@ scenes = {
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2),
-                text="Select Microphone",
-                load_scene="select_microphone",
+                text="Mic Info",
+                load_scene="microphone_info",
                 size=g.font_size
             ),
             sprites.ui.toggle_button.ToggleButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Red.png",
                 (g.WIDTH/2+350, g.HEIGHT/2),
-                display_text=("Absolute Unit Mode " + str(g.absolute_unit_mode)),
-                option_text="Absolute Unit Mode",
+                display_text=("Invincibility: " + str(g.absolute_unit_mode)),
+                option_text="Invincibility: ",
                 global_variable=g.absolute_unit_mode,
+                original_image="Assets/Art/UI/Empty-Button-Red.png",
+                alternate_image="Assets/Art/UI/Empty-Button.png",
                 function="toggle_absolute_unit_mode"
             ),
             sprites.ui.scene_button.SceneButton(
@@ -184,19 +186,25 @@ scenes = {
         ]
     ),
 
-    "select_microphone": scenes.menu.Menu(scripts.generate_select_microphone_ui()),
+    "microphone_info": scenes.menu.Menu(scripts.generate_select_microphone_ui()),
 
-    "mic_sensitivity": scenes.menu.Menu(
+    "mic_check": scenes.menu.Menu(
         [
             sprites.ui.text.Text(
-                "Adjust Microphone Sensitivity",
-                (g.WIDTH/2, g.HEIGHT/2-150),
+                "Check Microphone Input",
+                (g.WIDTH/2, g.HEIGHT/2-250),
                 60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Try Clapping!",
+                (g.WIDTH/2, g.HEIGHT/2-200),
+                40,
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2, g.HEIGHT/2+100),
+                (g.WIDTH/2, g.HEIGHT/2+200),
                 load_scene="options",
                 size=g.font_size
             ),
