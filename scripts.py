@@ -4,10 +4,6 @@ import scene
 import random
 from sprites.entities.player import Player
 
-# This executes a scripts that is called by a toggle button
-def execute_script(function=""):
-    function()
-
 # Draws text to the screen 
 def draw_text(text, font, color, surface, x, y):
     text = font.render(text, 1, color)
@@ -74,9 +70,20 @@ def generate_loading_hint():
 
 # Toggles absolute unit mode on and off
 def toggle_absolute_unit_mode():
-    Player.toggle_absolute_unit_mode()
+    g.absolute_unit_mode = not g.absolute_unit_mode
+    print("Absolute unit mode = " + str(g.absolute_unit_mode))
 
 # Run this whenever you need to change the scene, as it initializes the new scene
 def change_scene(new_scene):
     scene.scenes[new_scene].init()
     g.current_scene = new_scene
+
+# This executes a scripts that is called by a toggle button
+def execute_script(function=None):
+    method_name = function
+    possibles = globals().copy()
+    possibles.update(locals())
+    method = possibles.get(method_name)
+    if not method:
+        raise NotImplementedError("Method %s not implemented" % method_name)
+    method()
