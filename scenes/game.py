@@ -138,7 +138,7 @@ class Game:
 
         if self.player.life <= 0:
             pg.mixer.music.stop()
-            pg.mixer.music.unload()
+            #pg.mixer.music.unload()
             self.gems.empty()
 
             print(self.song_path)

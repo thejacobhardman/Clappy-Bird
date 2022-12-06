@@ -154,6 +154,12 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+200),
+                text="Replay",
+                load_scene="difficulty"
+            ),
+            sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
                 load_scene="main_menu"
@@ -199,7 +205,13 @@ scenes = {
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Quit-Button.png",
                 (g.WIDTH/2+175, g.HEIGHT/2+100)
-            )
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+200),
+                text="Replay",
+                load_scene="difficulty"
+            ),
         ]
     ),
 
