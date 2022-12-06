@@ -2,7 +2,8 @@ import pygame
 import globals as g
 import scene
 import random
-from sprites.entities.player import Player
+import sprites.ui.text
+import sprites.ui.scene_button
 
 # Draws text to the screen 
 def draw_text(text, font, color, surface, x, y):
@@ -87,3 +88,34 @@ def execute_script(function=None):
     if not method:
         raise NotImplementedError("Method %s not implemented" % method_name)
     method()
+
+# Dynamically generates a list of audio devices
+def generate_select_microphone_ui():
+    elements = []
+    elements.append(
+        sprites.ui.text.Text(
+            "Select Microphone",
+            (g.WIDTH/2, g.HEIGHT/2-250),
+            60,
+            pygame.Color(0, 0, 0)
+        )
+    )
+    for i in range(0, len(g.audio_devices_display)):
+        elements.append(
+            sprites.ui.text.Text(
+                str(g.audio_devices_display[i]),
+                (g.WIDTH/2, g.HEIGHT/2-(50*i)),
+                20,
+                pygame.Color(0, 0, 0)
+            )
+        )
+
+    elements.append(
+        sprites.ui.scene_button.SceneButton(
+            "Assets/Art/UI/Options-Button.png",
+            (g.WIDTH/2, g.HEIGHT/2+250),
+            load_scene="options"
+        )
+    )
+
+    return elements
