@@ -18,10 +18,11 @@ class LoginSignup(Menu):
                 pg.Color(0, 0, 0)
             ))
             self.sprites.add(sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Teal.png",
                 (g.WIDTH * 0.5, g.HEIGHT * 0.9),
-                text="Signup Instead",
-                load_scene="signup"
+                text="Register",
+                load_scene="signup",
+                size=g.font_size
             ))
         else:
             self.sprites.add(sprites.ui.text.Text(
@@ -31,10 +32,11 @@ class LoginSignup(Menu):
                 pg.Color(0, 0, 0)
             ))
             self.sprites.add(sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Teal.png",
                 (g.WIDTH * 0.5, g.HEIGHT * 0.9),
-                text="Login Instead",
-                load_scene="login"
+                text="Login Page",
+                load_scene="login",
+                size=g.font_size
             ))
 
         self.sprites.add(sprites.ui.text.Text(
@@ -68,7 +70,8 @@ class LoginSignup(Menu):
                 password_field=password_field,
                 status_text=status_text,
                 login=login,
-                text="Login"
+                text="Login",
+                size=g.font_size
             )
         else:
             button = sprites.ui.login_signup_button.LoginSignupButton(
@@ -78,7 +81,8 @@ class LoginSignup(Menu):
                 password_field=password_field,
                 status_text=status_text,
                 login=login,
-                text="Signup"
+                text="Signup",
+                size=g.font_size
             )
 
         self.sprites.add(username_field)

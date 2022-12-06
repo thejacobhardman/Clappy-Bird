@@ -84,11 +84,11 @@ class ClapTester(object):
 
                     count = 0
 
-                    if x > amplitude_noise + 20000:
+                    if x > amplitude_noise + 16000:
                         stop = time.time()
 
                         for amp in amp_mem:
-                            if amp > amplitude_noise + 20000:
+                            if amp > amplitude_noise + 16000:
                                 count += 1
                             if count > 2: 
                                 break
