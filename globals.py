@@ -28,10 +28,10 @@ def get_audio_devices():
 
 def get_default_audio_device():
     p = pyaudio.PyAudio()
-    return p.get_default_input_device_info()
+    return p.get_default_input_device_info(), p.get_default_input_device_info().get('name')
 
 audio_devices, audio_devices_display = get_audio_devices()
-selected_audio_device = get_default_audio_device()
+selected_audio_device, selected_audio_device_display = get_default_audio_device()
 
 absolute_unit_mode = False
 
