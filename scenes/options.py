@@ -1,5 +1,6 @@
 import pygame as pg
 import sprites.ui.button
+import sprites.ui.toggle_button
 from scenes.menu import Menu
 import globals as g
 
@@ -16,7 +17,7 @@ class Options(Menu):
                     # self.sprites.sprites() just gets a list of sprites from the self.sprites sprite group
                     for sprite in self.sprites.sprites():
                         # Check if any buttons were clicked
-                        if isinstance(sprite, sprites.ui.button.Button) and sprite.click((mouseX, mouseY)):
+                        if (isinstance(sprite, sprites.ui.button.Button) and sprite.click((mouseX, mouseY))) or (isinstance(sprite, sprites.ui.toggle_button.ToggleButton) and sprite.click((mouseX, mouseY))):
                             sprite.on_click()
 
     def init(self):
@@ -27,4 +28,3 @@ class Options(Menu):
         self.sprites.draw(g.screen)
         self.sprites.update()
         self.__handle_click()
-        
