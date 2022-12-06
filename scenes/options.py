@@ -27,3 +27,4 @@ class Options(Menu):
         self.sprites.draw(g.screen)
         self.sprites.update()
         self.__handle_click()
+        
