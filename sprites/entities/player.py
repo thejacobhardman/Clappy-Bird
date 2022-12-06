@@ -37,7 +37,7 @@ class Player(pg.sprite.Sprite):
         self.score = 0
         self.key_down = False
         self.absolute_unit = False  # <- Set this to True to make the player an absolute unit
-        self.clapTimer = 8
+        self.clapTimer = 10
         self.change = 3
 
     def reset(self):
@@ -86,7 +86,7 @@ class Player(pg.sprite.Sprite):
             g.jump_sound.play()
             self.acceleration += g.vec(0, -self.max_speed * self.change)
             self.frame_index = 0
-            self.clapTimer = 8
+            self.clapTimer = 10
 
     def handle_collisions(self):
         if self.did_leave_bottom_screen():
@@ -107,7 +107,7 @@ class Player(pg.sprite.Sprite):
             return True
 
     def did_leave_bottom_screen(self):
-        if self.position.y > g.HEIGHT:
+        if self.position.y > g.HEIGHT + 20:
             return True
 
     def get_hurt(self, invincibility):
