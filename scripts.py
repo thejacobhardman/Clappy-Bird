@@ -57,7 +57,10 @@ def generate_loading_hint():
         "Live long and prosper.",
         "Do, or do not. There is no try.",
         "Use the hidden ability!",
-        "help me they're in my house"
+        "help me they're in my house",
+        "you guys have hands, don't you?",
+        "bird up",
+        "snappy bird was already taken",
     ]
 
     hint = "Hint: " + strings[random.randint(0, len(strings)-1)]

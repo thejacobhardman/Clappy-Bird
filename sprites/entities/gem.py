@@ -4,7 +4,7 @@ import scripts
 import scene
 
 class Gem(pg.sprite.Sprite):
-    def __init__(self, x_offset, height, top_pipe, bottom_pipe):
+    def __init__(self, x_offset, height, top_pipe, bottom_pipe, value):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load("Assets/Art/purpleGem.png")
         self.image = pg.transform.scale(self.image, (35,35))
@@ -15,6 +15,7 @@ class Gem(pg.sprite.Sprite):
         self.id = "gem"
         self.top_pipe = top_pipe
         self.bottom_pipe = bottom_pipe
+        self.value = value
 
     def update(self):
         self.position += self.vel
@@ -26,7 +27,7 @@ class Gem(pg.sprite.Sprite):
             self.change_direction()
         if scene.game_scene.player.rect.colliderect(self):
             self.play_collect_sound()
-            scene.game_scene.player.score += 50
+            scene.game_scene.player.score += self.value
             scene.game_scene.gems.remove(self)
         if self.did_leave_screen():
             scene.game_scene.gems.remove(self)

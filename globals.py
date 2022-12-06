@@ -21,23 +21,31 @@ screen = org_screen.copy()
 
 icon = pg.image.load('Assets/Art/Bird Sprite/frame-1.png')
 
+sounds = []
+
 jump_sound = pg.mixer.Sound("Assets/SFX/slime_jump.wav")
 jump_sound.set_volume(0.75)
+sounds.append(jump_sound)
 
 death_sound = pg.mixer.Sound("Assets/SFX/death.wav")
 death_sound.set_volume(0.75)
+sounds.append(death_sound)
 
 countdown_sound = pg.mixer.Sound("Assets/SFX/Countdown.wav")
 countdown_sound.set_volume(0.25)
+sounds.append(countdown_sound)
 
 birds_sound = pg.mixer.Sound("Assets/SFX/birds-isaiah658.wav")
 birds_sound.set_volume(0.25)
+sounds.append(birds_sound)
 
 gem_sound = pg.mixer.Sound("Assets/SFX/collect.wav")
 gem_sound.set_volume(0.25)
+sounds.append(gem_sound)
 
 applause_sound = pg.mixer.Sound("Assets/SFX/applause.mp3")
 applause_sound.set_volume(0.25)
+sounds.append(applause_sound)
 
 vec = pg.math.Vector2
 
@@ -48,7 +56,8 @@ offset = itertools.repeat((0, 0))  # <- Set with "scripts.shake()"
 
 backgrounds = pg.sprite.Group()
 
-current_scene = "login"  # Do not manually change this, use scrips.set_scene() instead
+# Do not manually change this, use scrips.set_scene() instead
+current_scene = "login"
 
 # This is set to pg.event.get() every tick
 events = []
@@ -60,17 +69,17 @@ username = ""
 token = ""
 userId = ""
 
-# Big dictionary of song mappings
-songs = {
-    "Levels\\Blue Skies - Silent Partner.mp3": 1,
-    "Levels\\Buddha.mp3": 2,
-    "Levels\\C Major Scale.mp3": 3,
-    "Levels\\Jam Jam Jam.mp3": 4,
-    "Levels\\Octagon of Destiny.mp3": 5,
-    "Levels\\Parking.mp3": 6,
-    "Levels\\Remix 10.mp3": 7,
-    "Levels\\Spartacus.mp3": 8,
-    "Levels\\Stuffing Your Face.mp3": 9,
-    "Levels\\Uk.mp3": 10,
+# Big list its a list now hehehe of song mappings
+songs = [
+    "Levels/Blue Skies - Silent Partner.wav",
+    "Levels/Buddha.wav",
+    "Levels/C Major Scale.wav",
+    "Levels/Jam Jam Jam.wav",
+    "Levels/Octagon of Destiny.wav",
+    "Levels/Parking.wav",
+    "Levels/Remix 10.wav",
+    "Levels/Spartacus.wav",
+    "Levels/Stuffing Your Face.wav",
+    "Levels/Uk.wav",
     # etc
-}
+]

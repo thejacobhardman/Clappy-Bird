@@ -1,0 +1,10 @@
+librosa==0.9.2
+matplotlib==3.6.2
+numpy==1.23.4
+PyAudio==0.2.12
+pygame==2.1.2
+pynput==1.7.6
+pyperclip==1.8.2
+requests==2.28.1
+scipy==1.9.3
+youtube_dl==2021.12.17

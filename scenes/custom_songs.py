@@ -4,7 +4,7 @@ from os.path import isfile, join
 import globals as g
 from scenes.menu import Menu
 import math
-import sprites.ui.song_arrow_button
+import sprites.ui.arrow_button
 
 
 # Custom menu that generates buttons based on the songs in the Levels directory. Note that this inherits from menu
@@ -19,8 +19,8 @@ class CustomSongs(Menu):
 
         # Add the arrow buttons if there are too many songs to display on one page
         if self.max_page_num > 1:
-            sprites_param.append(sprites.ui.song_arrow_button.SongArrowButton((g.WIDTH/8, g.HEIGHT/2), False))
-            sprites_param.append(sprites.ui.song_arrow_button.SongArrowButton((g.WIDTH - (g.WIDTH/8), g.HEIGHT/2), True))
+            sprites_param.append(sprites.ui.arrow_button.ArrowButton((g.WIDTH / 8, g.HEIGHT / 2), "custom_songs", False))
+            sprites_param.append(sprites.ui.arrow_button.ArrowButton((g.WIDTH - (g.WIDTH / 8), g.HEIGHT / 2), "custom_songs", True))
 
         super().__init__(sprites_param)
 
