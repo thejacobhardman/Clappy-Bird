@@ -8,5 +8,5 @@ class ToggleButton(Button):
         super().__init__(image_file, position, text)
         self.function = function
 
-        def on_click(self):
-            scripts.execute_script(self.function)
+    def on_click(self):
+        scripts.execute_script(self.function)
