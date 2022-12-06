@@ -19,5 +19,4 @@ def yt_download(video_url):
     with youtube_dl.YoutubeDL(options) as ydl:
         ydl.download([video_info['webpage_url']])
 
-    print("Download complete... {}".format({video_info['title']}))
-    print(save_path)
+    return "Download complete... {}".format({video_info['title']})

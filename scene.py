@@ -225,7 +225,7 @@ scenes = {
             ),
             sprites.ui.text.Text(
                 "Enter a Youtube url",
-                (g.WIDTH/2, g.HEIGHT/2-150),
+                (g.WIDTH/2, g.HEIGHT/2-200),
                 30,
                 pg.Color(0, 0, 0)
             ),
