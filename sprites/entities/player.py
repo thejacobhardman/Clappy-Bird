@@ -36,7 +36,7 @@ class Player(pg.sprite.Sprite):
         self.acceleration = g.vec(0, 0)
         self.score = 0
         self.key_down = False
-        self.absolute_unit = False  # <- Set this to True to make the player an absolute unit
+        self.absolute_unit = g.absolute_unit_mode  # <- Set this to True to make the player an absolute unit
         self.clapTimer = 8
 
     def reset(self):
@@ -120,6 +120,3 @@ class Player(pg.sprite.Sprite):
         self.handle_collisions()
         if self.invincibility > 0:
             self.isInvincible()
-
-    def toggle_absolute_unit_mode(self):
-        self.absolute_unit = not self.absolute_unit
