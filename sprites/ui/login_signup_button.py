@@ -30,7 +30,7 @@ class LoginSignupButton(Button):
         bodyData = {"username": self.username_field.text,
                     "password": hashlib.sha256(self.password_field.text.encode('utf8')).hexdigest()}
         response = requests.get((g.api_url + "/user/auth"), json=bodyData)
-        print(json.dumps(response.json(), indent=4))
+
         if response.status_code == 200:
 
             # Save data from HTTP response
@@ -39,7 +39,6 @@ class LoginSignupButton(Button):
             g.userId = response.json()["data"]["data"]["id"]
             g.logged_in = True
 
-            print(g.token, g.username, g.userId)
             # Navigate to new menu
             scripts.change_scene("main_menu")
         elif response.status_code == 400:
@@ -56,12 +55,10 @@ class LoginSignupButton(Button):
                     "friendcode": "ABCDEF"}
         response = requests.post(
             (g.api_url + "/user/register"), json=bodyData)
-        print(json.dumps(response.json(), indent=4))
+
         if response.status_code == 201:
             # Save data from HTTP response
             g.userId = response.json()["data"]["data"]["InsertedID"]
-
-            print(g.userId)
 
             # Navigate to new menu
             scripts.change_scene("login")
