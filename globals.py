@@ -10,6 +10,7 @@ HEIGHT = 720
 FPS = 60
 PIPE_SPEED = 10
 
+absolute_unit_mode = False
 
 fps_clock = pg.time.Clock()
 
