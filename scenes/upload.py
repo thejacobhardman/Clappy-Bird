@@ -2,6 +2,7 @@ import pygame as pg
 import sprites.ui.button
 import sprites.ui.upload_button
 import sprites.ui.paste_button
+import sprites.ui.text
 import sprites.entities.textbox
 import globals as g
 from scenes.menu import Menu
@@ -17,6 +18,13 @@ class UploadScreen(Menu):
             g.birds_sound.play(-1)
         self.textBox = sprites.entities.textbox.TextBox((g.WIDTH/2 - 200, g.HEIGHT/2 - 90))
 
+        self.loading = sprites.ui.text.Text(
+                "",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                20,
+                pg.Color(0, 0, 0)
+            ),
+
         self.pasteButton = sprites.ui.paste_button.PasteButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2 - 400, g.HEIGHT/2 - 90),
@@ -29,7 +37,9 @@ class UploadScreen(Menu):
                 (g.WIDTH/2+175, g.HEIGHT/2),
                 text="Upload Song",
                 textBox=self.textBox,
+                loadingtext=self.loading
             ),
         self.sprites.add(self.textBox)
+        self.sprites.add(self.loading)
         self.sprites.add(self.uploadButton)
         self.sprites.add(self.pasteButton)

@@ -10,7 +10,7 @@ def yt_download(video_url):
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
+            'preferredcodec': 'wav',
             'preferredquality': '192', 
          }], 
          'outtmpl': save_path + '/%(title)s.%(ext)s',
@@ -19,5 +19,4 @@ def yt_download(video_url):
     with youtube_dl.YoutubeDL(options) as ydl:
         ydl.download([video_info['webpage_url']])
 
-    print("Download complete... {}".format({video_info['title']}))
-    print(save_path)
+    return "Download complete... {}".format({video_info['title']})

@@ -5,7 +5,9 @@ import random
 import sprites.ui.text
 import sprites.ui.scene_button
 
-# Draws text to the screen 
+# Draws text to the screen
+
+
 def draw_text(text, font, color, surface, x, y):
     text = font.render(text, 1, color)
     text_rect = text.get_rect()
@@ -47,6 +49,8 @@ def draw_image(image, surface, x, y):
     surface.blit(image, image_rect)
 
 # This will generate a random funny hint on the loading screen.
+
+
 def generate_loading_hint():
     strings = [
         "Don't die.",
@@ -63,10 +67,17 @@ def generate_loading_hint():
         "you guys have hands, don't you?",
         "bird up",
         "snappy bird was already taken",
+        "Skill issue",
+        "Good luck on your exams!",
+        ":D",
+        "Visit the Clappy Bird Wiki for tips",
+        "holy cow",
+        "I eat, Jon. it's what I do",
+        "I ate those food",
     ]
 
     hint = "Hint: " + strings[random.randint(0, len(strings)-1)]
-    
+
     return hint
 
 # Toggles absolute unit mode on and off
@@ -75,6 +86,8 @@ def toggle_absolute_unit_mode():
     print("Absolute unit mode = " + str(g.absolute_unit_mode))
 
 # Run this whenever you need to change the scene, as it initializes the new scene
+
+
 def change_scene(new_scene):
     scene.scenes[new_scene].init()
     g.current_scene = new_scene
