@@ -157,13 +157,15 @@ scenes = {
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2-350, g.HEIGHT/2),
                 text="Mic Check",
-                load_scene="mic_check"
+                load_scene="mic_check",
+                size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2),
                 text="Select Microphone",
-                load_scene="select_microphone"
+                load_scene="select_microphone",
+                size=g.font_size
             ),
             sprites.ui.toggle_button.ToggleButton(
                 "Assets/Art/UI/Empty-Button.png",
@@ -195,7 +197,8 @@ scenes = {
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Options-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2+100),
-                load_scene="options"
+                load_scene="options",
+                size=g.font_size
             ),
         ]
     ),
@@ -213,7 +216,8 @@ scenes = {
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Options-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2+100),
-                load_scene="options"
+                load_scene="options",
+                size=g.font_size
             ),
         ]
     ),
