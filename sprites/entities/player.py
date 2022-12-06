@@ -37,7 +37,7 @@ class Player(pg.sprite.Sprite):
         self.score = 0
         self.key_down = False
         self.absolute_unit = False  # <- Set this to True to make the player an absolute unit
-        self.clapTimer = 10
+        self.clapTimer = 8
 
     def reset(self):
         self.position = g.vec(g.WIDTH/2-250, g.HEIGHT/2)
@@ -77,18 +77,19 @@ class Player(pg.sprite.Sprite):
     def bounce(self):
         self.acceleration += g.vec(0, -self.max_speed * 3)
         self.frame_index = 0
-        self.get_hurt(20)
+        if self.invincibility == 0:
+            self.get_hurt(20)
 
     def clapflap(self):
         if self.clapTimer <= 0:
             g.jump_sound.play()
             self.acceleration += g.vec(0, -self.max_speed * 2)
             self.frame_index = 0
-            self.clapTimer = 10
+            self.clapTimer = 8
 
     def handle_collisions(self):
         if self.did_leave_bottom_screen():
-            if not self.absolute_unit and self.invincibility == 0:
+            if not self.absolute_unit:
                 self.bounce()
         if self.did_leave_top_screen():
             if not self.absolute_unit and self.invincibility == 0:
