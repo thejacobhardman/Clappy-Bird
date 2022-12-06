@@ -111,6 +111,15 @@ def generate_select_microphone_ui():
         )
 
     elements.append(
+        sprites.ui.text.Text(
+            ("Currently Selected Input Device: " + g.selected_audio_device_display),
+            (g.WIDTH/2, g.HEIGHT/2+175),
+            30,
+            pygame.Color(0, 0, 0)
+        )
+    )
+
+    elements.append(
         sprites.ui.scene_button.SceneButton(
             "Assets/Art/UI/Options-Button.png",
             (g.WIDTH/2, g.HEIGHT/2+250),
