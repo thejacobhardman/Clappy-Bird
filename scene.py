@@ -20,6 +20,7 @@ import scenes.upload
 import scenes.login_signup
 import sprites.ui.logout_button
 import scenes.leaderboard
+import scripts
 
 game_scene = scenes.game.Game()
 
@@ -147,8 +148,8 @@ scenes = {
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2),
-                text="Mic Sensitivity",
-                load_scene="mic_sensitivity"
+                text="Select Microphone",
+                load_scene="select_microphone"
             ),
             sprites.ui.toggle_button.ToggleButton(
                 "Assets/Art/UI/Empty-Button.png",
@@ -164,21 +165,7 @@ scenes = {
         ]
     ),
 
-    "mic_check": scenes.menu.Menu(
-        [
-            sprites.ui.text.Text(
-                "Mic Check",
-                (g.WIDTH/2, g.HEIGHT/2-150),
-                60,
-                pg.Color(0, 0, 0)
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2, g.HEIGHT/2+100),
-                load_scene="options"
-            ),
-        ]
-    ),
+    "select_microphone": scenes.menu.Menu(scripts.generate_select_microphone_ui()),
 
     "mic_sensitivity": scenes.menu.Menu(
         [
