@@ -120,3 +120,6 @@ class Player(pg.sprite.Sprite):
         self.handle_collisions()
         if self.invincibility > 0:
             self.isInvincible()
+
+    def toggle_absolute_unit_mode(self):
+        self.absolute_unit = not self.absolute_unit
