@@ -138,9 +138,36 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-250, g.HEIGHT/2),
+                load_scene="mic_check"
+            ),
+            sprites.ui.text.Text(
+                "Mic Check",
+                (g.WIDTH/2-250, g.HEIGHT/2),
+                40,
+                pg.Color(255, 255, 255)
+            ),
+            sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                (g.WIDTH/2, g.HEIGHT/2+100),
                 load_scene="main_menu"
+            ),
+        ]
+    ),
+
+    "mic_check": scenes.menu.Menu(
+        [
+            sprites.ui.text.Text(
+                "Mic Check",
+                (g.WIDTH/2, g.HEIGHT/2-150),
+                60,
+                pg.Color(0, 0, 0)
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Options-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+100),
+                load_scene="options"
             ),
         ]
     ),
