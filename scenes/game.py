@@ -141,7 +141,7 @@ class Game:
 
                 bodyData = {"player": g.userId,
                             "username": g.username,
-                            "leaderboard": str(g.songs.index(self.song_path) + 1),
+                            "leaderboard": g.songs.index(self.song_path) + 1,
                             "highscore": int(self.player.score)}
                 print(bodyData)
                 response = requests.put(
