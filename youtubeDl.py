@@ -10,7 +10,7 @@ def yt_download(video_url):
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
+            'preferredcodec': 'wav',
             'preferredquality': '192', 
          }], 
          'outtmpl': save_path + '/%(title)s.%(ext)s',
