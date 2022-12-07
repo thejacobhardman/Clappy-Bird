@@ -186,8 +186,6 @@ scenes = {
         ]
     ),
 
-    "microphone_info": scenes.menu.Menu(scripts.generate_select_microphone_ui()),
-
     "mic_check": scenes.menu.Menu(
         [
             sprites.ui.text.Text(
@@ -211,24 +209,24 @@ scenes = {
         ]
     ),
 
-    "select_microphone": scenes.menu.Menu(scripts.generate_select_microphone_ui()),
+    "microphone_info": scenes.menu.Menu(scripts.generate_input_devices()),
 
-    "mic_sensitivity": scenes.menu.Menu(
-        [
-            sprites.ui.text.Text(
-                "Adjust Microphone Sensitivity",
-                (g.WIDTH/2, g.HEIGHT/2-150),
-                60,
-                pg.Color(0, 0, 0)
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2, g.HEIGHT/2+100),
-                load_scene="options",
-                size=g.font_size
-            ),
-        ]
-    ),
+    # "mic_sensitivity": scenes.menu.Menu(
+    #     [
+    #         sprites.ui.text.Text(
+    #             "Adjust Microphone Sensitivity",
+    #             (g.WIDTH/2, g.HEIGHT/2-150),
+    #             60,
+    #             pg.Color(0, 0, 0)
+    #         ),
+    #         sprites.ui.scene_button.SceneButton(
+    #             "Assets/Art/UI/Options-Button.png",
+    #             (g.WIDTH/2, g.HEIGHT/2+100),
+    #             load_scene="options",
+    #             size=g.font_size
+    #         ),
+    #     ]
+    # ),
 
     "game_over": scenes.menu.Menu(
         [
