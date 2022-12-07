@@ -117,6 +117,12 @@ def generate_input_devices():
                 (g.WIDTH/2, g.HEIGHT/2-250),
                 30,
                 pygame.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Restart the game after changing your system settings.",
+                (g.WIDTH/2, g.HEIGHT/2-200),
+                30,
+                pygame.Color(0, 0, 0)
             )
         ]
     )
@@ -124,7 +130,7 @@ def generate_input_devices():
         elements.append(
             sprites.ui.text.Text(
                 str(g.audio_devices_display[i]),
-                (g.WIDTH/2, g.HEIGHT/2-(50*i)),
+                (g.WIDTH/2, g.HEIGHT/2-(30*i)),
                 20,
                 pygame.Color(0, 0, 0)
             )
