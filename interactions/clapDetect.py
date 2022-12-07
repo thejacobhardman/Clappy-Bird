@@ -25,13 +25,15 @@ INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 # Clap detect minimum interval - claps cannot be detected faster than this float in seconds
 MIN_CLAP = 0.2
 
-# Used to store text for whether a clap has been detected from the options menu
-clap_detected = False
+# Reset the interactions text to be blank at the start of the program.
+with open('interactions\interactions.txt', 'w') as writer:
+    writer.write("") 
 
+# Used to store text for whether a clap has been detected from the options menu
 def update_clap_detected_text():
     with open('interactions\interactions.txt', 'r') as reader:
         if reader.readline() == "CLAP":
-            clap_detected = True
+            return True
 
 class ClapTester(object):
     def __init__(self):
