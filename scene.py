@@ -21,6 +21,7 @@ import scenes.login_signup
 import sprites.ui.logout_button
 import scenes.leaderboard
 import scripts
+import scenes.mic_check
 
 game_scene = scenes.game.Game()
 
@@ -186,34 +187,7 @@ scenes = {
         ]
     ),
 
-    "mic_check": scenes.menu.Menu(
-        [
-            sprites.ui.text.Text(
-                "Check Microphone Input",
-                (g.WIDTH/2, g.HEIGHT/2-250),
-                60,
-                pg.Color(0, 0, 0)
-            ),
-            sprites.ui.text.Text(
-                "Try Clapping!",
-                (g.WIDTH/2, g.HEIGHT/2-200),
-                40,
-                pg.Color(0, 0, 0)
-            ),
-            sprites.ui.text.Text(
-                g.clap_detected_text,
-                (g.WIDTH/2, g.HEIGHT/2),
-                60,
-                pg.Color(0, 0, 0)
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2, g.HEIGHT/2+200),
-                load_scene="options",
-                size=g.font_size
-            ),
-        ]
-    ),
+    "mic_check": scenes.mic_check.MicCheck(),
 
     "microphone_info": scenes.menu.Menu(scripts.generate_input_devices()),
 
