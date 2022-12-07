@@ -6,8 +6,6 @@ import sprites.ui.text
 import sprites.ui.scene_button
 
 # Draws text to the screen
-
-
 def draw_text(text, font, color, surface, x, y):
     text = font.render(text, 1, color)
     text_rect = text.get_rect()
@@ -154,11 +152,6 @@ def generate_input_devices():
     )
 
     return elements
-
-def update_clap_detected_text():
-    with open('interactions\interactions.txt', 'r') as reader:
-        if reader.readline() == "CLAP":
-            g.clap_detected_text = "CLAP DETECTED"
 
 # # This is supposed to dynamically return a variable from the globals based on input
 # def get_updated_global_variable(variable):
