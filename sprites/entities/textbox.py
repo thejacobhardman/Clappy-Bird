@@ -1,5 +1,6 @@
 import pygame as pg
 import globals as g
+import pyperclip
 
 class TextBox(pg.sprite.Sprite):
 
@@ -53,11 +54,13 @@ class TextBox(pg.sprite.Sprite):
             if self.active:
                 if event.type == pg.KEYDOWN:
                     # print(event.key)
-                    if event.key == pg.K_RETURN:
-                        print(self.getText())
-                        self.text = ''
-                    elif event.key == pg.K_BACKSPACE:
+                    keys = pg.key.get_pressed()
+                    #if keys[pg.K_RETURN]:
+                    #    self.text = ''
+                    if keys[pg.K_BACKSPACE]:
                         self.removeText()
+                    elif keys[pg.K_LCTRL] and keys[pg.K_v]:
+                        self.text = pyperclip.paste()
                     else:
                         self.addText(event)
 

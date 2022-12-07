@@ -6,8 +6,8 @@ import scene
 # Button that picks a song and navigates to the loading scene
 class DifficultyButton(sprites.ui.button.Button):
 
-    def __init__(self, image_file, position, text=""):
-        super().__init__(image_file, position, text)
+    def __init__(self, image_file, position, text="", size=None):
+        super().__init__(image_file, position, text, size)
         self.difficulty = text
 
     def on_click(self):

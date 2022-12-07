@@ -4,6 +4,7 @@ import sprites.ui.scene_button
 import sprites.ui.quit_button
 import sprites.ui.difficulty_button
 import sprites.ui.upload_button
+import sprites.ui.toggle_button
 import scenes.menu
 import scenes.win_screen
 import sprites.ui.sprite
@@ -18,6 +19,9 @@ import scenes.countdown
 import scenes.upload
 import scenes.login_signup
 import sprites.ui.logout_button
+import scenes.leaderboard
+import scripts
+import scenes.mic_check
 
 game_scene = scenes.game.Game()
 
@@ -66,34 +70,44 @@ scenes = {
                 (g.WIDTH/2, g.HEIGHT/2-150)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Play-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2),
-                load_scene="play_menu"
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Leaderboard-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2),
-                load_scene="leaderboard"
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2+100),
-                load_scene="options"
-            ),
-            sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
+                load_scene="play_menu",
+                text="Play",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button-Blue.png",
+                (g.WIDTH/2+175, g.HEIGHT/2),
+                load_scene="leaderboard",
+                text="Leaderboard",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button-Orange.png",
+                (g.WIDTH/2+175, g.HEIGHT/2+100),
+                load_scene="options",
+                text="Options",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button-Magenta.png",
                 (g.WIDTH/2-175, g.HEIGHT/2+100),
                 text="Upload",
                 load_scene="Upload_screen",
+                size=g.font_size
             ),
             sprites.ui.logout_button.LogoutButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Teal.png",
                 (g.WIDTH/2-175, g.HEIGHT/2+200),
-                text="Log Out"
+                text="Log Out",
+                size=g.font_size
             ),
             sprites.ui.quit_button.QuitButton(
-                "Assets/Art/UI/Quit-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2+200)
+                "Assets/Art/UI/Empty-Button-Red.png",
+                (g.WIDTH/2+175, g.HEIGHT/2+200),
+                text="Quit",
+                size=g.font_size
             )
         ]
     ),
@@ -107,40 +121,30 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Blue.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
                 text="Songs",
-                load_scene="songs"
+                load_scene="songs",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button-Orange.png",
+                (g.WIDTH/2+175, g.HEIGHT/2),
+                text="Custom Songs",
+                load_scene="custom_songs",
+                size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2),
-                text="Custom Songs",
-                load_scene="custom_songs"
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Main-Menu-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2+100),
-                load_scene="main_menu"
+                text="Main Menu",
+                load_scene="main_menu",
+                size=g.font_size
             ),
         ]
     ),
 
-    "leaderboard": scenes.menu.Menu(
-        [
-            sprites.ui.text.Text(
-                "Leaderboard",
-                (g.WIDTH/2, g.HEIGHT/2-150),
-                60,
-                pg.Color(0, 0, 0)
-            ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Main-Menu-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100),
-                load_scene="main_menu"
-            ),
-        ]
-    ),
+    "leaderboard": scenes.leaderboard.Leaderboard(),
 
     "options": scenes.menu.Menu(
         [
@@ -151,12 +155,41 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2-350, g.HEIGHT/2),
+                text="Mic Check",
+                load_scene="mic_check",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2),
+                text="Mic Info",
+                load_scene="microphone_info",
+                size=g.font_size
+            ),
+            sprites.ui.toggle_button.ToggleButton(
+                "Assets/Art/UI/Empty-Button-Red.png",
+                (g.WIDTH/2+350, g.HEIGHT/2),
+                display_text=("Invincibility: " + str(g.absolute_unit_mode)),
+                option_text="Invincibility: ",
+                global_variable=g.absolute_unit_mode,
+                original_image="Assets/Art/UI/Empty-Button-Red.png",
+                alternate_image="Assets/Art/UI/Empty-Button.png",
+                function="toggle_absolute_unit_mode"
+            ),
+            sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100),
-                load_scene="main_menu"
+                (g.WIDTH/2, g.HEIGHT/2+100),
+                load_scene="main_menu",
+                size=g.font_size
             ),
         ]
     ),
+
+    "mic_check": scenes.mic_check.MicCheck(),
+
+    "microphone_info": scenes.menu.Menu(scripts.generate_input_devices()),
 
     "game_over": scenes.menu.Menu(
         [
@@ -167,22 +200,36 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+200),
+                text="Replay",
+                load_scene="difficulty"
+            ),
+            sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
-                load_scene="main_menu"
+                load_scene="main_menu",
+                size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Leaderboard-Button.png",
+                "Assets/Art/UI/Empty-Button-Blue.png",
                 (g.WIDTH/2+175, g.HEIGHT/2),
-                load_scene="leaderboard"
+                load_scene="leaderboard",
+                text="Leaderboard",
+                size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100)
+                "Assets/Art/UI/Empty-Button-Orange.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                load_scene="options",
+                text="Options",
+                size=g.font_size
             ),
             sprites.ui.quit_button.QuitButton(
-                "Assets/Art/UI/Quit-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2+100)
+                "Assets/Art/UI/Empty-Button-Red.png",
+                (g.WIDTH/2+175, g.HEIGHT/2+100),
+                text="Quit",
+                size=g.font_size
             )
         ]
     ),
@@ -198,20 +245,28 @@ scenes = {
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Main-Menu-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
-                load_scene="main_menu"
+                load_scene="main_menu",
+                size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Leaderboard-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2),
-                load_scene="leaderboard"
+                "Assets/Art/UI/Empty-Button-Blue.png",
+                (g.WIDTH / 2 + 175, g.HEIGHT / 2),
+                load_scene="leaderboard",
+                text="Leaderboard",
+                size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Options-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100)
+                "Assets/Art/UI/Empty-Button-Orange.png",
+                (g.WIDTH / 2 - 175, g.HEIGHT / 2 + 100),
+                load_scene="options",
+                text="Options",
+                size=g.font_size
             ),
             sprites.ui.quit_button.QuitButton(
-                "Assets/Art/UI/Quit-Button.png",
-                (g.WIDTH/2+175, g.HEIGHT/2+100)
+                "Assets/Art/UI/Empty-Button-Red.png",
+                (g.WIDTH / 2 + 175, g.HEIGHT / 2 + 100),
+                text="Quit",
+                size=g.font_size
             )
         ]
     ),
@@ -220,26 +275,25 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Upload a Song",
-                (g.WIDTH/2, g.HEIGHT/2-250),
+                (g.WIDTH/2, g.HEIGHT/2-270),
                 60,
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.text.Text(
                 "Enter a Youtube url",
-                (g.WIDTH/2, g.HEIGHT/2-150),
+                (g.WIDTH/2, g.HEIGHT/2-220),
                 30,
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Main-Menu-Button.png",
+                "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
-                load_scene="main_menu"
+                load_scene="main_menu",
+                text="Main Menu",
+                size=g.font_size
             ),
         ],
-        sprites.entities.textbox.TextBox((20, 20))
     ),
-
-
 
     "difficulty": scenes.menu.Menu(
         [
@@ -252,22 +306,26 @@ scenes = {
             sprites.ui.difficulty_button.DifficultyButton(
                 "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
-                text="Easy"
+                text="Easy",
+                size=g.font_size
             ),
             sprites.ui.difficulty_button.DifficultyButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Blue.png",
                 (g.WIDTH/2+175, g.HEIGHT/2),
-                text="Normal"
+                text="Normal",
+                size=g.font_size
             ),
             sprites.ui.difficulty_button.DifficultyButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Orange.png",
                 (g.WIDTH/2-175, g.HEIGHT/2+100),
-                text="Hard"
+                text="Hard",
+                size=g.font_size
             ),
             sprites.ui.difficulty_button.DifficultyButton(
-                "Assets/Art/UI/Empty-Button.png",
+                "Assets/Art/UI/Empty-Button-Red.png",
                 (g.WIDTH/2+175, g.HEIGHT/2+100),
-                text="Extreme"
+                text="Extreme",
+                size=g.font_size
             )
         ]
     ),
@@ -281,9 +339,11 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Main-Menu-Button.png",
+                "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH / 2, (g.HEIGHT / 2) + 300),
-                load_scene="main_menu"
+                load_scene="main_menu",
+                text="Main Menu",
+                size=g.font_size
             )
         ]
     ),
@@ -297,9 +357,11 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Main-Menu-Button.png",
+                "Assets/Art/UI/Empty-Button.png",
                 (g.WIDTH / 2, (g.HEIGHT / 2) + 300),
-                load_scene="main_menu"
+                load_scene="main_menu",
+                text="Main Menu",
+                size=g.font_size
             )
         ]
     ),

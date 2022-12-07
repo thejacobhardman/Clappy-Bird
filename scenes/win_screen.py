@@ -18,6 +18,7 @@ class WinScreen:
                     for sprite in self.sprites.sprites():
                         # Check if any buttons were clicked
                         if isinstance(sprite, sprites.ui.button.Button) and sprite.click((mouseX, mouseY)):
+                            g.applause_sound.stop()
                             sprite.on_click()
 
     def init(self):
