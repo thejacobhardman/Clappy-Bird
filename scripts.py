@@ -102,7 +102,7 @@ def execute_script(function=None):
     method()
 
 # Dynamically generates a list of audio devices
-def generate_select_microphone_ui():
+def generate_input_devices():
     elements = []
     elements.append(
         [
