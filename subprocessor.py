@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-os.system("pip install -r requirements.txt")
+os.system("pip install -r requirements.txt -q")
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
