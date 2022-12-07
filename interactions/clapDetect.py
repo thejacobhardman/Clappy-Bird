@@ -25,7 +25,13 @@ INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 # Clap detect minimum interval - claps cannot be detected faster than this float in seconds
 MIN_CLAP = 0.2
 
+# Used to store text for whether a clap has been detected from the options menu
+clap_detected = False
 
+def update_clap_detected_text():
+    with open('interactions\interactions.txt', 'r') as reader:
+        if reader.readline() == "CLAP":
+            clap_detected = True
 
 class ClapTester(object):
     def __init__(self):
@@ -56,7 +62,7 @@ class ClapTester(object):
         return stream
 
     # listens for loud objects, and prints them to console
-    def listen(self):                                                       
+    def listen(self):                                           
 
         start = time.time()
 
@@ -101,7 +107,7 @@ class ClapTester(object):
                             # clap in clappy bird
                             with open('interactions\interactions.txt', 'w') as writer:
                                 writer.write("CLAP") 
-                            #scripts.update_clap_detected_text() 
+                            update_clap_detected_text() 
 
                             break
             
