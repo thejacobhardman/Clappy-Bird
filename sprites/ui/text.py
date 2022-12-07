@@ -12,9 +12,11 @@ class Text(pg.sprite.Sprite):
         self.position = position
         self.font = pg.font.SysFont("Arial", size, bold=True)
         self.color = color
+        self.text = text
         self.image = self.font.render(text, True, self.color)
         self.rect = self.image.get_rect(center=self.position)
 
     def change_text(self, text):
         self.image = self.font.render(text, True, self.color)
         self.rect = self.image.get_rect(center=self.position)
+        self.text = text

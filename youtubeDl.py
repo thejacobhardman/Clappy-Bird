@@ -19,4 +19,4 @@ def yt_download(video_url):
     with youtube_dl.YoutubeDL(options) as ydl:
         ydl.download([video_info['webpage_url']])
 
-    return "Download complete... {}".format({video_info['title']})
+    return "Song: {} loaded. Reload game to access.".format({video_info['title']})

@@ -209,7 +209,6 @@ scenes = {
                 "Assets/Art/UI/Main-Menu-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
                 load_scene="main_menu",
-                text="Main Menu",
                 size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
@@ -244,10 +243,9 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH / 2 - 175, g.HEIGHT / 2),
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
                 load_scene="main_menu",
-                text="Main Menu",
                 size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
@@ -277,13 +275,13 @@ scenes = {
         [
             sprites.ui.text.Text(
                 "Upload a Song",
-                (g.WIDTH/2, g.HEIGHT/2-250),
+                (g.WIDTH/2, g.HEIGHT/2-270),
                 60,
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.text.Text(
                 "Enter a Youtube url",
-                (g.WIDTH/2, g.HEIGHT/2-200),
+                (g.WIDTH/2, g.HEIGHT/2-220),
                 30,
                 pg.Color(0, 0, 0)
             ),
