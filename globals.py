@@ -33,6 +33,8 @@ def get_default_audio_device():
 audio_devices, audio_devices_display = get_audio_devices()
 selected_audio_device, selected_audio_device_display = get_default_audio_device()
 
+clap_detected_text = ""
+
 absolute_unit_mode = False
 
 fps_clock = pg.time.Clock()
