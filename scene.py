@@ -200,6 +200,12 @@ scenes = {
                 40,
                 pg.Color(0, 0, 0)
             ),
+            sprites.ui.text.Text(
+                g.clap_detected_text,
+                (g.WIDTH/2, g.HEIGHT/2),
+                60,
+                pg.Color(0, 0, 0)
+            ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Options-Button.png",
                 (g.WIDTH/2, g.HEIGHT/2+200),
@@ -316,6 +322,7 @@ scenes = {
             ),
         ],
     ),
+
     "difficulty": scenes.menu.Menu(
         [
             sprites.ui.text.Text(
