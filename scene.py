@@ -179,7 +179,6 @@ scenes = {
                 "Assets/Art/UI/Main-Menu-Button.png",
                 (g.WIDTH/2-175, g.HEIGHT/2),
                 load_scene="main_menu",
-                text="Main Menu",
                 size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
@@ -187,6 +186,13 @@ scenes = {
                 (g.WIDTH/2+175, g.HEIGHT/2),
                 load_scene="leaderboard",
                 text="Leaderboard",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button-Orange.png",
+                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                load_scene="options",
+                text="Options",
                 size=g.font_size
             ),
             sprites.ui.quit_button.QuitButton(
@@ -207,10 +213,9 @@ scenes = {
                 pg.Color(0, 0, 0)
             ),
             sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH / 2 - 175, g.HEIGHT / 2),
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2-175, g.HEIGHT/2),
                 load_scene="main_menu",
-                text="Main Menu",
                 size=g.font_size
             ),
             sprites.ui.scene_button.SceneButton(
