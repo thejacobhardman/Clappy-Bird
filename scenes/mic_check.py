@@ -40,18 +40,19 @@ class MicCheck(Menu):
                     for sprite in self.sprites.sprites():
                         # Check if any buttons were clicked
                         if isinstance(sprite, sprites.ui.button.Button) and sprite.click((mouseX, mouseY)):
-                            g.applause_sound.stop()
                             sprite.on_click()
     
-    def update(self):
-        if clapDetect.clap_detected == True:
+    def update_clap_detected_text(self):
+        if clapDetect.update_clap_detected_text() == True and len(self.sprites.sprites()) == 3:
             self.sprites.add(
                 sprites.ui.text.Text(
                 "CLAP DETECTED",
                 (g.WIDTH/2, g.HEIGHT/2),
                 60,
-                pg.Color(0, 0, 0)
-            ))
+                pg.Color(0, 0, 0))
+            )
+    
+    def update(self):
+        self.update_clap_detected_text()
         self.sprites.draw(g.screen)
-        print(self.sprites)
         self.__handle_click()
