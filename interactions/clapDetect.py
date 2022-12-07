@@ -52,8 +52,8 @@ class ClapTester(object):
                                  input = True,
                                  frames_per_buffer = INPUT_FRAMES_PER_BLOCK,
                                  input_device_index=g.selected_audio_device.get('index'))
-        print(g.selected_audio_device.get('index'))
-        print(g.selected_audio_device.get('name'))
+        #print(g.selected_audio_device.get('index'))
+        #print(g.selected_audio_device.get('name'))
         return stream
 
     # listens for loud objects, and prints them to console
