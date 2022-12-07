@@ -108,7 +108,7 @@ class Game:
     #API Methods -------------------------
 
     def can_upload_score(self):
-        if g.logged_in & (g.songs.index(self.song_path) != None) & (self.customSong == False) & (self.player.absolute_unit == False):
+        if g.logged_in and (self.customSong == False) and (g.songs.index(self.song_path) != None) and (self.player.absolute_unit == False):
             return True
 
     def upload_score(self):

@@ -189,13 +189,6 @@ scenes = {
                 text="Leaderboard",
                 size=g.font_size
             ),
-            sprites.ui.scene_button.SceneButton(
-                "Assets/Art/UI/Empty-Button-Orange.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100),
-                load_scene="options",
-                text="Options",
-                size=g.font_size
-            ),
             sprites.ui.quit_button.QuitButton(
                 "Assets/Art/UI/Empty-Button-Red.png",
                 (g.WIDTH/2+175, g.HEIGHT/2+100),
