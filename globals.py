@@ -69,7 +69,7 @@ username = ""
 token = ""
 userId = ""
 
-# Big list its a list now hehehe of song mappings
+# Big list it's a list now hehehe of song mappings
 songs = [
     "Levels/Blue Skies - Silent Partner.wav",
     "Levels/Buddha.wav",
@@ -83,3 +83,5 @@ songs = [
     "Levels/Uk.wav",
     # etc
 ]
+
+font_size = 55
