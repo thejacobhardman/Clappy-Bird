@@ -2,10 +2,10 @@ import pygame
 import globals as g
 import scene
 import random
+import sprites.ui.text
+import sprites.ui.scene_button
 
 # Draws text to the screen
-
-
 def draw_text(text, font, color, surface, x, y):
     text = font.render(text, 1, color)
     text_rect = text.get_rect()
@@ -78,9 +78,81 @@ def generate_loading_hint():
 
     return hint
 
+# Toggles absolute unit mode on and off
+def toggle_absolute_unit_mode():
+    g.absolute_unit_mode = not g.absolute_unit_mode
+
 # Run this whenever you need to change the scene, as it initializes the new scene
 
 
 def change_scene(new_scene):
     scene.scenes[new_scene].init()
     g.current_scene = new_scene
+
+# This executes a scripts that is called by a toggle button
+def execute_script(function=None):
+    method_name = function
+    possibles = globals().copy()
+    possibles.update(locals())
+    method = possibles.get(method_name)
+    if not method:
+        raise NotImplementedError("Method %s not implemented" % method_name)
+    method()
+
+# Dynamically generates a list of audio devices
+def generate_input_devices():
+    elements = []
+    elements.append(
+        [
+            sprites.ui.text.Text(
+                "Your Input Devices",
+                (g.WIDTH/2, g.HEIGHT/2-300),
+                60,
+                pygame.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Change your default input device in your system settings to change the in-game microphone.",
+                (g.WIDTH/2, g.HEIGHT/2-250),
+                30,
+                pygame.Color(0, 0, 0)
+            ),
+            sprites.ui.text.Text(
+                "Restart the game after changing your system settings.",
+                (g.WIDTH/2, g.HEIGHT/2-200),
+                30,
+                pygame.Color(0, 0, 0)
+            )
+        ]
+    )
+    for i in range(0, len(g.audio_devices_display)):
+        elements.append(
+            sprites.ui.text.Text(
+                str(g.audio_devices_display[i]),
+                (g.WIDTH/2, g.HEIGHT/2-(30*i)),
+                20,
+                pygame.Color(0, 0, 0)
+            )
+        )
+
+    elements.append(
+        sprites.ui.text.Text(
+            ("Currently Selected Input Device: " + g.selected_audio_device_display),
+            (g.WIDTH/2, g.HEIGHT/2+200),
+            30,
+            pygame.Color(0, 0, 0)
+        )
+    )
+
+    elements.append(
+        sprites.ui.scene_button.SceneButton(
+            "Assets/Art/UI/Options-Button.png",
+            (g.WIDTH/2, g.HEIGHT/2+275),
+            load_scene="options"
+        )
+    )
+
+    return elements
+
+# # This is supposed to dynamically return a variable from the globals based on input
+# def get_updated_global_variable(variable):
+#     return g.variable

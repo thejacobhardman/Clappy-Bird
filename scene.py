@@ -4,6 +4,7 @@ import sprites.ui.scene_button
 import sprites.ui.quit_button
 import sprites.ui.difficulty_button
 import sprites.ui.upload_button
+import sprites.ui.toggle_button
 import scenes.menu
 import scenes.win_screen
 import sprites.ui.sprite
@@ -19,6 +20,8 @@ import scenes.upload
 import scenes.login_signup
 import sprites.ui.logout_button
 import scenes.leaderboard
+import scripts
+import scenes.mic_check
 
 game_scene = scenes.game.Game()
 
@@ -153,13 +156,40 @@ scenes = {
             ),
             sprites.ui.scene_button.SceneButton(
                 "Assets/Art/UI/Empty-Button.png",
-                (g.WIDTH/2-175, g.HEIGHT/2+100),
+                (g.WIDTH/2-350, g.HEIGHT/2),
+                text="Mic Check",
+                load_scene="mic_check",
+                size=g.font_size
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Empty-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2),
+                text="Mic Info",
+                load_scene="microphone_info",
+                size=g.font_size
+            ),
+            sprites.ui.toggle_button.ToggleButton(
+                "Assets/Art/UI/Empty-Button-Red.png",
+                (g.WIDTH/2+350, g.HEIGHT/2),
+                display_text=("Invincibility: " + str(g.absolute_unit_mode)),
+                option_text="Invincibility: ",
+                global_variable=g.absolute_unit_mode,
+                original_image="Assets/Art/UI/Empty-Button-Red.png",
+                alternate_image="Assets/Art/UI/Empty-Button.png",
+                function="toggle_absolute_unit_mode"
+            ),
+            sprites.ui.scene_button.SceneButton(
+                "Assets/Art/UI/Main-Menu-Button.png",
+                (g.WIDTH/2, g.HEIGHT/2+100),
                 load_scene="main_menu",
-                text="Main Menu",
                 size=g.font_size
             ),
         ]
     ),
+
+    "mic_check": scenes.mic_check.MicCheck(),
+
+    "microphone_info": scenes.menu.Menu(scripts.generate_input_devices()),
 
     "game_over": scenes.menu.Menu(
         [
@@ -266,6 +296,7 @@ scenes = {
             ),
         ],
     ),
+
     "difficulty": scenes.menu.Menu(
         [
             sprites.ui.text.Text(

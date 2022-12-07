@@ -1,5 +1,6 @@
 import pygame as pg
 import itertools
+import pyaudio
 
 pg.init()
 pg.key.set_repeat(500, 100)
@@ -10,6 +11,29 @@ HEIGHT = 720
 FPS = 60
 PIPE_SPEED = 10
 
+# Audio Devices - This code came from: https://stackoverflow.com/a/39677871
+def get_audio_devices():
+    p = pyaudio.PyAudio()
+    info = p.get_host_api_info_by_index(0)
+    numdevices = info.get('deviceCount')
+    input_devices = []
+    input_devices_display_list = []
+
+    for i in range(0, numdevices):
+        if (p.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+            input_devices.append(p.get_device_info_by_host_api_device_index(0, i))
+            input_devices_display_list.append(p.get_device_info_by_host_api_device_index(0, i).get('name'))
+
+    return input_devices, input_devices_display_list
+
+def get_default_audio_device():
+    p = pyaudio.PyAudio()
+    return p.get_default_input_device_info(), p.get_default_input_device_info().get('name')
+
+audio_devices, audio_devices_display = get_audio_devices()
+selected_audio_device, selected_audio_device_display = get_default_audio_device()
+
+absolute_unit_mode = False
 
 fps_clock = pg.time.Clock()
 

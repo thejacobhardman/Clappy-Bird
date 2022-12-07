@@ -36,7 +36,7 @@ class Player(pg.sprite.Sprite):
         self.acceleration = g.vec(0, 0)
         self.score = 0
         self.key_down = False
-        self.absolute_unit = False  # <- Set this to True to make the player an absolute unit
+        self.absolute_unit = g.absolute_unit_mode
         self.clapTimer = 10
         self.change = 3
 

@@ -4,6 +4,7 @@
 .env
 *.txt
 !requirements.txt
+interactions/interactions.txt
 .idea/Clappy-Bird.iml
 .idea/misc.xml
 .idea/workspace.xml

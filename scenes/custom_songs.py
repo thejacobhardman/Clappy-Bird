@@ -47,16 +47,17 @@ class CustomSongs(Menu):
             x_pos = g.WIDTH / 2
             if len(level_paths) > 4:
                 x_pos = g.WIDTH - (g.WIDTH / 3) if i > 3 else g.WIDTH / 3
-
-            song_buttons.append(
-                sprites.ui.song_button.SongButton(
-                    "Assets/Art/UI/Empty-Button.png",
-                    (x_pos, (g.HEIGHT / 4) + (120 * (i % 4))),
-                    text=level[:-4],
-                    song="CustomLevels/" + level,
-                    flag=True
+            
+            if not i == 0:
+                song_buttons.append(
+                    sprites.ui.song_button.SongButton(
+                        "Assets/Art/UI/Empty-Button.png",
+                        (x_pos, (g.HEIGHT / 4) + (120 * (i % 4))),
+                        text=level[:-4],
+                        song="CustomLevels/" + level,
+                        flag=True
+                    )
                 )
-            )
             i += 1
         for level in song_buttons:
             self.sprites.add(level)
