@@ -155,6 +155,11 @@ def generate_input_devices():
 
     return elements
 
+def update_clap_detected_text():
+    with open('interactions\interactions.txt', 'r') as reader:
+        if reader.readline() == "CLAP":
+            g.clap_detected_text = "CLAP DETECTED"
+
 # # This is supposed to dynamically return a variable from the globals based on input
 # def get_updated_global_variable(variable):
 #     return g.variable
