@@ -104,8 +104,7 @@ class Game:
         scripts.draw_text("Hitpoints: "+str(round(self.player.life)),
                           g.game_font, (0, 0, 0), g.screen, 300, 50)
 
-
-    #API Methods -------------------------
+    # API Methods -------------------------
 
     def can_upload_score(self):
         if g.logged_in and (self.customSong == False) and (g.songs.index(self.song_path) != None) and (self.player.absolute_unit == False):
@@ -135,7 +134,6 @@ class Game:
         else:
             high_score = response.json(
             )["data"]["data"]["highscore"]
-            print(high_score)
 
             if self.player.score > high_score:
 
@@ -143,17 +141,14 @@ class Game:
                             "username": g.username,
                             "leaderboard": g.songs.index(self.song_path) + 1,
                             "highscore": int(self.player.score)}
-                print(bodyData)
                 response = requests.put(
                     (g.api_url + "/score/" + g.userId + "/" + str(g.songs.index(self.song_path) + 1)), json=bodyData, headers=headers)
-                print(response.status_code)
 
                 if response.status_code != 200:
                     # Save data from HTTP response
                     print("Error updating score")
 
-    
-    #Song Methods -------------------------------------------------------
+    # Song Methods -------------------------------------------------------
 
     def set_song(self, path, data):
         self.song_path = path
@@ -169,7 +164,7 @@ class Game:
         self.music_started = True
         pg.mixer.music.play()
 
-    #Spawn pipe Method --------------------------------------------------
+    # Spawn pipe Method --------------------------------------------------
 
     def spawn_pipe_set(self, height, gap_size, has_gem, mid_pipe):
         top_pipe = sprites.entities.pipe.Pipe("top", 500, height - gap_size)
@@ -203,7 +198,7 @@ class Game:
                 ((self.level.pipe_list[self.pipeIncr]['spawn'] - self.level.pipe_list[self.pipeIncr - 1]['spawn']) / 2) + .05) and self.noMiddlePipe and self.spawnChance == 2:
             return True
 
-    #Difficulty Methods --------------------------------------------------------
+    # Difficulty Methods --------------------------------------------------------
 
     def set_difficulty(self, difficulty):
         self.difficulty = difficulty
@@ -240,6 +235,6 @@ class Game:
             self.spawnChance = random.randint(0, 20)
         elif difficulty == 'Hard':
             self.spawnChance = random.randint(0, 10)
-            self.variance == random.randint(-20,0)
+            self.variance == random.randint(-20, 0)
         elif difficulty == 'Extreme':
-            self.variance == random.randint(-50,-20)
+            self.variance == random.randint(-50, -20)
