@@ -4,7 +4,7 @@
  If you're bad at Flappy Bird like Jacob you can enable absolute unit mode by setting the Player class' property to true in its __init__ function.
 
  ### Controls:
- - Space: Jump
+ - Clap: Jump
 
  ### Credits:
  - Project Lead - Michael Vigil

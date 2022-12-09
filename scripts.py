@@ -72,6 +72,7 @@ def generate_loading_hint():
         "holy cow",
         "I eat, Jon. it's what I do",
         "I ate those food",
+        "Clappy Bird is like Flappy Bird except Clappy"
     ]
 
     hint = "Hint: " + strings[random.randint(0, len(strings)-1)]
