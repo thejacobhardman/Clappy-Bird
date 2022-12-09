@@ -9,6 +9,13 @@ class MicCheck(Menu):
 
     def __init__(self):
         super().__init__([])
+        self.clap_detected_text = sprites.ui.text.Text(
+                                    "CLAP DETECTED",
+                                    (g.WIDTH/2, g.HEIGHT/2),
+                                    60,
+                                    pg.Color(0, 0, 0))
+        self.first_load = True
+        self.clap_detected = False
         self.sprites.add(
             sprites.ui.text.Text(
             "Check Microphone Input",
@@ -40,19 +47,46 @@ class MicCheck(Menu):
                     for sprite in self.sprites.sprites():
                         # Check if any buttons were clicked
                         if isinstance(sprite, sprites.ui.button.Button) and sprite.click((mouseX, mouseY)):
+                            self.first_load = False
                             sprite.on_click()
     
     def update_clap_detected_text(self):
         if clapDetect.update_clap_detected_text() == True and len(self.sprites.sprites()) == 3:
-            self.sprites.add(
-                sprites.ui.text.Text(
-                "CLAP DETECTED",
-                (g.WIDTH/2, g.HEIGHT/2),
-                60,
-                pg.Color(0, 0, 0))
-            )
+            self.sprites.add(self.clap_detected_text)
+            self.clap_detected = True
+            print(len(self.sprites.sprites()))
+
+    def redraw_screen(self):
+        with open('interactions\interactions.txt', 'w') as writer:
+            writer.write("") 
+        self.clap_detected_text.kill()
+        self.first_load = True
+        super().__init__([])
+        self.sprites.add(
+            sprites.ui.text.Text(
+            "Check Microphone Input",
+            (g.WIDTH/2, g.HEIGHT/2-250),
+            60,
+            pg.Color(0, 0, 0)
+        ))
+        self.sprites.add(
+            sprites.ui.text.Text(
+            "Try Clapping!",
+            (g.WIDTH/2, g.HEIGHT/2-200),
+            40,
+            pg.Color(0, 0, 0)
+        ))
+        self.sprites.add(
+            sprites.ui.scene_button.SceneButton(
+            "Assets/Art/UI/Options-Button.png",
+            (g.WIDTH/2, g.HEIGHT/2+200),
+            load_scene="options",
+            size=g.font_size
+        ))
     
     def update(self):
+        if not self.first_load:
+            self.redraw_screen()
         self.update_clap_detected_text()
         self.sprites.draw(g.screen)
         self.__handle_click()
