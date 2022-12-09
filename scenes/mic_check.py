@@ -54,7 +54,6 @@ class MicCheck(Menu):
         if clapDetect.update_clap_detected_text() == True and len(self.sprites.sprites()) == 3:
             self.sprites.add(self.clap_detected_text)
             self.clap_detected = True
-            print(len(self.sprites.sprites()))
 
     def redraw_screen(self):
         with open('interactions\interactions.txt', 'w') as writer:
